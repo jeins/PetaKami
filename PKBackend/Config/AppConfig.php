@@ -15,7 +15,7 @@ class AppConfig extends Config
     /**
      * @return array
      */
-    private function setupDB()
+    public function setupDB()
     {
         return [
           'database' => [
@@ -30,7 +30,7 @@ class AppConfig extends Config
     /**
      * @return array
      */
-    private function setupApplication()
+    public function setupApplication()
     {
         return [
             'application' => [
@@ -47,7 +47,16 @@ class AppConfig extends Config
                     'staticBaseUri' => '',
                     'baseUri'       => '/'
                 ],
-                'debug' => true
+                'debug' => true,
+            ]
+        ];
+    }
+
+    public function setupGeoServer(){
+        return [
+            'geoserver' => [
+                'REST_URL'      => 'http://192.168.1.134:8080/geoserver/rest',
+                'DATASTORE_TYP' => 'PostGIS',
             ]
         ];
     }

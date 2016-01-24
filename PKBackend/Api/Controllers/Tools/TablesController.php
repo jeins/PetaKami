@@ -8,15 +8,11 @@ use Phalcon\Db\Column;
 
 class TablesController extends BaseController
 {
-
-    public $connection;
-
     public $table;
 
     public function __construct()
     {
         parent::__construct();
-        $this->connection = $this->di->getShared('db');
     }
 
     public function setTable()

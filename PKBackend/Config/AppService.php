@@ -20,12 +20,24 @@ class AppService extends AppLoader
 
         $this->di = new FactoryDefault();
         $this->setRouteCollections();
+        $this->setConfig();
         $this->di->setShared('url', $this->setUrl());
         $this->di->setShared('db', $this->setDB());
     }
 
     public function getDependencyInjection(){
         return $this->di;
+    }
+
+    private function setConfig()
+    {
+        $this->di->set('config', function(){
+           return json_encode(array_values(array_merge(
+               $this->setupDB(),
+               $this->setupApplication(),
+               $this->setupGeoServer()
+           )));
+        });
     }
 
     private function setRouteCollections()

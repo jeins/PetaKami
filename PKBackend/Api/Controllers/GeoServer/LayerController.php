@@ -18,10 +18,7 @@ class LayerController extends RESTController
 
     public function get()
     {
-        $this->queryBuilder->table = "atestrest";
-        //$this->queryBuilder->createTablePoint("atestrest");
-
-        return $this->respond([$this->queryBuilder->postAction()]);
+        return $this->respond(['hellow']);
     }
 
     public function putAction()
