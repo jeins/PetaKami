@@ -60,7 +60,7 @@ class TablesController extends BaseController
                 )
             );
         } catch(\Exception $e){
-            // ADD LOG FILE
+            //TODO: need exception!
         }
     }
 

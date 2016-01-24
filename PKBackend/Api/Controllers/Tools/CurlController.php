@@ -70,6 +70,7 @@ class CurlController
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $this->requestBody);
                 break;
             case 'delete':
+                //TODO: belum beresin nih!
                 break;
         }
 

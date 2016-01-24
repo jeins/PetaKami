@@ -30,7 +30,7 @@ class QueryController extends TablesController
         try{
             $result = $this->connection->execute($this->_query);
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            $result = $e->getMessage();
         }
 
         $this->_query = '';
@@ -58,9 +58,7 @@ class QueryController extends TablesController
                     $val = 'NULL';
                     continue;
                 }
-                if($pos !== false){
-                    $val = $val;
-                } else if (is_string($val)) {
+                if (is_string($val) && $pos === false) {
                     $val = "'".$val."'";
                 }
             }
