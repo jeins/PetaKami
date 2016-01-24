@@ -20,7 +20,7 @@ class TablesController extends BaseController
 
     }
 
-    public function createTablePoint()
+    public function createTable($typ)
     {
         try{
             $this->connection->createTable(
@@ -51,7 +51,7 @@ class TablesController extends BaseController
                             ]
                         ),
                         new Column(
-                            "point",
+                            $typ,
                             [
                                 "type"  =>  'geometry(Point,4326)',
                             ]
@@ -59,7 +59,6 @@ class TablesController extends BaseController
                     )
                 )
             );
-            $this->table = '';
         } catch(\Exception $e){
             // ADD LOG FILE
         }
