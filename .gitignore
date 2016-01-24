@@ -1,0 +1,4 @@
+.phalcon/
+composer.lock
+PKBackend/vendor
+.idea/
