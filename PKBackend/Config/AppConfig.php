@@ -55,6 +55,7 @@ class AppConfig extends Config
     public function setupGeoServer(){
         return [
             'geoserver' => [
+                'DB_HOST'       => 'localhost',
                 'REST_URL'      => 'http://192.168.1.134:8080/geoserver/rest',
                 'DATASTORE_TYP' => 'PostGIS',
             ]

@@ -24,8 +24,8 @@ class CurlController
 
     public function __construct()
     {
-        $this->userPass = 'admin:geouser'; // nanti pindahin ke yml
-        $this->logFile = fopen(__DIR__ . "/../../Logs/GeoserverPHP.log", 'w') or die("can't open log file");
+        $this->userPass = 'admin:geoserver'; // nanti pindahin ke yml
+        $this->logFile = fopen(__DIR__ . "/../../../Logs/GeoserverPHP.log", 'w') or die("can't open log file");
     }
 
     public function setUrl($url)
@@ -75,13 +75,13 @@ class CurlController
 
         $responseBody = curl_exec($ch);
         $responseInfo = curl_getinfo($ch);
-        $this->writeLogFile($responseInfo, $responseBody);
+        $this->_writeLogFile($responseInfo, $responseBody);
 
         curl_close($ch);
         fclose($this->logFile);
     }
 
-    private function writeLogFile($responseInfo, $responseBody)
+    private function _writeLogFile($responseInfo, $responseBody)
     {
         if ($responseInfo['http_code'] != $this->successCode) {
             $msgStr = "# Unsuccessful cURL request to ";

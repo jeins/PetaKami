@@ -32,11 +32,12 @@ class AppService extends AppLoader
     private function setConfig()
     {
         $this->di->set('config', function(){
-           return json_encode(array_values(array_merge(
-               $this->setupDB(),
-               $this->setupApplication(),
-               $this->setupGeoServer()
-           )));
+            $jsonString = json_encode(array_values([array_merge(
+                $this->setupDB(),
+                $this->setupApplication(),
+                $this->setupGeoServer()
+            )]));
+           return json_decode($jsonString)[0];
         });
     }
 
