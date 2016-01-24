@@ -2,5 +2,5 @@
 
 require 'Config/App.php';
 
-$app = new \PetaKita\Config\App();
+$app = new \PetaKami\Config\App();
 $app->handle();

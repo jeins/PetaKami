@@ -19,7 +19,7 @@ class AppConfig extends Config
     {
         return [
           'database' => [
-              'host'       => '192.168.178.128',//'192.168.1.134',
+              'host'       => '192.168.1.134',
               'dbname'     => 'geodb',
               'username'   => 'geouser',
               'password'   => 'geouser',

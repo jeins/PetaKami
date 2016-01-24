@@ -26,42 +26,47 @@ class TablesController extends BaseController
 
     public function createTablePoint()
     {
-        $this->connection->createTable(
-            $this->table,
-            null,
-            array(
-                "columns" => array(
-                    new Column(
-                        "id",
-                        [
-                            "type"          => Column::TYPE_INTEGER,
-                            "notNull"       => true,
-                            "autoIncrement" => true,
-                            "primary"       => true,
-                        ]
-                    ),
-                    new Column(
-                        "name",
-                        [
-                            "type"    => Column::TYPE_VARCHAR,
-                            "size"    => 70,
-                        ]
-                    ),
-                    new Column(
-                        "description",
-                        [
-                            "type"    => Column::TYPE_TEXT,
-                        ]
-                    ),
-                    new Column(
-                        "point",
-                        [
-                            "type"  =>  'geometry(Point,4326)',
-                        ]
+        try{
+            $this->connection->createTable(
+                $this->table,
+                null,
+                array(
+                    "columns" => array(
+                        new Column(
+                            "id",
+                            [
+                                "type"          => Column::TYPE_INTEGER,
+                                "notNull"       => true,
+                                "autoIncrement" => true,
+                                "primary"       => true,
+                            ]
+                        ),
+                        new Column(
+                            "name",
+                            [
+                                "type"    => Column::TYPE_VARCHAR,
+                                "size"    => 70,
+                            ]
+                        ),
+                        new Column(
+                            "description",
+                            [
+                                "type"    => Column::TYPE_TEXT,
+                            ]
+                        ),
+                        new Column(
+                            "point",
+                            [
+                                "type"  =>  'geometry(Point,4326)',
+                            ]
+                        )
                     )
                 )
-            )
-        );
+            );
+            $this->table = '';
+        } catch(\Exception $e){
+            // ADD LOG FILE
+        }
     }
 
     private function _validate()

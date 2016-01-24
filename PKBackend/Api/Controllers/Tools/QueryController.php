@@ -8,9 +8,9 @@ class QueryController extends TablesController
 {
     public $columns;
 
-    public $data;
+    public $data = [];
 
-    private $query;
+    private $_query;
 
     public function __construct()
     {
@@ -22,18 +22,18 @@ class QueryController extends TablesController
 
     }
 
-    public function postAction()
+    public function insertAction()
     {
         $this->_validate();
         $this->_stringify();
 
         try{
-            $result = $this->connection->execute($this->query);
+            $result = $this->connection->execute($this->_query);
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
 
-        $this->query = '';
+        $this->_query = '';
         return $result;
     }
 
@@ -67,7 +67,7 @@ class QueryController extends TablesController
             $str .= sprintf('(%s),', implode(',', $values));
         }
         $str = rtrim($str, ',');
-        $this->query = sprintf("INSERT INTO %s (%s) VALUES %s",
+        $this->_query = sprintf("INSERT INTO %s (%s) VALUES %s",
             $this->table,
             $columns,
             $str
