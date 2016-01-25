@@ -21,6 +21,7 @@ class AppLoader extends AppConfig
                 'PetaKami\Config'       => $this->application->configDir,
                 'PetaKami\Controllers'  => $this->application->controllersDir,
                 'PetaKami\Common'       => $this->application->commonsDir,
+                'PetaKami\Processors'   => $this->application->processorDir,
                 'PetaKami\Routes'       => $this->application->routeDir
             ]
         );

@@ -15,13 +15,12 @@ class TablesController extends BaseController
         parent::__construct();
     }
 
-    public function setTable()
-    {
-
-    }
-
     public function createTable($typ)
     {
+        if($typ == 'point') $spacialTyp = 'geometry(Point,4326)';
+        else if($typ == 'line') $spacialTyp = "";
+        else $spacialTyp = "";
+
         try{
             $this->connection->createTable(
                 $this->table,
@@ -53,7 +52,7 @@ class TablesController extends BaseController
                         new Column(
                             $typ,
                             [
-                                "type"  =>  'geometry(Point,4326)',
+                                "type"  =>  $spacialTyp,
                             ]
                         )
                     )

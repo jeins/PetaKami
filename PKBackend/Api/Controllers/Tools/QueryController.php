@@ -10,14 +10,12 @@ class QueryController extends TablesController
 
     public $data = [];
 
-    private $_query;
-
     public function __construct()
     {
         parent::__construct();
     }
 
-    public function getAction()
+    public function selectAction()
     {
 
     }
@@ -25,10 +23,32 @@ class QueryController extends TablesController
     public function insertAction()
     {
         $this->_validate();
-        $this->_stringify();
 
         try{
-            $result = $this->connection->execute($this->_query);
+            $columns = sprintf('"%s"', implode('","', $this->columns));
+            $str = '';
+            foreach ($this->data as $values) {
+                foreach ($values as &$val) {
+                    $pos = strpos($val, 'ST_GeomFromText(');
+                    if (is_null($val)) {
+                        $val = 'NULL';
+                        continue;
+                    }
+                    if (is_string($val) && $pos === false) {
+                        $val = "'".$val."'";
+                    }
+                }
+                $str .= sprintf('(%s),', implode(',', $values));
+            }
+            $str = rtrim($str, ',');
+
+            $query = sprintf("INSERT INTO %s (%s) VALUES %s",
+                $this->table,
+                $columns,
+                $str
+            );
+
+            $result = $this->connection->execute($query);
         } catch (\Exception $e) {
             $result = $e->getMessage();
         }
@@ -37,39 +57,14 @@ class QueryController extends TablesController
         return $result;
     }
 
-    public function putAction()
+    public function updateAction()
     {
-
+        $this->_validate();
     }
 
     public function deleteAction()
     {
 
-    }
-
-    private function _stringify()
-    {
-        $columns = sprintf('"%s"', implode('","', $this->columns));
-        $str = '';
-        foreach ($this->data as $values) {
-            foreach ($values as &$val) {
-                $pos = strpos($val, 'ST_GeomFromText(');
-                if (is_null($val)) {
-                    $val = 'NULL';
-                    continue;
-                }
-                if (is_string($val) && $pos === false) {
-                    $val = "'".$val."'";
-                }
-            }
-            $str .= sprintf('(%s),', implode(',', $values));
-        }
-        $str = rtrim($str, ',');
-        $this->_query = sprintf("INSERT INTO %s (%s) VALUES %s",
-            $this->table,
-            $columns,
-            $str
-        );
     }
 
     private function _validate()

@@ -7,21 +7,19 @@ use PetaKami\Controllers\RESTController;
 use PetaKami\Controllers\Tools\CurlController;
 use PetaKami\Controllers\Tools\QueryController;
 use PetaKami\Controllers\Tools\XmlController;
+use PetaKami\Processors\GeoServer\LayerProcessor;
 
 class LayerController extends RESTController
 {
     private $queryBuilder;
 
-    private $xml;
-
-    private $curl;
+    private $layerProcessor;
 
     public function __construct()
     {
         parent::__construct();
+        $this->layerProcessor = new LayerProcessor($this->config);
         $this->queryBuilder = new QueryController();
-        $this->xml = new XmlController();
-        $this->curl = new CurlController();
     }
 
     public function get()
@@ -29,9 +27,15 @@ class LayerController extends RESTController
         return $this->respond(['hellow']);
     }
 
-    public function putAction()
+    public function putAction($id)
     {
+        $request = $this->getRequestBody();
+        $request->name = str_replace(' ', '_', $request->name);
 
+        foreach($request->typ as $typ=>$val){
+            $this->_setupQuery($typ, $val, $request->name);
+            $this->queryBuilder->updateAction();
+        }
     }
 
     /**
@@ -58,17 +62,13 @@ class LayerController extends RESTController
     public function postAction()
     {
         $request = $this->getRequestBody();
+        $request->name = str_replace(' ','_',$request->name);
 
         $layerNames = [];
         $index = 0;
-        $request->name = str_replace(' ','_',$request->name);
 
         foreach($request->typ as $typ=>$val){
-            if(strtolower($typ) == 'point') $this->queryBuilder->table = $request->name . '_point';
-            else if(strtolower($typ) == 'line') $this->queryBuilder->table = $request->name . '_line';
-            else if(strtolower($typ) == 'polygon') $this->queryBuilder->table = $request->name . '_poly';
-
-            $this->_setupQuery($typ, $val);
+            $this->_setupQuery($typ, $val, $request->name);
 
             $layerNames[$index] = $this->queryBuilder->table;
             $index++;
@@ -77,46 +77,20 @@ class LayerController extends RESTController
             $this->queryBuilder->insertAction();
         }
 
-        foreach($layerNames as $layerName){
-            $this->xml->workspace = 'IDBangunan'; //TODO: set static
-            $this->xml->dataStore = $request->name;
-            $this->xml->layerGroupName = $request->name;
-            $this->xml->featureTypeName = $layerName;
+        $this->layerProcessor->createLayer($layerNames, $request->name);
 
-            $this->_doCurl(
-                $this->config->geoserver->REST_URL . '/workspaces/' . $this->xml->workspace . '/datastores.xml',
-                'post',
-                $this->xml->dataStoreXML()
-            );
-
-            $this->_doCurl(
-                $this->config->geoserver->REST_URL . '/workspaces/' . $this->xml->workspace .
-                '/datastores/' . $request->name . '/featuretypes',
-                'post',
-                $this->xml->featureTypeXML()
-            );
-        }
-        $this->xml->layerGroupLayers = $layerNames;
-
-        $this->_doCurl(
-            $this->config->geoserver->REST_URL . '/layergroups',
-            'post',
-            $this->xml->layerGroupXML()
-        );
+        $this->respond(["OK"]);
     }
 
-    private function _doCurl($url, $reqMethod, $reqBody)
-    {
-        $this->curl->setRequestMethod($reqMethod);
-        $this->curl->setUrl($url);
-        $this->curl->setRequestBody($reqBody);
-        $this->curl->run();
-    }
-
-    private function _setupQuery($typ, $val)
+    private function _setupQuery($typ, $val, $tblName)
     {
         $this->queryBuilder->columns = ['name', 'description'];
         $this->queryBuilder->data= [];
+
+        if(strtolower($typ) == 'point') $this->queryBuilder->table = $tblName . '_point';
+        else if(strtolower($typ) == 'line') $this->queryBuilder->table = $tblName . '_line';
+        else if(strtolower($typ) == 'polygon') $this->queryBuilder->table = $tblName . '_poly';
+
         switch(strtolower($typ)){
             case 'point':
                 array_push($this->queryBuilder->columns, 'point');

@@ -9,5 +9,6 @@ return call_user_func(function(){
 
     $layerCollection->get('/', 'get');
     $layerCollection->post('/', 'postAction');
+    $layerCollection->put('/{id}', 'putAction');
     return $layerCollection;
 });

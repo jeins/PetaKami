@@ -37,6 +37,7 @@ class AppConfig extends Config
                 'controllersDir' => __DIR__ . '/../Api/Controllers/',
                 'commonsDir'     => __DIR__ . '/../Api/Common/',
                 'routeDir'       => __DIR__ . '/../Api/Routes/',
+                'processorDir'   => __DIR__ . '/../Api/Processors/',
                 'configDir'      => __DIR__ . '/../Config/',
                 'logsDir'        => __DIR__ . '/../Logs/',
                 'development'    => [
