@@ -10,9 +10,11 @@ class TablesController extends BaseController
 {
     public $table;
 
-    public function __construct()
+    public $connection;
+
+    public function onConstruct()
     {
-        parent::__construct();
+        $this->connection = $this->di->get('db');
     }
 
     public function createTable($typ)

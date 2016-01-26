@@ -3,28 +3,25 @@
 
 namespace PetaKami\Controllers\GeoServer;
 
-use PetaKami\Controllers\RESTController;
-use PetaKami\Controllers\Tools\CurlController;
+use PetaKami\Controllers\BaseController;
 use PetaKami\Controllers\Tools\QueryController;
-use PetaKami\Controllers\Tools\XmlController;
 use PetaKami\Processors\GeoServer\LayerProcessor;
 
-class LayerController extends RESTController
+class LayerController extends BaseController
 {
     private $queryBuilder;
 
     private $layerProcessor;
 
-    public function __construct()
+    public function onConstruct()
     {
-        parent::__construct();
-        $this->layerProcessor = new LayerProcessor($this->config);
+        $this->layerProcessor = new LayerProcessor($this->di->get('config'));
         $this->queryBuilder = new QueryController();
     }
 
     public function get()
     {
-        return $this->respond(['hellow']);
+        return 'hellow';
     }
 
     public function putAction($id)
@@ -80,7 +77,7 @@ class LayerController extends RESTController
 
         $this->layerProcessor->createLayer($layerNames, $request->name);
 
-        $this->respond(["OK"]);
+        return ["OK"];
     }
 
     private function _setupQuery($typ, $val, $tblName)

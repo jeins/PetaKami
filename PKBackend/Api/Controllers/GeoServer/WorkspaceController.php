@@ -4,16 +4,15 @@
 namespace PetaKami\Controllers\GeoServer;
 
 
-use PetaKami\Controllers\RESTController;
+use PetaKami\Controllers\BaseController;
 
-class WorkspaceController extends RESTController
+class WorkspaceController extends BaseController
 {
 
     private $workspaceWithDrawTyp;
 
-    public function __construct()
+    public function onConstruct()
     {
-        parent::__construct();
         $this->workspaceWithDrawTyp = $this->di->get('config')->geoserver->WORKSPACE;
     }
 
@@ -24,11 +23,11 @@ class WorkspaceController extends RESTController
             array_push($workspaces, $workspace);
         }
 
-        return $this->respond($workspaces);
+        return $workspaces;
     }
 
     public function getWorkspaceWithDrawTyp($workspace)
     {
-        return $this->respond($this->workspaceWithDrawTyp->$workspace);
+        return $this->workspaceWithDrawTyp->$workspace;
     }
 }

@@ -6,14 +6,9 @@ namespace PetaKami\Controllers\Tools;
 
 class QueryController extends TablesController
 {
-    public $columns;
+    public $columns = [];
 
     public $data = [];
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     public function selectAction()
     {
@@ -34,9 +29,7 @@ class QueryController extends TablesController
                         $val = 'NULL';
                         continue;
                     }
-                    if (is_string($val) && $pos === false) {
-                        $val = "'".$val."'";
-                    }
+                    if (is_string($val) && $pos === false) $val = "'".$val."'";
                 }
                 $str .= sprintf('(%s),', implode(',', $values));
             }
@@ -60,6 +53,31 @@ class QueryController extends TablesController
     public function updateAction()
     {
         $this->_validate();
+
+        try{
+            var_dump($this->columns);
+            var_dump($this->data);
+
+            $str = '';
+            foreach($this->data as $values){
+                for($i=1; $i<count($values); $i++){
+                    $pos = strpos($values[$i], 'ST_GeomFromText(');
+
+                    if(is_string($values[$i]) && $pos === false) $str .= $this->columns[$i]."='".$values[$i]."'";
+                }
+
+                $query = sprintf("UPDATE %s SET %s WHERE %s;",
+                    $this->table,
+                    $str,
+                    $this->columns[0].'='.$values[0]
+                );
+                var_dump($query);
+                #$this->connection->execute($query);
+            }
+
+        } catch(\Exception $e){
+
+        }die();
     }
 
     public function deleteAction()

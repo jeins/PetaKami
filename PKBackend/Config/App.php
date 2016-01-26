@@ -58,16 +58,15 @@ class App extends Micro
     }
 
     private function setNotFoundResponse(){
-        $this->response->setStatusCode(404, "Not Found")->sendHeaders();
-//        $this->notFound(function() {
-//            throw new HTTPException(
-//                'Not found', 404,
-//                [
-//                    'dev' => 'That route was not found on the server.',
-//                    'internalCode' => 'NF1000',
-//                    'more' => 'Check route for mispellings.'
-//                ]
-//            );
-//        });
+        $this->notFound(function() {
+            throw new HTTPException(
+                'Not found', 404,
+                [
+                    'dev' => 'That route was not found on the server.',
+                    'internalCode' => 'NF1000',
+                    'more' => 'Check route for mispellings.'
+                ]
+            );
+        });
     }
 }
