@@ -45,8 +45,6 @@ class QueryController extends TablesController
         } catch (\Exception $e) {
             $result = $e->getMessage();
         }
-
-        $this->_query = '';
         return $result;
     }
 
@@ -55,29 +53,27 @@ class QueryController extends TablesController
         $this->_validate();
 
         try{
-            var_dump($this->columns);
-            var_dump($this->data);
-
-            $str = '';
             foreach($this->data as $values){
+                $str = '';
                 for($i=1; $i<count($values); $i++){
                     $pos = strpos($values[$i], 'ST_GeomFromText(');
 
-                    if(is_string($values[$i]) && $pos === false) $str .= $this->columns[$i]."='".$values[$i]."'";
+                    if(is_string($values[$i]) && $pos === false) $str .= $this->columns[$i]."='".$values[$i]."',";
                 }
+                $str = rtrim($str, ',');
 
                 $query = sprintf("UPDATE %s SET %s WHERE %s;",
                     $this->table,
                     $str,
                     $this->columns[0].'='.$values[0]
                 );
-                var_dump($query);
-                #$this->connection->execute($query);
+
+                $result = $this->connection->execute($query);
             }
-
         } catch(\Exception $e){
-
-        }die();
+            $result = $e->getMessage();
+        }
+        return $result;
     }
 
     public function deleteAction()
