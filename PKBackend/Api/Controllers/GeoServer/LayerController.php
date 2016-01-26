@@ -5,17 +5,17 @@ namespace PetaKami\Controllers\GeoServer;
 
 use PetaKami\Controllers\BaseController;
 use PetaKami\Controllers\Tools\QueryController;
-use PetaKami\Processors\GeoServer\LayerProcessor;
+use PetaKami\Processors\XmlRequestProcessor;
 
 class LayerController extends BaseController
 {
     private $queryBuilder;
 
-    private $layerProcessor;
+    private $xmlRequestProcessor;
 
     public function onConstruct()
     {
-        $this->layerProcessor = new LayerProcessor($this->di->get('config'));
+        $this->xmlRequestProcessor = new XmlRequestProcessor($this->di->get('config'));
         $this->queryBuilder = new QueryController();
     }
 
@@ -28,10 +28,11 @@ class LayerController extends BaseController
     {
         $request = $this->getRequestBody();
         $request->name = str_replace(' ', '_', $request->name);
-        $this->queryBuilder->columns = ['id'];
 
         foreach($request->typ as $typ=>$val){
-            $this->_setupQuery($typ, $val, $request->name);
+            $this->_setupTableName($request->name, $typ);
+            $this->_setupColumnAndData($typ, $val);
+
             $this->queryBuilder->updateAction();
         }
     }
@@ -66,7 +67,8 @@ class LayerController extends BaseController
         $index = 0;
 
         foreach($request->typ as $typ=>$val){
-            $this->_setupQuery($typ, $val, $request->name);
+            $this->_setupTableName($request->name, $typ);
+            $this->_setupColumnAndData($typ, $val);
 
             $layerNames[$index] = $this->queryBuilder->table;
             $index++;
@@ -75,19 +77,15 @@ class LayerController extends BaseController
             $this->queryBuilder->insertAction();
         }
 
-        $this->layerProcessor->createLayer($layerNames, $request->name);
+        $this->xmlRequestProcessor->createLayer($layerNames, $request->name);
 
         return ["OK"];
     }
 
-    private function _setupQuery($typ, $val, $tblName)
+    private function _setupColumnAndData($typ, $val)
     {
-        array_push($this->queryBuilder->columns, 'name', 'description');
+        array_push($this->queryBuilder->columns, 'id', 'name', 'description');
         $this->queryBuilder->data= [];
-
-        if(strtolower($typ) == 'point') $this->queryBuilder->table = $tblName . '_point';
-        else if(strtolower($typ) == 'line') $this->queryBuilder->table = $tblName . '_line';
-        else if(strtolower($typ) == 'polygon') $this->queryBuilder->table = $tblName . '_poly';
 
         switch(strtolower($typ)){
             case 'point':
@@ -103,6 +101,13 @@ class LayerController extends BaseController
                 $this->_mergeColumnAndData($val);
                 break;
         }
+    }
+
+    private function _setupTableName($name, $typ)
+    {
+        if(strtolower($typ) == 'point') $this->queryBuilder->table = $name . '_point';
+        else if(strtolower($typ) == 'line') $this->queryBuilder->table = $name . '_line';
+        else if(strtolower($typ) == 'polygon') $this->queryBuilder->table = $name . '_poly';
     }
 
     private function _mergeColumnAndData($value)

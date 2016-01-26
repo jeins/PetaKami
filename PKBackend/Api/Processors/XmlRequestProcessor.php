@@ -1,12 +1,12 @@
 <?php
 
 
-namespace PetaKami\Processors\GeoServer;
+namespace PetaKami\Processors;
 
 use PetaKami\Controllers\Tools\CurlController;
 use PetaKami\Controllers\Tools\XmlController;
 
-class LayerProcessor
+class XmlRequestProcessor
 {
 
     private $xml;
