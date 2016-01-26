@@ -19,22 +19,40 @@ class LayerController extends BaseController
         $this->queryBuilder = new QueryController();
     }
 
-    public function get()
+    public function getLayers()
     {
         return 'hellow';
+    }
+
+    public function getLayerByWorkspace($workspace)
+    {
+
+    }
+
+    public function getLayerGroup($layerGroupName)
+    {
+
+    }
+
+    public function getLayerGroupByDrawType($layerGroupName, $drawType)
+    {
+
     }
 
     public function putAction($id)
     {
         $request = $this->getRequestBody();
         $request->name = str_replace(' ', '_', $request->name);
+        $response = [];
 
         foreach($request->typ as $typ=>$val){
             $this->_setupTableName($request->name, $typ);
             $this->_setupColumnAndData($typ, $val);
 
-            $this->queryBuilder->updateAction();
+            array_push($response, $this->queryBuilder->updateAction());
         }
+
+        return $response;
     }
 
     /**
@@ -113,8 +131,9 @@ class LayerController extends BaseController
     private function _mergeColumnAndData($value)
     {
         foreach($value as $k=>$v){
+            $id = explode('.', $k)[1];
             $this->queryBuilder->data = array_merge(
-                [[$k, $v->name , $v->description, "ST_GeomFromText('POINT(".$v->lat." ".$v->long.")', 4326)"]],
+                [[$id, $v->name , $v->description, "ST_GeomFromText('POINT(".$v->lat." ".$v->long.")', 4326)"]],
                 $this->queryBuilder->data
             );
         }
