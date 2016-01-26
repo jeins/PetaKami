@@ -11,15 +11,19 @@ class RouteLoader
         return call_user_func(function(){
 
             $collections = [];
-            $collectionFiles = scandir(__DIR__ . '/RouteCollections');
+            $collectionDirs = scandir(__DIR__ . '/RouteCollections');
 
-            foreach($collectionFiles as $collectionFile){
-                $pathinfo = pathinfo($collectionFile);
-                //Only include php files
-                if($pathinfo['extension'] === 'php'){
-                    // The collection files return their collection objects, so mount
-                    // them directly into the router.
-                    $collections[] = include(__DIR__ .'/RouteCollections/' . $collectionFile);
+            foreach($collectionDirs as $collectionDir){
+                if($collectionDir == '.' || $collectionDir == '..') continue;
+                $collectionFiles = scandir(__DIR__ . '/RouteCollections/' . $collectionDir);
+
+                foreach($collectionFiles as $collectionFile){
+                    if($collectionFile == '.' ||$collectionFile == '..') continue;
+                    $pathinfo = pathinfo($collectionFile);
+
+                    if($pathinfo['extension'] === 'php'){
+                        $collections[] = include(__DIR__ .'/RouteCollections/' .$collectionDir .'/'. $collectionFile);
+                    }
                 }
             }
             return $collections;

@@ -31,6 +31,7 @@ class LayerController extends RESTController
     {
         $request = $this->getRequestBody();
         $request->name = str_replace(' ', '_', $request->name);
+        $this->queryBuilder->columns = ['id'];
 
         foreach($request->typ as $typ=>$val){
             $this->_setupQuery($typ, $val, $request->name);
@@ -84,7 +85,7 @@ class LayerController extends RESTController
 
     private function _setupQuery($typ, $val, $tblName)
     {
-        $this->queryBuilder->columns = ['name', 'description'];
+        array_push($this->queryBuilder->columns, 'name', 'description');
         $this->queryBuilder->data= [];
 
         if(strtolower($typ) == 'point') $this->queryBuilder->table = $tblName . '_point';
@@ -94,31 +95,26 @@ class LayerController extends RESTController
         switch(strtolower($typ)){
             case 'point':
                 array_push($this->queryBuilder->columns, 'point');
-                foreach($val as $k=>$v){
-                    $this->queryBuilder->data = array_merge(
-                        [[$k, $v->description, "ST_GeomFromText('POINT(".$v->lat." ".$v->long.")', 4326)"]],
-                        $this->queryBuilder->data
-                    );
-                }
+                $this->_mergeColumnAndData($val);
                 break;
             case 'line':
                 array_push($this->queryBuilder->columns, 'line');
-                foreach($val as $k=>$v){
-                    $this->queryBuilder->data = array_merge(
-                        [[$k, $v->description, "ST_GeomFromText('POINT(".$v->lat." ".$v->long.")', 4326)"]],
-                        $this->queryBuilder->data
-                    );
-                }
+                $this->_mergeColumnAndData($val);
                 break;
             case'polygon':
                 array_push($this->queryBuilder->columns, 'polygon');
-                foreach($val as $k=>$v){
-                    $this->queryBuilder->data = array_merge(
-                        [[$k, $v->description, "ST_GeomFromText('POINT(".$v->lat." ".$v->long.")', 4326)"]],
-                        $this->queryBuilder->data
-                    );
-                }
+                $this->_mergeColumnAndData($val);
                 break;
+        }
+    }
+
+    private function _mergeColumnAndData($value)
+    {
+        foreach($value as $k=>$v){
+            $this->queryBuilder->data = array_merge(
+                [[$k, $v->name , $v->description, "ST_GeomFromText('POINT(".$v->lat." ".$v->long.")', 4326)"]],
+                $this->queryBuilder->data
+            );
         }
     }
 }

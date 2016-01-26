@@ -59,6 +59,15 @@ class AppConfig extends Config
                 'DB_HOST'       => 'localhost',
                 'REST_URL'      => 'http://192.168.1.134:8080/geoserver/rest',
                 'DATASTORE_TYP' => 'PostGIS',
+                'WORKSPACE'     => [
+                    'IDBangunan'        => ['point', 'line', 'polygon'],
+                    'IDTransportasi'    => ['line'],
+                    'IDHipsografi'      => ['point', 'line'],
+                    'IDBatasDaerah'     => ['line', 'polygon'],
+                    'IDTutupanLahan'    => ['line', 'polygon'],
+                    'IDHydrografi'      => ['point', 'line', 'polygon'],
+                    'IDToponomi'        => ['point']
+                ]
             ]
         ];
     }
