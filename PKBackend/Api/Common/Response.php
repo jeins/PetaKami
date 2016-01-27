@@ -25,14 +25,17 @@ class Response extends Injectable
      * @return  no return value, array is edited in place
      */
     protected function arrayKeysToSnake($snakeArray){
-        foreach($snakeArray as $k=>$v){
-            if (is_array($v)){
-                $v = $this->arrayKeysToSnake($v);
+        if(is_array($snakeArray)){
+            foreach($snakeArray as $k=>$v){
+                if (is_array($v)){
+                    $v = $this->arrayKeysToSnake($v);
+                }
+                $snakeArray[$this->snakeToCamel($k)] = $v;
+                if($this->snakeToCamel($k) != $k){
+                    unset($snakeArray[$k]);
+                }
             }
-            $snakeArray[$this->snakeToCamel($k)] = $v;
-            if($this->snakeToCamel($k) != $k){
-                unset($snakeArray[$k]);
-            }
+            return $snakeArray;
         }
         return $snakeArray;
     }

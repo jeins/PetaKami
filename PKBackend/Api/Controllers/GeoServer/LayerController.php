@@ -4,6 +4,7 @@
 namespace PetaKami\Controllers\GeoServer;
 
 use PetaKami\Controllers\BaseController;
+use PetaKami\Controllers\Tools\CurlController;
 use PetaKami\Controllers\Tools\QueryController;
 use PetaKami\Processors\XmlRequestProcessor;
 
@@ -13,30 +14,72 @@ class LayerController extends BaseController
 
     private $xmlRequestProcessor;
 
+    private $curlController;
+
     public function onConstruct()
     {
         $this->xmlRequestProcessor = new XmlRequestProcessor($this->di->get('config'));
         $this->queryBuilder = new QueryController();
+        $this->curlController = new CurlController();
     }
 
-    public function getLayers()
+    public function getLayersInGeoJSON($workspace, $layerGroupName)
     {
-        return 'hellow';
+        $layers = $this->getLayersWithDrawType($workspace, $layerGroupName);
+
+        $featureTypes = [];
+
+        foreach($layers as $layer){
+            $this->curlController->setUrl('/'.$workspace.
+                '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='
+                .$workspace.':'.$layer.
+                '&maxFeatures=50&outputFormat=application%2Fjson', true);
+            $this->curlController->run();
+            array_push($featureTypes, [$layer => json_decode($this->curlController->responseBody[0])]);
+        }
+
+        return $featureTypes;
+    }
+
+    public function getLayerDrawTypeInGeoJSON($workspace, $layerGroupName, $drawType)
+    {
+        $this->curlController->setUrl('/'.$workspace.
+            '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='
+            .$workspace.':'.$layerGroupName.'_'.$drawType.
+            '&maxFeatures=50&outputFormat=application%2Fjson', true);
+        $this->curlController->run();
+
+        return json_decode($this->curlController->responseBody[0]);
     }
 
     public function getLayerByWorkspace($workspace)
     {
+        $this->curlController->setUrl('/workspaces/'.$workspace.'/layergroups.json');
+        $this->curlController->run();
 
+        $responses = json_decode($this->curlController->responseBody[0]);
+
+        $newLayerGroups = [];
+        foreach($responses->layerGroups->layerGroup as $response){
+            array_push($newLayerGroups, $response->name);
+        }
+
+        return $newLayerGroups;
     }
 
-    public function getLayerGroup($layerGroupName)
+    public function getLayersWithDrawType($workspace, $layerGroupName)
     {
+        $this->curlController->setUrl('/workspaces/'.$workspace.'/layergroups/'.$layerGroupName.'.json');
+        $this->curlController->run();
 
-    }
+        $responses = json_decode($this->curlController->responseBody[0]);
 
-    public function getLayerGroupByDrawType($layerGroupName, $drawType)
-    {
+        $newLayerGroups = [];
+        foreach($responses->layerGroup->publishables->published as $response){
+            array_push($newLayerGroups, $response->name);
+        }
 
+        return $newLayerGroups;
     }
 
     public function putAction($id)

@@ -11,11 +11,9 @@ class XmlRequestProcessor
 
     private $xml;
     private $curl;
-    private $config;
 
-    public function __construct($config)
+    public function __construct()
     {
-        $this->config = $config;
         $this->xml = new XmlController();
         $this->curl = new CurlController();
     }
@@ -34,13 +32,13 @@ class XmlRequestProcessor
             $this->xml->featureTypeName = $layerName;
 
             $this->_doCurl(
-                $this->config->geoserver->REST_URL . '/workspaces/' . $this->xml->workspace . '/datastores.xml',
+                '/workspaces/' . $this->xml->workspace . '/datastores.xml',
                 'post',
                 $this->xml->dataStoreXML()
             );
 
             $this->_doCurl(
-                $this->config->geoserver->REST_URL . '/workspaces/' . $this->xml->workspace .
+                '/workspaces/' . $this->xml->workspace .
                 '/datastores/' . $name . '/featuretypes',
                 'post',
                 $this->xml->featureTypeXML()
@@ -49,7 +47,7 @@ class XmlRequestProcessor
         $this->xml->layerGroupLayers = $layerNames;
 
         $this->_doCurl(
-            $this->config->geoserver->REST_URL . '/layergroups',
+            '/layergroups',
             'post',
             $this->xml->layerGroupXML()
         );

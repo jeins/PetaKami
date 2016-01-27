@@ -55,6 +55,12 @@ class XmlController extends BaseController
     {
         $layerGroup = '<layerGroup>
                         <name>'.$this->layerGroupName.'</name>
+                        <workspace>
+                            <name>'. $this->workspace .'</name>
+                            <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate"
+                            href="'.$this->config->geoserver->REST_URL.'/workspaces/'. $this->workspace .'.xml"
+                            type="application/xml"/>
+                        </workspace>
 		                <layers>';
 
         foreach($this->layerGroupLayers as $layer){

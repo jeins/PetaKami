@@ -3,10 +3,11 @@
 
 namespace PetaKami\Controllers\Tools;
 
+use PetaKami\Controllers\BaseController;
 
-class CurlController
+class CurlController extends BaseController
 {
-    private $url;
+    private $_url;
 
     private $logFile;
 
@@ -16,21 +17,25 @@ class CurlController
 
     private $requestBody;
 
+    public $responseBody;
+
     private $successCode = 200;
 
     private $returnString = true;
 
     private $verbose = true;
 
-    public function __construct()
+    public function onConstruct()
     {
+        $this->_url = $this->di->get('config')->geoserver->REST_URL;
         $this->userPass = 'admin:geoserver'; // nanti pindahin ke yml
         $this->logFile = fopen(__DIR__ . "/../../../Logs/GeoserverPHP.log", 'w') or die("can't open log file");
     }
 
-    public function setUrl($url)
+    public function setUrl($url, $replace = false)
     {
-        $this->url = $url;
+        if($replace) $this->_url = str_replace('/rest', '', $this->_url) . $url;
+        else $this->_url .= $url;
     }
 
     public function setRequestMethod($requestMethod)
@@ -45,7 +50,7 @@ class CurlController
 
     public function run()
     {
-        $ch = curl_init($this->url);
+        $ch = curl_init($this->_url);
 
         // Optional settings for debugging
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, $this->returnString); //option to return string
@@ -78,19 +83,21 @@ class CurlController
         $responseInfo = curl_getinfo($ch);
         $this->_writeLogFile($responseInfo, $responseBody);
 
+        $this->responseBody = [$responseBody];
+
         curl_close($ch);
         fclose($this->logFile);
+        $this->onConstruct();
     }
 
     private function _writeLogFile($responseInfo, $responseBody)
     {
         if ($responseInfo['http_code'] != $this->successCode) {
             $msgStr = "# Unsuccessful cURL request to ";
-            $msgStr .= $this->url." [". $responseInfo['http_code']. "]\n";
+            $msgStr .= $this->_url." [". $responseInfo['http_code']. "]\n";
             fwrite($this->logFile, $msgStr);
         } else {
-            $msgStr = "# Successful cURL request to ".$this->url."\n";
-            echo "<pre>".$msgStr;
+            $msgStr = "# Successful cURL request to ".$this->_url."\n";
             fwrite($this->logFile, $msgStr);
             fwrite($this->logFile, $responseBody."\n");
         }
