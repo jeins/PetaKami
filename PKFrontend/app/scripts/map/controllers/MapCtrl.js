@@ -15,7 +15,7 @@ angular.module('pkfrontendApp')
               lon: 123.91423963552285,
               zoom: 5
           },
-          mousepositiones: '',
+          mouseposition: '',
           projection: 'EPSG:4326'
       });
 
@@ -24,11 +24,11 @@ angular.module('pkfrontendApp')
       $scope.$on('openlayers.map.pointermove', function(event, data){
          $scope.$apply(function(){
              if($scope.projection == data.projection){
-                 $scope.mouseposition = data.coord;
+                 vm.mouseposition = data.coord;
              } else{
                  var p = ol.proj.transform([data.coord[0], data.coord[1]], data.projection, $scope.projection);
 
-                 $scope.mouseposition = 'lat:' + p[1] + ', lon:' + p[0];
+                 vm.mouseposition = 'lat:' + p[1] + ', lon:' + p[0];
              }
          })
       });

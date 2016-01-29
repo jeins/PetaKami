@@ -1,3 +1,6 @@
+html, body{
+  height:100%;
+}
 .navbar-right button{
   margin-top: 15px;
   margin-right: 5px;
@@ -23,10 +26,6 @@
   }
 }
 
-html, body, #pk-map_canvas{
-  height: 100%;
-}
-
 #pk-wrapper {
   left: 0px;
   top: 40px;
@@ -47,8 +46,78 @@ html, body, #pk-map_canvas{
 .pk-mouse_position{
   position: absolute;
   top: 90%;
-  bottom: 0px;
-  left: 1%;
   width: 40%;
   height: 5%;
+  margin-left: 1%;
+  bottom: 0px;
+}
+
+.pk-map_canvas80{
+  height: 100%;
+  width: 80%;
+  float: right;
+  overflow: hidden;
+}
+
+.pk-map_canvas100{
+  height: 100%;
+}
+
+#pk-map{
+  height: 100%;
+}
+
+.pk-sidenav_show{
+  position: absolute;
+  width: 20%;
+  height: 98%;
+  float:left;
+}
+
+.pk-sidenav_hide{
+  display: none;
+}
+
+.pk-sidenav_content{
+  margin-top: 35px;
+}
+
+.scrollDiv {
+  overflow-y: scroll;
+  display: inline-block;
+  float: none; /* Very important */
+  width: 100%;
+  height: 100%;
+ }
+
+.bs-callout {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 3px;
+}
+
+.bs-callout h4 {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.bs-callout p:last-child {
+  margin-bottom: 0;
+}
+
+.bs-callout code {
+  border-radius: 3px;
+}
+
+.bs-callout+.bs-callout {
+  margin-top: -5px;
+}
+
+.bs-callout-info {
+  border-left-color: #5bc0de;
+}
+.bs-callout-info h4 {
+  color: #5bc0de;
 }
