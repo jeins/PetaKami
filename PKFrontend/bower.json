@@ -1,0 +1,18 @@
+{
+  "name": "pkfrontend",
+  "version": "0.0.0",
+  "dependencies": {
+    "angular": "^1.4.0",
+    "angular-animate": "^1.4.0",
+    "angular-route": "^1.4.0",
+    "angular-bootstrap": "~1.1.1",
+    "angular-sanitize": "*",
+    "font-awesome": "fontawesome#~4.5.0",
+    "openlayers3": "https://github.com/tombatossals/ol3-compiled.git#3.8.2"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.4.0"
+  },
+  "appPath": "app",
+  "moduleName": "pkfrontendApp"
+}

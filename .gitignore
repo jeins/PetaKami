@@ -1,4 +1,7 @@
-.phalcon/
-composer.lock
 PKBackend/vendor
-.idea/
+
+PKFrontend/node_modules
+PKFrontend/dist
+PKFrontend/.tmp
+PKFrontend/.sass-cache
+PKFrontend/bower_components
