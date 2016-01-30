@@ -51,27 +51,7 @@
     </div>
 
     <div id="pk-wrapper">
-      <div id="pk-content" ng-controller="MapCtrl as CMP">
-        <div ng-class="CSN.mapClass" >
-          <pk-maps id="pk-map" ol-draw-type="Polygon" ol-center="indonesia" ol-defaults="defaults"></pk-maps>
-          <div class="pk-mouse_position">
-            <p ng-bind="CMP.mouseposition"></p>
-          </div>
-        </div>
-
-        <div ng-class="CSN.sidenavClass">
-          <div class="span3 scrollDiv container">
-            <a href="" style="width: 100%" ng-click="CSN.hideSideNav()"><i class="fa fa-times fa-2x" style="float: right"></i></a>
-            <div class="pk-sidenav_content" ng-switch="CSN.sideNavContent">
-              <div ng-switch-when="draw" >
-                <ng-include src="'views/sidenav/draw.html'"></ng-include>
-              </div>
-              <div ng-switch-when="browse" >
-                <ng-include src="'views/sidenav/browse.html'"></ng-include>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div id="pk-content" ng-view="">
       </div>
     </div>
 
@@ -102,6 +82,7 @@
         <script src="scripts/map/services/olHelpers.js"></script>
 
         <script src="scripts/sidenav/controllers/SidenavCtrl.js"></script>
+        <script src="scripts/sidenav/controllers/SideDrawCtrl.js"></script>
         <script src="scripts/map/controllers/MapCtrl.js"></script>
         <!-- endbuild -->
 </body>

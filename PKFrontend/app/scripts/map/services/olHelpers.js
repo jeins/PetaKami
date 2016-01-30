@@ -868,9 +868,10 @@ angular.module('pkfrontendApp')
             });
         },
 
-        addDrawInteraction: function(source, value){
+        addDrawInteraction: function(source, value, features){
             return new ol.interaction.Draw({
                 source: source,
+                features: features,
                 type: /** @type {ol.geom.GeometryType} */ (value)
             });
         },

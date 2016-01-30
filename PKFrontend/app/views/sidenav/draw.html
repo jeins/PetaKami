@@ -2,3 +2,9 @@
     <h4>Draw Feature</h4>
     Mari menggambar diatas peta!
 </div>
+
+<select  id="myselect" ng-model="CMP.selectedDrawType"
+         ng-options="drawType as drawType.label for drawType in CSD.setDrawTypes"
+         style="width: 100%">
+
+</select>

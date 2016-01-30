@@ -3,6 +3,8 @@
 angular.module('pkfrontendApp')
   .controller('MapCtrl', ['$scope', 'olData', function ($scope, olData) {
       var vm = this;
+      vm.onchange = onchange;
+      vm.selectedDrawType = '';
 
       angular.extend($scope, {
           defaults: {
@@ -19,6 +21,8 @@ angular.module('pkfrontendApp')
           projection: 'EPSG:4326'
       });
 
+      vm.drawType = '';
+
       $scope.$on('pk.draw.coordinate', function(event, data) { console.log(data); });
 
       $scope.$on('openlayers.map.pointermove', function(event, data){
@@ -33,4 +37,8 @@ angular.module('pkfrontendApp')
          })
       });
 
+
+      function onchange(value){
+          vm.drawType = value;
+      }
   }]);

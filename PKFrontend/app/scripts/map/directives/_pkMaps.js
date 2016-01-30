@@ -111,10 +111,17 @@ angular.module('pkfrontendApp')
                 view.setZoom(defaults.center.zoom);
             }
 
-            if(attrs.olDrawType != undefined){
-                map.addInteraction(addDrawInteraction(source, attrs.olDrawType));
-                map.addInteraction(addDrawModifyInteraction(features));
-            }
+            var draw;
+            attrs.$observe('olDrawType', function(value) {
+                value = value.replace("{0}", value).replace(/\'/g, '');
+
+                if(value != ""){
+                    map.removeInteraction(draw);
+                    draw = addDrawInteraction(source, value, features);
+                    map.addInteraction(draw);
+                    map.addInteraction(addDrawModifyInteraction(features));
+                }
+            });
 
             // Set the Default events for the map
             setMapEvents(defaults.events, map, scope);

@@ -17,7 +17,12 @@ angular
   ])
   .config(function ($routeProvider) {
     $routeProvider
-      .otherwise({
-        redirectTo: '/'
-      });
+        .when('/', {
+            controller: 'MapCtrl',
+            controllerAs: 'CMP',
+            templateUrl: 'views/map/map.html'
+        })
+        .otherwise({
+            redirectTo: '/'
+        });
   });
