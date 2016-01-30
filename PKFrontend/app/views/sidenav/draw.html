@@ -3,8 +3,28 @@
     Mari menggambar diatas peta!
 </div>
 
-<select  id="myselect" ng-model="CMP.selectedDrawType"
-         ng-options="drawType as drawType.label for drawType in CSD.setDrawTypes"
-         style="width: 100%">
+<div class="form-group">
+    <label for="selectWorkspace">Pilih Workspace: </label>
+    <select id="selectWorkspace" ng-model="selectedWorkspace"
+            ng-options="workspace as workspace for workspace in CSD.setWorkspaces"
+            ng-change="CSD.changeWorkspace(selectedWorkspace)"
+            style="width: 100%">
+    </select>
+</div>
 
-</select>
+<div class="form-group" ng-show="selectedWorkspace">
+    <label for="selectDrawType">Pilih Draw Type: </label>
+    <div id="selectDrawType" ng-repeat="drawType in CSD.setDrawTypes">
+        <label>
+            <input type="radio" name="drawTypeRadio" ng-click="CMP.selectedDrawType(drawType)">
+            {{drawType}}
+        </label>
+    </div>
+</div>
+
+<div class="form-group" ng-show="selectedWorkspace">
+    <label for="insertLayerName">Tulis Nama Layer Group:</label>
+    <input type="text" id="insertLayerName" placeholder="Layer Group Name" ng-modal="CSD.layerGroupName" style="width: 100%">
+</div>
+
+<button ng-show="selectedWorkspace" type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px">Save</button>

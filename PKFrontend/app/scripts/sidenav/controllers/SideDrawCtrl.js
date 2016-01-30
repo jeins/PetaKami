@@ -1,15 +1,22 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .controller('SideDrawCtrl', ['$scope', function ($scope) {
+    .controller('SideDrawCtrl', ['$scope', 'svcWorkspace', function ($scope, svcWorkspace) {
         var vm = this;
 
-        vm.setDrawTypes = [
-            {value: 'point', label: 'Point'},
-            {value: 'line', label: 'LineString'},
-            {value: 'polygon', label: 'Polygon'}
-        ];
+        vm.setDrawTypes = [];
+        vm.setWorkspaces = [];
         vm.selectedDrawType = '';
+        vm.layerGroupName = '';
+        vm.changeWorkspace = changeWorkspace;
 
+        svcWorkspace.getWorkspaces(function(result){
+            vm.setWorkspaces = result.records;
+        });
 
+        function changeWorkspace(workspace){
+            svcWorkspace.getWorkspaceWithDrawTyp(workspace, function(result){
+                vm.setDrawTypes = result.records;
+            });
+        }
     }]);

@@ -129,7 +129,7 @@ angular.module('pkfrontendApp')
             //Set the Default events for the map view
             setViewEvents(defaults.events, map, scope);
 
-            source.on(['addfeature', 'changefeature'], function(evt){
+            source.on(['addfeature', 'changefeature'], function(evt){console.log("OK");
                 var feature = evt.feature;
                 var coords = feature.getGeometry().getCoordinates();
                 scope.$emit('pk.draw.coordinate', coords);

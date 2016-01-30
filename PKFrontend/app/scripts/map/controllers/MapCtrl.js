@@ -3,8 +3,10 @@
 angular.module('pkfrontendApp')
   .controller('MapCtrl', ['$scope', 'olData', function ($scope, olData) {
       var vm = this;
-      vm.onchange = onchange;
-      vm.selectedDrawType = '';
+      vm.drawType = '';
+      vm.drawValue = [];
+
+      vm.selectedDrawType = selectedDrawType;
 
       angular.extend($scope, {
           defaults: {
@@ -21,9 +23,20 @@ angular.module('pkfrontendApp')
           projection: 'EPSG:4326'
       });
 
-      vm.drawType = '';
-
-      $scope.$on('pk.draw.coordinate', function(event, data) { console.log(data); });
+      $scope.$on('pk.draw.coordinate', function(event, data) {
+          switch(vm.drawType){
+              case 'Point':
+                  vm.drawValue.push({'point':data});
+                  break;
+              case 'LineString':
+                  vm.drawValue.push({'line':data});
+                  break;
+              case 'Polygon':
+                  vm.drawValue.push({'polygon':data});
+                  break;
+          }
+          console.log(vm.drawValue);
+      });
 
       $scope.$on('openlayers.map.pointermove', function(event, data){
          $scope.$apply(function(){
@@ -37,8 +50,7 @@ angular.module('pkfrontendApp')
          })
       });
 
-
-      function onchange(value){
+      function selectedDrawType(value){
           vm.drawType = value;
       }
   }]);

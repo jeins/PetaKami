@@ -15,14 +15,20 @@ angular
       'ui.bootstrap',
       'ngSanitize'
   ])
-  .config(function ($routeProvider) {
-    $routeProvider
-        .when('/', {
-            controller: 'MapCtrl',
-            controllerAs: 'CMP',
-            templateUrl: 'views/map/map.html'
-        })
-        .otherwise({
-            redirectTo: '/'
-        });
+    .constant('CONFIG', {
+        'http': {
+            'rest_host': 'http://localhost/vhosts/PetaKami/PKBackend/v1/gs/',
+            'redirectUri': 'http://localhost:9000/'
+        }
+    })
+    .config(function ($routeProvider) {
+        $routeProvider
+            .when('/', {
+                controller: 'MapCtrl',
+                controllerAs: 'CMP',
+                templateUrl: 'views/map/map.html'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
   });
