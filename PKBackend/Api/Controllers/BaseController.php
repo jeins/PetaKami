@@ -11,6 +11,7 @@ use Phalcon\Mvc\Dispatcher;
 class BaseController extends Controller
 {
     public function afterExecuteRoute(Dispatcher $dispatcher) {
+        $this->optionsBase();
         $this->response->setContentType('application/json', 'UTF-8');
         $data = $dispatcher->getReturnedValue();
 
@@ -21,16 +22,6 @@ class BaseController extends Controller
         }
 
         $this->response->setContent($data);
-    }
-
-    protected function optionsBase(){
-        $response = $this->di->get('response');
-        $response->setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, HEAD');
-        $response->setHeader('Access-Control-Allow-Origin', $this->di->get('request')->header('Origin'));
-        $response->setHeader('Access-Control-Allow-Credentials', 'true');
-        $response->setHeader('Access-Control-Allow-Headers', "origin, x-requested-with, content-type");
-        $response->setHeader('Access-Control-Max-Age', '86400');
-        return true;
     }
 
     protected function getRequestBody()
