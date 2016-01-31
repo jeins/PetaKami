@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-  .controller('MapCtrl', ['$scope', 'olData', function ($scope, olData) {
+  .controller('MapCtrl', ['$scope', 'svcSharedProperties', function ($scope, svcSharedProperties) {
       var vm = this;
       vm.drawType = '';
       vm.drawValue = [];
+      var point = [], line=[], poly=[];
 
       vm.selectedDrawType = selectedDrawType;
 
@@ -23,19 +24,27 @@ angular.module('pkfrontendApp')
           projection: 'EPSG:4326'
       });
 
-      $scope.$on('pk.draw.coordinate', function(event, data) {
-          switch(vm.drawType){
+      $scope.$on('pk.draw.feature', function(event, data) {
+          var feature = data;
+          switch(feature.getGeometry().getType()){
               case 'Point':
-                  vm.drawValue.push({'point':data});
+                  if(point.id != feature.getProperties().id)
+                      point[feature.getProperties().id] = feature.getGeometry().getCoordinates();
+                  else point.id = data;
                   break;
               case 'LineString':
-                  vm.drawValue.push({'line':data});
+                  if(line.id != feature.getProperties().id)
+                      line[feature.getProperties().id] = feature.getGeometry().getCoordinates();
+                  else line.id = data;
                   break;
               case 'Polygon':
-                  vm.drawValue.push({'polygon':data});
+                  if(poly.id != feature.getProperties().id)
+                      poly[feature.getProperties().id] = feature.getGeometry().getCoordinates();
+                  else poly.id = data;
                   break;
           }
-          console.log(vm.drawValue);
+
+          svcSharedProperties.setLayerValues({'point':point, 'line':line, 'poly':poly});
       });
 
       $scope.$on('openlayers.map.pointermove', function(event, data){

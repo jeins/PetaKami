@@ -112,6 +112,7 @@ angular.module('pkfrontendApp')
             }
 
             var draw;
+            var ipo= 0, ils= 0, ipl=0;
             attrs.$observe('olDrawType', function(value) {
                 value = value.replace("{0}", value).replace(/\'/g, '');
 
@@ -120,6 +121,24 @@ angular.module('pkfrontendApp')
                     draw = addDrawInteraction(source, value, features);
                     map.addInteraction(draw);
                     map.addInteraction(addDrawModifyInteraction(features));
+
+                    draw.on('drawend', function(e){
+                        var drawType = e.feature.getGeometry().getType();
+                        switch(drawType){
+                            case 'Point':
+                                e.feature.setProperties({'id': ipo});
+                                ipo++;
+                                break;
+                            case 'LineString':
+                                e.feature.setProperties({'id': ils});
+                                ils++;
+                                break;
+                            case 'Polygon':
+                                e.feature.setProperties({'id': ipl});
+                                ipl++;
+                                break;
+                        }
+                    });
                 }
             });
 
@@ -129,10 +148,8 @@ angular.module('pkfrontendApp')
             //Set the Default events for the map view
             setViewEvents(defaults.events, map, scope);
 
-            source.on(['addfeature', 'changefeature'], function(evt){console.log("OK");
-                var feature = evt.feature;
-                var coords = feature.getGeometry().getCoordinates();
-                scope.$emit('pk.draw.coordinate', coords);
+            source.on(['addfeature', 'changefeature'], function(evt){
+                scope.$emit('pk.draw.feature', evt.feature);
             });
 
             // Resolve the map object to the promises

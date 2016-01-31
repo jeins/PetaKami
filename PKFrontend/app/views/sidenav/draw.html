@@ -24,7 +24,7 @@
 
 <div class="form-group" ng-show="selectedWorkspace">
     <label for="insertLayerName">Tulis Nama Layer Group:</label>
-    <input type="text" id="insertLayerName" placeholder="Layer Group Name" ng-modal="CSD.layerGroupName" style="width: 100%">
+    <input type="text" id="insertLayerName" placeholder="Layer Group Name" ng-model="layerGroupName.text" style="width: 100%">
 </div>
 
-<button ng-show="selectedWorkspace" type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px">Save</button>
+<button ng-show="selectedWorkspace" type="submit" ng-click="CSD.saveLayer(selectedWorkspace, layerGroupName.text)" class="btn btn-primary" style="width: 100%; margin-top: 20px">Save</button>
