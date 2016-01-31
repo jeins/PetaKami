@@ -26,7 +26,7 @@ angular.module('pkfrontendApp')
                 });
 
 
-                $scope.$on('pk.draw.feature', function(event, data){console.log("OK");
+                $scope.$on('pk.draw.feature', function(event, data){
                     var feature = data;
                     switch(feature.getGeometry().getType()){
                         case 'Point':

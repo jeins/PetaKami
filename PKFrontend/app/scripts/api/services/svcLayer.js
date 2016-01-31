@@ -5,28 +5,28 @@ angular.module('pkfrontendApp')
         '$q', '$http', 'CONFIG', function($q, $http, CONFIG) {
 
             function getLayerByWorkspace(workspace, doneCallback){
-                $http(setupRequest('/workspace/'+workspace+'/layers'))
+                $http(setupRequest('/workspace/'+workspace+'/layers', 'GET'))
                     .then(function(response){
                         doneCallback(response.data);
                     });
             }
 
             function getLayersWithDrawType(workspace, layer, doneCallback){
-                $http(setupRequest('/workspace/'+workspace+'/layer/'+layer+'/draw'))
+                $http(setupRequest('/workspace/'+workspace+'/layer/'+layer+'/draw', 'GET'))
                     .then(function(response){
                         doneCallback(response.data);
                     });
             }
 
             function getLayersInGeoJSON(workspace, layer, doneCallback){
-                $http(setupRequest('/workspace/'+workspace+'/layer/'+layer+'/geojson'))
+                $http(setupRequest('/workspace/'+workspace+'/layer/'+layer+'/geojson', 'GET'))
                     .then(function(response){
                         doneCallback(response.data);
                     });
             }
 
             function getLayerDrawTypeInGeoJSON(workspace, layer, drawType, doneCallback){
-                $http(setupRequest('/workspace/'+workspace+'/layer/'+layer+'/draw'+drawType+'/geojson'))
+                $http(setupRequest('/workspace/'+workspace+'/layer/'+layer+'/draw'+drawType+'/geojson', 'GET'))
                     .then(function(response){
                         doneCallback(response.data);
                     });

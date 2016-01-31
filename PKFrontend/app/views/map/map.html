@@ -14,7 +14,7 @@
                 <ng-include ng-controller="SideDrawCtrl as CSD" src="'views/sidenav/draw.html'"></ng-include>
             </div>
             <div ng-switch-when="browse" >
-                <ng-include src="'views/sidenav/browse.html'"></ng-include>
+                <ng-include ng-controller="SideBrowseCtrl as CSB" src="'views/sidenav/browse.html'"></ng-include>
             </div>
         </div>
     </div>

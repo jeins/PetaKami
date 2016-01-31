@@ -2,3 +2,20 @@
     <h4>Browse Feature</h4>
     cari feature yang tersedia
 </div>
+
+<div class="form-group">
+    <label for="selectWorkspace">Pilih Workspace: </label>
+    <select id="selectWorkspace" ng-model="selectedWorkspace"
+            ng-options="workspace as workspace for workspace in CSB.setWorkspaces"
+            ng-change="CSB.changeWorkspace(selectedWorkspace)"
+            style="width: 100%">
+    </select>
+</div>
+
+<div ng-show="selectedWorkspace">
+    <ul class="list-group" ng-repeat="layer in CSB.layers">
+        <li class="list-group-item" style="text-transform: capitalize;" ng-click="CSB.viewLayer(layer.name)">
+            {{layer.name}}<span class="pull-right">{{layer.type}}</span>
+        </li>
+    </ul>
+</div>

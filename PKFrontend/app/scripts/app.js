@@ -28,6 +28,11 @@ angular
                 controllerAs: 'CMP',
                 templateUrl: 'views/map/map.html'
             })
+            .when('/view/:layer', {
+                controller: 'ViewLayerCtrl',
+                controllerAs: 'CVL',
+                templateUrl: 'views/map/map.html'
+            })
             .otherwise({
                 redirectTo: '/'
             });

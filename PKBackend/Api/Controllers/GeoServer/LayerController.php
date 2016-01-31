@@ -61,7 +61,14 @@ class LayerController extends BaseController
 
         $newLayerGroups = [];
         foreach($responses->layerGroups->layerGroup as $response){
-            array_push($newLayerGroups, $response->name);
+            $drawTypes = $this->getLayersWithDrawType($workspace, $response->name);
+            $drawType = '';
+            foreach($drawTypes as $dType){
+                $dType = explode('_', $dType);
+                $drawType .=  $dType[count($dType)-1].'_';
+            }
+            $drawType = rtrim($drawType, '_');
+            array_push($newLayerGroups, [$response->name, $drawType]);
         }
 
         return $newLayerGroups;
