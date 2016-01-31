@@ -17,7 +17,7 @@ angular
   ])
     .constant('CONFIG', {
         'http': {
-            'rest_host': 'http://localhost/vhosts/PetaKami/PKBackend/v1/gs/',
+            'rest_host': 'http://localhost/vhosts/PetaKami/PKBackend/v1/gs',
             'redirectUri': 'http://localhost:9000/'
         }
     })

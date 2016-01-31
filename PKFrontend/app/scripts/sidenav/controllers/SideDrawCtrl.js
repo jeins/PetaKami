@@ -2,8 +2,8 @@
 
 angular.module('pkfrontendApp')
     .controller('SideDrawCtrl', [
-        '$scope', 'svcWorkspace', 'svcSharedProperties',
-        function ($scope, svcWorkspace, svcSharedProperties) {
+        '$scope', 'svcWorkspace', 'svcSharedProperties', 'svcLayer',
+        function ($scope, svcWorkspace, svcSharedProperties, svcLayer) {
         var vm = this;
 
         var point = [], line=[], poly=[];
@@ -62,6 +62,9 @@ angular.module('pkfrontendApp')
                     'poly': tmpVal.poly
                 }
             };
-            console.log(obj);
+
+            svcLayer.addLayer(obj, function(response){
+                //TODO: what should i do after add layer?
+            });
         }
     }]);
