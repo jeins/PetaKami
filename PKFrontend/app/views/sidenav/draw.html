@@ -1,3 +1,6 @@
+
+<uib-alert ng-repeat="alert in CSD.alerts" type="{{alert.type}}" close="CSD.closeAlert($index)">{{alert.msg}}</uib-alert>
+
 <div class="bs-callout bs-callout-info">
     <h4>Draw Feature</h4>
     Mari menggambar diatas peta!
@@ -27,4 +30,7 @@
     <input type="text" id="insertLayerName" placeholder="Layer Group Name" ng-model="layerGroupName.text" style="width: 100%">
 </div>
 
-<button ng-show="selectedWorkspace" type="submit" ng-click="CSD.saveLayer(selectedWorkspace, layerGroupName.text)" class="btn btn-primary" style="width: 100%; margin-top: 20px">Save</button>
+<button ng-show="selectedWorkspace" type="submit"
+        ng-click="CSD.saveLayer(selectedWorkspace, layerGroupName.text);CSD.addAlert(layerGroupName.text)"
+        ng-disabled="CSD.isDisabled(layerGroupName.text)"
+        class="btn btn-primary" style="width: 100%; margin-top: 20px">Save</button>
