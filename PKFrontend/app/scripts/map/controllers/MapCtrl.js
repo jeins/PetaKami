@@ -26,20 +26,21 @@ angular.module('pkfrontendApp')
 
       $scope.$on('pk.draw.feature', function(event, data) {
           var feature = data;
+          var latLong = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326');
           switch(feature.getGeometry().getType()){
               case 'Point':
                   if(point.id != feature.getProperties().id)
-                      point[feature.getProperties().id] = feature.getGeometry().getCoordinates();
+                      point[feature.getProperties().id] = latLong;
                   else point.id = data;
                   break;
               case 'LineString':
                   if(line.id != feature.getProperties().id)
-                      line[feature.getProperties().id] = feature.getGeometry().getCoordinates();
+                      line[feature.getProperties().id] = latLong;
                   else line.id = data;
                   break;
               case 'Polygon':
                   if(poly.id != feature.getProperties().id)
-                      poly[feature.getProperties().id] = feature.getGeometry().getCoordinates();
+                      poly[feature.getProperties().id] = latLong;
                   else poly.id = data;
                   break;
           }

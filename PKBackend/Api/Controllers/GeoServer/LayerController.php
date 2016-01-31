@@ -182,16 +182,16 @@ class LayerController extends BaseController
                     foreach($valA as $valB){
                         if(is_array($valB)){
                             foreach($valB as $valC){
-                                $geom .= $valB[0].' '.$valB[1].',';
+                                $geom .= $valB[1].' '.$valB[0].',';
                                 break;
                             }
                         } else{
-                            $geom .= $valA[0].' '.$valA[1].',';
+                            $geom .= $valA[1].' '.$valA[0].',';
                             break;
                         }
                     }
                 } else{
-                    $geom .= $value[$i][0].' '.$value[$i][1].',';
+                    $geom .= $value[$i][1].' '.$value[$i][0].',';
                     break;
                 }
             }
