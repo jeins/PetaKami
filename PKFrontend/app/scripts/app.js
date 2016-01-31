@@ -1,17 +1,9 @@
 'use strict';
 
-/**
- * @ngdoc overview
- * @name pkfrontendApp
- * @description
- * # pkfrontendApp
- *
- * Main module of the application.
- */
 angular
   .module('pkfrontendApp', [
       'ngAnimate',
-      'ngRoute',
+      'ui.router',
       'ui.bootstrap',
       'ngSanitize'
   ])
@@ -21,19 +13,21 @@ angular
             'redirectUri': 'http://localhost:9000/'
         }
     })
-    .config(function ($routeProvider) {
-        $routeProvider
-            .when('/', {
-                controller: 'MapCtrl',
-                controllerAs: 'CMP',
-                templateUrl: 'views/map/map.html'
-            })
-            .when('/view/:layer', {
-                controller: 'ViewLayerCtrl',
-                controllerAs: 'CVL',
-                templateUrl: 'views/map/map.html'
-            })
-            .otherwise({
-                redirectTo: '/'
-            });
-  });
+    //.config(['$locationProvider', function ($locationProvider) {
+    //    $locationProvider.html5Mode(true);
+    //}])
+    .config(['$urlRouterProvider', '$stateProvider',
+        function ($urlRouterProvider, $stateProvider) {
+            $urlRouterProvider.otherwise('/');
+            $stateProvider
+                .state('home', {
+                    url: '/',
+                    templateUrl: 'views/map/map.html',
+                    controller: 'MapCtrl as CMP'
+                })
+                .state('view', {
+                    url: '/view/:layer',
+                    templateUrl: 'views/map/map.html',
+                    controller: 'ViewLayerCtrl as CVL'
+                });
+      }]);

@@ -1,16 +1,23 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .controller('SidenavCtrl', ['$scope', function ($scope) {
+    .controller('SidenavCtrl', ['$scope', '$location', function ($scope, $location) {
         var vm = this;
-
         vm.sideNavContent = 'home';
 
+        vm.init = init;
         vm.toggleSideNav = toggleSideNav;
         vm.hideSideNav = hideSideNav;
         vm.isNavActive = isNavActive;
 
-        vm.hideSideNav();
+        init();
+
+        function init(){
+            hideSideNav();
+            if($location.path().match("view")){
+                toggleSideNav('browse');
+            }
+        }
 
         function toggleSideNav(content){
             vm.sidenavClass = "pk-sidenav_show";

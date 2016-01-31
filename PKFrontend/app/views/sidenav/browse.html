@@ -5,17 +5,24 @@
 
 <div class="form-group">
     <label for="selectWorkspace">Pilih Workspace: </label>
-    <select id="selectWorkspace" ng-model="selectedWorkspace"
+    <select id="selectWorkspace" ng-model="CSB.selectedWorkspace"
             ng-options="workspace as workspace for workspace in CSB.setWorkspaces"
-            ng-change="CSB.changeWorkspace(selectedWorkspace)"
+            ng-change="CSB.changeWorkspace(CSB.selectedWorkspace)"
             style="width: 100%">
     </select>
 </div>
 
-<div ng-show="selectedWorkspace">
-    <ul class="list-group" ng-repeat="layer in CSB.layers">
-        <li class="list-group-item" style="text-transform: capitalize;" ng-click="CSB.viewLayer(layer.name)">
-            {{layer.name}}<span class="pull-right">{{layer.type}}</span>
-        </li>
-    </ul>
+<div ng-show="CSB.selectedWorkspace">
+    <div class="list-group panel" ng-repeat="layerGroup in CSB.layerGroups">
+        <a href="" class="list-group-item" style="text-transform: capitalize;"
+           ng-click="CSB.viewLayer(CSB.selectedWorkspace, layerGroup.name)">
+            {{layerGroup.name}}<span class="pull-right">{{layerGroup.type}}</span>
+        </a>
+    </div>
+
+    <div ng-show="CSB.displayLayer" ng-repeat="layer in CSB.layers">
+        <div class="checkbox">
+            <label><input type="checkbox" ng-model="CSB.selectedLayer[layer.type]" ng-change="CSB.layerSelectChange()">{{layer.name}}</label>
+        </div>
+    </div>
 </div>
