@@ -20,8 +20,8 @@ class TablesController extends BaseController
     public function createTable($typ)
     {
         if($typ == 'point') $spacialTyp = 'geometry(Point,4326)';
-        else if($typ == 'line') $spacialTyp = "";
-        else $spacialTyp = "";
+        else if($typ == 'line') $spacialTyp = 'geometry(LineString,4326)';
+        else if($typ == 'poly') $spacialTyp = 'geometry(Polygon,4326)';
 
         try{
             $this->connection->createTable(
@@ -38,19 +38,19 @@ class TablesController extends BaseController
                                 "primary"       => true,
                             ]
                         ),
-                        new Column(
-                            "name",
-                            [
-                                "type"    => Column::TYPE_VARCHAR,
-                                "size"    => 70,
-                            ]
-                        ),
-                        new Column(
-                            "description",
-                            [
-                                "type"    => Column::TYPE_TEXT,
-                            ]
-                        ),
+//                        new Column(
+//                            "name",
+//                            [
+//                                "type"    => Column::TYPE_VARCHAR,
+//                                "size"    => 70,
+//                            ]
+//                        ),
+//                        new Column(
+//                            "description",
+//                            [
+//                                "type"    => Column::TYPE_TEXT,
+//                            ]
+//                        ),
                         new Column(
                             $typ,
                             [

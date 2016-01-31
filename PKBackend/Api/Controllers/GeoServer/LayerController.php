@@ -122,44 +122,44 @@ class LayerController extends BaseController
     public function postAction()
     {
         $request = $this->getRequestBody();
-        $request->name = str_replace(' ','_',$request->name);
+        $request->name = strtolower(str_replace(' ','_',$request->name));
 
         $layerNames = [];
         $index = 0;
 
-        foreach($request->typ as $typ=>$val){
-            $this->_setupTableName($request->name, $typ);
-            $this->_setupColumnAndData($typ, $val);
+        foreach($request->type as $type=>$val){
+            $this->_setupTableName($request->name, $type);
+            $this->_setupColumnAndData($type, $val);
 
             $layerNames[$index] = $this->queryBuilder->table;
             $index++;
 
-            $this->queryBuilder->createTable($typ);
+            $this->queryBuilder->createTable($type);
             $this->queryBuilder->insertAction();
         }
-
         $this->xmlRequestProcessor->createLayer($layerNames, $request->name);
 
         return ["OK"];
     }
 
-    private function _setupColumnAndData($typ, $val)
+    private function _setupColumnAndData($type, $val)
     {
-        array_push($this->queryBuilder->columns, 'id', 'name', 'description');
+        $this->queryBuilder->columns = [];
+        array_push($this->queryBuilder->columns, 'id');
         $this->queryBuilder->data= [];
 
-        switch(strtolower($typ)){
+        switch(strtolower($type)){
             case 'point':
                 array_push($this->queryBuilder->columns, 'point');
-                $this->_mergeColumnAndData($val);
+                $this->_mergeColumnAndData($val, 'POINT');
                 break;
             case 'line':
                 array_push($this->queryBuilder->columns, 'line');
-                $this->_mergeColumnAndData($val);
+                $this->_mergeColumnAndData($val, 'LINESTRING');
                 break;
-            case'polygon':
-                array_push($this->queryBuilder->columns, 'polygon');
-                $this->_mergeColumnAndData($val);
+            case'poly':
+                array_push($this->queryBuilder->columns, 'poly');
+                $this->_mergeColumnAndData($val, 'POLYGON');
                 break;
         }
     }
@@ -168,16 +168,40 @@ class LayerController extends BaseController
     {
         if(strtolower($typ) == 'point') $this->queryBuilder->table = $name . '_point';
         else if(strtolower($typ) == 'line') $this->queryBuilder->table = $name . '_line';
-        else if(strtolower($typ) == 'polygon') $this->queryBuilder->table = $name . '_poly';
+        else if(strtolower($typ) == 'poly') $this->queryBuilder->table = $name . '_poly';
     }
 
-    private function _mergeColumnAndData($value)
+    private function _mergeColumnAndData($value, $type)
     {
-        foreach($value as $k=>$v){
-            $id = explode('.', $k)[1];
+        for($i=0; $i<count($value); $i++){
+            $geom = 'ST_GeomFromText(\''.$type.'(';
+            if($type == 'POLYGON') $geom .= '(';
+
+            foreach($value[$i] as $valA){
+                if(is_array($valA)){
+                    foreach($valA as $valB){
+                        if(is_array($valB)){
+                            foreach($valB as $valC){
+                                $geom .= $valB[0].' '.$valB[1].',';
+                                break;
+                            }
+                        } else{
+                            $geom .= $valA[0].' '.$valA[1].',';
+                            break;
+                        }
+                    }
+                } else{
+                    $geom .= $value[$i][0].' '.$value[$i][1].',';
+                    break;
+                }
+            }
+            $geom = rtrim($geom, ',');
+            if($type == 'POLYGON') $geom .= ')';
+            $geom .= ')\', 4326)';
+
             $this->queryBuilder->data = array_merge(
-                [[$id, $v->name , $v->description, "ST_GeomFromText('POINT(".$v->lat." ".$v->long.")', 4326)"]],
-                $this->queryBuilder->data
+                $this->queryBuilder->data,
+                [[$i+1, $geom]]
             );
         }
     }
