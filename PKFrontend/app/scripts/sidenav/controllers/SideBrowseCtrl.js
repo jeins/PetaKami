@@ -2,8 +2,8 @@
 
 angular.module('pkfrontendApp')
     .controller('SideBrowseCtrl', [
-        '$scope', 'svcLayer', 'svcWorkspace', '$window', '$stateParams',
-        function ($scope, svcLayer, svcWorkspace, $window, $stateParams) {
+        '$scope', 'svcLayer', 'svcWorkspace', '$window', '$stateParams', 'svcSharedProperties',
+        function ($scope, svcLayer, svcWorkspace, $window, $stateParams, svcSharedProperties) {
             var vm = this;
 
             vm.setWorkspaces = [];
@@ -73,12 +73,27 @@ angular.module('pkfrontendApp')
             }
 
             function viewLayer(workspace, layer){
-                layer = layer.replace(/[ ]+/g, '_');
-                $window.location.href = '/#/view/' + workspace+':'+layer+':d_p_l_pl';
+                svcLayer.getLayerByWorkspace(workspace, function (response){
+                    layer = layer.replace(/[ ]+/g, '_');
+                    var records = response.records;
+                    var setType = 'd';
+                    for(var i=0; i<records.length; i++){
+                        if(records[i][0] == layer){
+                            var tmpType = records[i][1].split('_');
+                            for(var j=0; j<tmpType.length; j++){
+                                if(tmpType[j] == 'point') setType += '_p';
+                                if(tmpType[j] == 'line') setType += '_l';
+                                if(tmpType[j] == 'poly') setType += '_pl';
+                            }
+                        }
+                    }
+                    $window.location.href = '/#/view/' + workspace+':'+layer+':'+setType;
+                })
             }
 
             function changeWorkspace(workspace){
                 vm.displayLayer = false;
+                vm.layerGroups = [];
                 svcLayer.getLayerByWorkspace(workspace, function(response){
                     var records = response.records;
                     for(var i=0; i<records.length; i++){

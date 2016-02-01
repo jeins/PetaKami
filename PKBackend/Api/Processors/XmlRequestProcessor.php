@@ -18,10 +18,10 @@ class XmlRequestProcessor
         $this->curl = new CurlController();
     }
 
-    public function createLayer($layerNames, $name)
+    public function createLayer($workspace, $layerNames, $name)
     {
         foreach($layerNames as $layerName){
-            $this->xml->workspace = 'IDBangunan'; //TODO: set static
+            $this->xml->workspace = $workspace; //TODO: set static
             $this->xml->dataStore = $name;
             $this->xml->layerGroupName = $name;
             $this->xml->featureTypeName = $layerName;

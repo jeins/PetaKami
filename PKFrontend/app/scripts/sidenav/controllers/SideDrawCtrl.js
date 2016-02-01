@@ -81,15 +81,29 @@ angular.module('pkfrontendApp')
 
             function saveLayer(workspace, layerGroupName){
                 var tmpVal = svcSharedProperties.getLayerValues();
+                var tmpType = {'point': '', 'line': '', 'poly':''};
+
+                if(tmpVal.point.length > 0){
+                    tmpType.point =  tmpVal.point;
+                } else {
+                    delete tmpType['point'];
+                }
+                if(tmpVal.line.length > 0){
+                    tmpType.line =  tmpVal.line;
+                }else {
+                    delete tmpType['line'];
+                }
+                if(tmpVal.poly.length > 0){
+                    tmpType.poly =  tmpVal.poly;
+                }else {
+                    delete tmpType['poly'];
+                }
+
 
                 var obj = {
                     "name": layerGroupName,
                     "workspace": workspace,
-                    "type": {
-                        'point': tmpVal.point,
-                        'line': tmpVal.line,
-                        'poly': tmpVal.poly
-                    }
+                    "type": tmpType
                 };
 
                 svcLayer.addLayer(obj, function(response){

@@ -120,8 +120,13 @@ class LayerController extends BaseController
         $responses = json_decode($this->curlController->responseBody[0]);
 
         $newLayerGroups = [];
-        foreach($responses->layerGroup->publishables->published as $response){
-            array_push($newLayerGroups, $response->name);
+        $responses = $responses->layerGroup->publishables->published;
+        if(is_array($responses)){
+            foreach($responses as $response){
+                array_push($newLayerGroups, $response->name);
+            }
+        } else{
+            array_push($newLayerGroups, $responses->name);
         }
 
         return $newLayerGroups;
@@ -182,7 +187,7 @@ class LayerController extends BaseController
             $this->queryBuilder->createTable($type);
             $this->queryBuilder->insertAction();
         }
-        $this->xmlRequestProcessor->createLayer($layerNames, $request->name);
+        $this->xmlRequestProcessor->createLayer($request->workspace, $layerNames, $request->name);
 
         return ["OK"];
     }
