@@ -126,7 +126,6 @@ angular.module('pkfrontendApp')
                         if (properties.maxResolution) {
                             olLayer.setMaxResolution(properties.maxResolution);
                         }
-
                     } else {
                         var isNewLayer = (function(olLayer) {
                             // this function can be used to verify whether a new layer instance has

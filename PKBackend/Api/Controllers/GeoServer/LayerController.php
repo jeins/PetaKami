@@ -43,13 +43,39 @@ class LayerController extends BaseController
 
     public function getLayerDrawTypeInGeoJSON($workspace, $layerGroupName, $drawType)
     {
-        $this->curlController->setUrl('/'.$workspace.
-            '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='
-            .$workspace.':'.$layerGroupName.'_'.$drawType.
-            '&maxFeatures=50&outputFormat=application%2Fjson', true);
-        $this->curlController->run();
+        $dTypes = explode('_', str_replace('d', '', $drawType));
 
-        return json_decode($this->curlController->responseBody[0]);
+        $isFirst = true;
+        $geoJson = [];
+        foreach($dTypes as $dType){
+            if($dType != ""){
+                if($dType == 'p') $dType = 'point';
+                if($dType == 'l') $dType = 'line';
+                if($dType == 'pl') $dType = 'poly';
+
+                $this->curlController->setUrl('/'.$workspace.
+                    '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='
+                    .$workspace.':'.$layerGroupName.'_'.$dType.
+                    '&maxFeatures=50&outputFormat=application%2Fjson', true);
+                $this->curlController->run();
+                $response = json_decode($this->curlController->responseBody[0]);
+
+                if($isFirst){
+                    $geoJson = $response;
+                    $isFirst = false;
+                } else{
+                    $geoJson->features = array_merge($response->features, $geoJson->features);
+                }
+            }
+        }
+
+//        $this->curlController->setUrl('/'.$workspace.
+//            '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='
+//            .$workspace.':'.$layerGroupName.'_'.$drawType.
+//            '&maxFeatures=50&outputFormat=application%2Fjson', true);
+//        $this->curlController->run();
+//
+        return $geoJson;
     }
 
     public function getLayerByWorkspace($workspace)
@@ -189,16 +215,16 @@ class LayerController extends BaseController
                     foreach($valA as $valB){
                         if(is_array($valB)){
                             foreach($valB as $valC){
-                                $geom .= $valB[1].' '.$valB[0].',';
+                                $geom .= $valB[0].' '.$valB[1].',';
                                 break;
                             }
                         } else{
-                            $geom .= $valA[1].' '.$valA[0].',';
+                            $geom .= $valA[0].' '.$valA[1].',';
                             break;
                         }
                     }
                 } else{
-                    $geom .= $value[$i][1].' '.$value[$i][0].',';
+                    $geom .= $value[$i][0].' '.$value[$i][1].',';
                     break;
                 }
             }

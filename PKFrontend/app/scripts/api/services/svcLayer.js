@@ -26,7 +26,7 @@ angular.module('pkfrontendApp')
             }
 
             function getLayerDrawTypeInGeoJSON(workspace, layer, drawType, doneCallback){
-                $http(setupRequest('/workspace/'+workspace+'/layer/'+layer+'/draw'+drawType+'/geojson', 'GET'))
+                $http(setupRequest('/workspace/'+workspace+'/layer/'+layer+'/draw/'+drawType+'/geojson', 'GET'))
                     .then(function(response){
                         doneCallback(response.data);
                     });

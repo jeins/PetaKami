@@ -20,9 +20,17 @@
         </a>
     </div>
 
-    <div ng-show="CSB.displayLayer" ng-repeat="layer in CSB.layers">
-        <div class="checkbox">
-            <label><input type="checkbox" ng-model="CSB.selectedLayer[layer.type]" ng-change="CSB.layerSelectChange()">{{layer.name}}</label>
+    <div ng-show="CSB.displayLayer" class="form-group">
+        <label for="selectedLayer">Layer Group:</label>
+        <input type="text" id="selectedLayer" placeholder="{{CSB.layerGroupName}}" disabled>
+    </div>
+
+    <div ng-show="CSB.displayLayer">
+        <label for="selectedLayer">Tampilkan Layer:</label>
+        <div ng-repeat="layer in CSB.layers">
+            <div class="checkbox">
+                <label><input type="checkbox" ng-model="CSB.selectedLayer[layer.type]" ng-change="CSB.layerSelectChange()">{{layer.name}}</label>
+            </div>
         </div>
     </div>
 </div>

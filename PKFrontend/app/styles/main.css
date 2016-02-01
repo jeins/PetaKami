@@ -28,8 +28,8 @@ html, body{
 
 #pk-wrapper {
   left: 0px;
-  top: 40px;
-  bottom: 18px;
+  top: 35px;
+  bottom: 0px;
   right: 0;
   position: absolute;
 }
@@ -45,18 +45,22 @@ html, body{
 
 .pk-mouse_position{
   position: absolute;
-  top: 90%;
-  width: 40%;
   height: 5%;
   margin-left: 1%;
   bottom: 0px;
 }
 
 .pk-map_canvas80{
-  height: 100%;
-  width: 80%;
-  float: right;
+  /*height: 100%;*/
+  /*width: 80%;*/
+  /*float: right;*/
   overflow: hidden;
+  position: absolute;
+  height:100%;
+  width: 100%;
+  float: right;
+  right: 0;
+  bottom: 0px;
 }
 
 .pk-map_canvas100{
@@ -68,10 +72,16 @@ html, body{
 }
 
 .pk-sidenav_show{
+  /*position: absolute;*/
+  /*width: 20%;*/
+  /*height: 98%;*/
+  /*float:left;*/
   position: absolute;
-  width: 20%;
-  height: 98%;
-  float:left;
+  width: 15%;
+  height: 100%;
+  float: left;
+  background: #fff;
+  overflow: hidden;
 }
 
 .pk-sidenav_hide{

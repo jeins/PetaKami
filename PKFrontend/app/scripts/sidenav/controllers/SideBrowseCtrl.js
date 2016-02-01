@@ -12,6 +12,7 @@ angular.module('pkfrontendApp')
             vm.selectedLayer = [];
             vm.selectedWorkspace = '';
             vm.displayLayer = false;
+            vm.layerGroupName = '';
             vm.init = init;
             vm.changeWorkspace = changeWorkspace;
             vm.viewLayer = viewLayer;
@@ -29,6 +30,22 @@ angular.module('pkfrontendApp')
                     var param = $stateParams.layer;
                     var workspace = param.split(':')[0];
                     var layer = param.split(':')[1];
+                    var drawTypes =param.split(':')[2].split('_');
+
+                    if(drawTypes.indexOf('p') > 0){
+                        vm.selectedLayer['point'] = true;
+                    }
+
+                    if(drawTypes.indexOf('l') > 0){
+                        vm.selectedLayer['line'] = true;
+                    }
+
+                    if(drawTypes.indexOf('pl') > 0){
+                        vm.selectedLayer['poly'] = true;
+                    }
+
+
+                    vm.layerGroupName = layer.replace(/_/g, ' ');
 
                     vm.selectedWorkspace = workspace;
 
@@ -45,12 +62,19 @@ angular.module('pkfrontendApp')
             }
 
             function layerSelectChange(){
-                console.log(vm.selectedLayer);
+                var dTypes = 'd';
+
+                if(vm.selectedLayer['point']) dTypes += '_p';
+                if(vm.selectedLayer['line']) dTypes += '_l';
+                if(vm.selectedLayer['poly']) dTypes += '_pl';
+
+                var layer = vm.layerGroupName.replace(/[ ]+/g, '_');
+                $window.location.href = '/#/view/' + vm.selectedWorkspace+':'+layer+':'+dTypes;
             }
 
             function viewLayer(workspace, layer){
                 layer = layer.replace(/[ ]+/g, '_');
-                $window.location.href = '/#/view/' + workspace+':'+layer;
+                $window.location.href = '/#/view/' + workspace+':'+layer+':d_p_l_pl';
             }
 
             function changeWorkspace(workspace){
@@ -66,7 +90,7 @@ angular.module('pkfrontendApp')
                          else if(types[j] == 'poly') type += '<img src="images/polygon_draw_type.png">';
                          }*/
                         var name = (records[i][0]).replace(/_/g, ' ');
-                        vm.layerGroups.push({'name':name, 'type': type});console.log(type);
+                        vm.layerGroups.push({'name':name, 'type': type});
                     }
                 });
             }
