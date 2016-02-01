@@ -20,8 +20,8 @@ angular.module('pkfrontendApp')
                   }
               },
               indonesia: {
-                  lat: -1.5767477849425404,
-                  lon: 123.91423963552285,
+                  lat: -0.4055727193536711,
+                  lon: 116.19846321160155,
                   zoom: 5
               },
               mouseposition: '',
