@@ -32,7 +32,14 @@ angular.module('pkfrontendApp')
                     });
             }
 
-            function addLayer(body, doneCallback){console.log(body);
+            function getBBox(workspace, layergroup, doneCallback){
+                $http(setupRequest('/workspace/'+workspace+'/layer/'+layergroup+'/bbox', 'GET'))
+                    .then(function(response){
+                        doneCallback(response.data);
+                    });
+            }
+
+            function addLayer(body, doneCallback){
                 $http(setupRequest('/layer', 'POST', body))
                     .then(function (response){
                         doneCallback(response.data);
@@ -60,6 +67,7 @@ angular.module('pkfrontendApp')
                 getLayerByWorkspace: getLayerByWorkspace,
                 getLayersWithDrawType: getLayersWithDrawType,
                 getLayersInGeoJSON: getLayersInGeoJSON,
-                getLayerDrawTypeInGeoJSON: getLayerDrawTypeInGeoJSON
+                getLayerDrawTypeInGeoJSON: getLayerDrawTypeInGeoJSON,
+                getBBox: getBBox
             }
         }]);

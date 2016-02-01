@@ -18,11 +18,6 @@ class XmlRequestProcessor
         $this->curl = new CurlController();
     }
 
-    public function getLayer()
-    {
-
-    }
-
     public function createLayer($layerNames, $name)
     {
         foreach($layerNames as $layerName){

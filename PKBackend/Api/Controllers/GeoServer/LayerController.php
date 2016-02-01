@@ -41,6 +41,24 @@ class LayerController extends BaseController
         return $featureTypes;
     }
 
+    public function getBBox($workspace, $layerGroup){
+        $this->curlController->setUrl('/wms/reflect?format=application/openlayers&layers=' .  $workspace . ':' . $layerGroup, true);
+        $this->curlController->setRequestMethod = 'GET';
+        $this->curlController->run();
+        $responses = preg_replace('/\s+/', '', $this->get_string_between($this->curlController->responseBody[0], 'OpenLayers.Bounds(', ');'));
+
+        return explode(',', $responses);
+    }
+
+    function get_string_between($string, $start, $end){
+        $string = ' ' . $string;
+        $ini = strpos($string, $start);
+        if ($ini == 0) return '';
+        $ini += strlen($start);
+        $len = strpos($string, $end, $ini) - $ini;
+        return substr($string, $ini, $len);
+    }
+
     public function getLayerDrawTypeInGeoJSON($workspace, $layerGroupName, $drawType)
     {
         $dTypes = explode('_', str_replace('d', '', $drawType));
@@ -69,12 +87,6 @@ class LayerController extends BaseController
             }
         }
 
-//        $this->curlController->setUrl('/'.$workspace.
-//            '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='
-//            .$workspace.':'.$layerGroupName.'_'.$drawType.
-//            '&maxFeatures=50&outputFormat=application%2Fjson', true);
-//        $this->curlController->run();
-//
         return $geoJson;
     }
 

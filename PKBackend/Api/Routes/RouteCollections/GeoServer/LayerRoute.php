@@ -11,6 +11,7 @@ return call_user_func(function(){
     $collection->get('/workspace/{workspace}/layer/{layer}/draw', 'getLayersWithDrawType');
     $collection->get('/workspace/{workspace}/layer/{layer}/geojson', 'getLayersInGeoJSON');
     $collection->get('/workspace/{workspace}/layer/{layer}/draw/{draw}/geojson', 'getLayerDrawTypeInGeoJSON');
+    $collection->get('/workspace/{workspace}/layer/{layer}/bbox', 'getBBox');
 
     $collection->post('/layer', 'postAction');
 

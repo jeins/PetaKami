@@ -2,8 +2,8 @@
 
 angular.module('pkfrontendApp')
     .controller('ViewLayerCtrl', [
-        '$scope', '$stateParams', 'svcSharedProperties', 'svcLayer',
-        function ($scope, $stateParams, svcSharedProperties, svcLayer) {
+        '$scope', '$stateParams', 'svcSharedProperties', 'svcLayer', 'olData',
+        function ($scope, $stateParams, svcSharedProperties, svcLayer, olData) {
             var vm = this;
             vm.init = init;
 
@@ -26,6 +26,19 @@ angular.module('pkfrontendApp')
                             }
                         }
                     };
+
+                    svcLayer.getBBox(workspace, layer, function(response){
+                        var records = response.records;
+                        for(var i=0; i<records.length; i++){
+                            records[i] = parseFloat(records[i]);
+                        }
+                        olData.getMap().then(function(map) {
+                            var view = map.getView();
+                            var extent = records;
+                            extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", "EPSG:3857"));
+                            view.fit(extent, map.getSize(), {nearest: true});
+                        });
+                    });
                 });
 
                 angular.extend($scope, {
@@ -35,9 +48,9 @@ angular.module('pkfrontendApp')
                         }
                     },
                     indonesia: {
-                        lat: -6.1766409627685,
-                        lon: 106.82906985283,
-                        zoom: 18
+                        lat: -1.5767477849425404,
+                        lon: 123.91423963552285,
+                        zoom: 5
                     },
                     mouseposition: '',
                     layer: {}
