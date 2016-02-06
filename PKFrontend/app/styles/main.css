@@ -131,3 +131,24 @@ html, body{
 .bs-callout-info h4 {
   color: #5bc0de;
 }
+
+.pk-content_heading {
+  background: #eee;
+  height: 7%;
+  width: 100%;
+}
+
+.pk-heading_inner {
+  position: relative;
+  max-width: 900px;
+  margin: auto;
+  padding: 1px;
+}
+
+.pk-content_body {
+  position: relative;
+  max-width: 900px;
+  margin: auto;
+  margin-top: 20px;
+  padding: 1px;
+}

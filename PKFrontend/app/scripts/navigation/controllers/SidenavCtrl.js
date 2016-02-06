@@ -14,8 +14,11 @@ angular.module('pkfrontendApp')
 
         function init(){
             hideSideNav();
+
             if($location.path().match("view")){
                 toggleSideNav('browse');
+            } else if($location.path().match("upload")){
+                toggleSideNav('upload');
             }
         }
 

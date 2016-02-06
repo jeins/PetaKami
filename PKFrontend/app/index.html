@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
-    <!--<base href="/">-->
+      <base href="/">
   </head>
   <body ng-app="pkfrontendApp" ng-controller="SidenavCtrl as CSN">
 
@@ -30,17 +30,20 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Peta Kami</a>
+            <a class="navbar-brand" href="/">Peta Kami</a>
           </div>
 
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li ng-class="CSN.isNavActive('draw')">
-                <a href="/" ng-click="CSN.toggleSideNav('draw')">Draw Features</a>
-              </li>
-              <li ng-class="CSN.isNavActive('browse')">
-                <a href="/" ng-click="CSN.toggleSideNav('browse')">Browse Features</a>
-              </li>
+              <ul class="nav navbar-nav">
+                <li ng-class="CSN.isNavActive('draw')">
+                    <a href="/" ng-click="CSN.toggleSideNav('draw')">Draw Features</a>
+                </li>
+                <li ng-class="CSN.isNavActive('browse')">
+                    <a href="/" ng-click="CSN.toggleSideNav('browse')">Browse Features</a>
+                </li>
+                <li ng-class="CSN.isNavActive('upload')">
+                    <a href="#/upload" ng-click="CSN.toggleSideNav('upload')">Upload Feature</a>
+                </li>
             </ul>
             <div class="nav navbar-nav navbar-right btn-group">
               <button type="submit" class="btn btn-default">Login</button>
@@ -64,6 +67,7 @@
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/openlayers3/build/ol.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -85,9 +89,10 @@
         <script src="scripts/api/services/svcLayer.js"></script>
         <script src="scripts/api/services/svcSharedProperties.js"></script>
 
-        <script src="scripts/sidenav/controllers/SidenavCtrl.js"></script>
-        <script src="scripts/sidenav/controllers/SideDrawCtrl.js"></script>
-        <script src="scripts/sidenav/controllers/SideBrowseCtrl.js"></script>
+        <script src="scripts/navigation/controllers/SidenavCtrl.js"></script>
+        <script src="scripts/navigation/controllers/UploadCtrl.js"></script>
+        <script src="scripts/navigation/controllers/SideDrawCtrl.js"></script>
+        <script src="scripts/navigation/controllers/SideBrowseCtrl.js"></script>
         <script src="scripts/map/controllers/MapCtrl.js"></script>
         <script src="scripts/map/controllers/ViewLayerCtrl.js"></script>
         <!-- endbuild -->

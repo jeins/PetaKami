@@ -5,7 +5,8 @@ angular
       'ngAnimate',
       'ui.router',
       'ui.bootstrap',
-      'ngSanitize'
+      'ngSanitize',
+      'ngFileUpload'
   ])
     .constant('CONFIG', {
         'http': {
@@ -13,11 +14,8 @@ angular
             'redirectUri': 'http://localhost:9000/'
         }
     })
-    //.config(['$locationProvider', function ($locationProvider) {
-    //    $locationProvider.html5Mode(true);
-    //}])
-    .config(['$urlRouterProvider', '$stateProvider',
-        function ($urlRouterProvider, $stateProvider) {
+    .config(['$urlRouterProvider', '$stateProvider', '$locationProvider',
+        function ($urlRouterProvider, $stateProvider, $locationProvider) {
             $urlRouterProvider.otherwise('/');
             $stateProvider
                 .state('home', {
@@ -29,5 +27,12 @@ angular
                     url: '/view/:layer',
                     templateUrl: 'views/map/map.html',
                     controller: 'ViewLayerCtrl as CVL'
-                });
+                })
+                .state('upload', {
+                    url: '/upload',
+                    templateUrl: 'views/navigation/upload.html',
+                    controller: 'UploadCtrl as UC'
+                })
+            ;
+            //$locationProvider.html5Mode(true);
       }]);
