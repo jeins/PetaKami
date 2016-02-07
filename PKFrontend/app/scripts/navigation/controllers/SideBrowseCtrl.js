@@ -2,8 +2,8 @@
 
 angular.module('pkfrontendApp')
     .controller('SideBrowseCtrl', [
-        '$scope', 'svcLayer', 'svcWorkspace', '$window', '$stateParams', 'svcSharedProperties',
-        function ($scope, svcLayer, svcWorkspace, $window, $stateParams, svcSharedProperties) {
+        '$scope', 'svcLayer', 'svcWorkspace', '$window', '$stateParams',
+        function ($scope, svcLayer, svcWorkspace, $window, $stateParams) {
             var vm = this;
 
             vm.setWorkspaces = [];

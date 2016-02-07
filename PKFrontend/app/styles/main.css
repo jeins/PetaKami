@@ -152,3 +152,20 @@ html, body{
   margin-top: 20px;
   padding: 1px;
 }
+
+.drop-box {
+  background: #F8F8F8;
+  width: 90%;
+  height: 90px;
+  text-align: center;
+  padding-top: 25px;
+  margin: 10px;
+}
+
+.pk-dropbox_brown{
+  border: 5px dashed #DDD;
+}
+
+.pk-dropbox_green{
+  border: 5px dashed green;
+}

@@ -31,7 +31,7 @@ angular
                 .state('upload', {
                     url: '/upload',
                     templateUrl: 'views/navigation/upload.html',
-                    controller: 'UploadCtrl as UC'
+                    controller: 'UploadCtrl as CU'
                 })
             ;
             //$locationProvider.html5Mode(true);
