@@ -18,7 +18,9 @@ angular.module('pkfrontendApp')
             if($location.path().match("view")){
                 toggleSideNav('browse');
             } else if($location.path().match("upload")){
-                toggleSideNav('upload');
+                vm.sidenavClass = "pk-sidenav_hide";
+                vm.mapClass = "pk-map_canvas100";
+                vm.sideNavContent = 'upload';
             }
         }
 

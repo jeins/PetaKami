@@ -53,6 +53,13 @@ angular.module('pkfrontendApp')
                     });
             }
 
+            function uploadFileToGeoServer(workspace, layer, key, doneCallback){
+                $http(setupRequest('/uploadtogs/' + workspace +'/' +layer +'/'+ key, 'PUT'))
+                    .then(function(response){
+                        doneCallback(response.data);
+                    });
+            }
+
             function setupRequest(uri, method, data){
                 return {
                     url: CONFIG.http.rest_host + uri,
@@ -68,6 +75,7 @@ angular.module('pkfrontendApp')
                 getLayersWithDrawType: getLayersWithDrawType,
                 getLayersInGeoJSON: getLayersInGeoJSON,
                 getLayerDrawTypeInGeoJSON: getLayerDrawTypeInGeoJSON,
-                getBBox: getBBox
+                getBBox: getBBox,
+                uploadFileToGeoServer: uploadFileToGeoServer
             }
         }]);

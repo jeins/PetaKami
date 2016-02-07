@@ -59,6 +59,19 @@ class XmlRequestProcessor
         );
     }
 
+    public function createLayerGroup($workspace, $name, $layerNames)
+    {
+        $this->xml->layerGroupName = $name;
+        $this->xml->workspace = $workspace;
+        $this->xml->layerGroupLayers = $layerNames;
+
+        $this->_doCurl(
+            '/layergroups',
+            'post',
+            $this->xml->layerGroupXML()
+        );
+    }
+
     private function _doCurl($url, $reqMethod, $reqBody)
     {
         $this->curl->setRequestMethod($reqMethod);

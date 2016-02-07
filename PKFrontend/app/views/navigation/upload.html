@@ -8,7 +8,7 @@
         <div class="panel-body">
             <div class="form-group">
                 <label for="inputLayerName">Layer Group Name: </label>
-                <input type="text" id="inputLayerName" placeholder="Tuliskan Nama Layer Group" style="width: 100%">
+                <input type="text" ng-model="CU.layerGroupName" id="inputLayerName" placeholder="Tuliskan Nama Layer Group" style="width: 100%">
             </div>
             <div class="form-group">
                 <label for="selectWorkspace">Pilih Workspace: </label>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Upload</button>
+                <button type="submit" class="btn btn-primary" ng-click="CU.uploadToGeoServer()" style="width: 100%;">Upload</button>
             </div>
         </div>
     </div>

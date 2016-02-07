@@ -2,19 +2,21 @@
 
 angular.module('pkfrontendApp')
     .controller('UploadCtrl', [
-        '$scope', 'Upload', 'svcWorkspace', 'CONFIG', '$timeout',
-        function ($scope, Upload, svcWorkspace, CONFIG, $timeout) {
+        '$scope', 'Upload', 'svcWorkspace', 'svcLayer','CONFIG', '$timeout',
+        function ($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout) {
             var vm = this;
 
             vm.timeNow = '';
             vm.workspaces = '';
             vm.selectedWorkspace = '';
+            vm.layerGroupName = '';
             vm.showPoint = false; vm.showLineString = false; vm.showPolygon = false;
             vm.isCollapsed = true;
             vm.isPointSelected = 'pk-dropbox_brown'; vm.isLineSelected = 'pk-dropbox_brown'; vm.isPolySelected = 'pk-dropbox_brown';
             vm.init = init;
             vm.changeWorkspace = changeWorkspace;
             vm.uploadLayerGroup = uploadLayerGroup;
+            vm.uploadToGeoServer = uploadToGeoServer;
 
             init();
 
@@ -73,6 +75,12 @@ angular.module('pkfrontendApp')
                     return true;
                 }
                 return false;
+            }
+
+            function uploadToGeoServer(){
+                svcLayer.uploadFileToGeoServer(vm.selectedWorkspace, vm.layerGroupName, vm.timeNow, function(result){
+
+                });
             }
         }
     ]);

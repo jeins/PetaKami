@@ -221,10 +221,40 @@ class LayerController extends BaseController
         return $tmp[0];
     }
 
+    private function _get2DArrayFromCsv($csvfile) {
+        $csv = Array();
+        $rowcount = 0;
+        if (($handle = fopen($csvfile, "r")) !== FALSE) {
+            $max_line_length = defined('MAX_LINE_LENGTH') ? MAX_LINE_LENGTH : 10000;
+            $header = fgetcsv($handle, $max_line_length);
+            $header_colcount = count($header);
+            while (($row = fgetcsv($handle, $max_line_length)) !== FALSE) {
+                $row_colcount = count($row);
+                if ($row_colcount == $header_colcount) {
+                    $entry = array_combine($header, $row);
+                    $csv[] = $entry;
+                }
+                else {
+                    error_log("csvreader: Invalid number of columns at line " . ($rowcount + 2) . " (row " . ($rowcount + 1) . "). Expected=$header_colcount Got=$row_colcount");
+                    return null;
+                }
+                $rowcount++;
+            }
+            //echo "Totally $rowcount rows found\n";
+            fclose($handle);
+        }
+        else {
+            error_log("csvreader: Could not read CSV \"$csvfile\"");
+            return null;
+        }
+        return $csv;
+    }
+
     public function uploadFileToGeoServer($workspace, $layer, $key)
     {
         $tmpFolder = $this->di->get('config')->application->tmpDir . $key.'/';
         $files = scandir($tmpFolder);
+        $layer = strtolower(str_replace(' ','_',$layer));
 
         foreach($files as $file){
             if($file == '.' || $file == '..') continue;
@@ -234,16 +264,37 @@ class LayerController extends BaseController
             $tmpParts = pathinfo($fullFilePath);
             $newName = $type . '_' . $layer . '.' .$tmpParts['extension'];
 
-            rename($fullFilePath, $tmpFolder . '/' . $newName);
+            #rename($fullFilePath, $tmpFolder . '/' . $newName);
 
-            $this->xmlRequestProcessor->createDataStore($workspace, $type . '_' . $layer);
+            if($tmpParts['extension'] == 'zip'){
+//                $this->xmlRequestProcessor->createDataStore($workspace, $layer);
+//
+//                $this->curlController->setUrl('/workspaces/' . $workspace .'/datastores/' . $layer .'/file.shp');
+//                $this->curlController->setRequestMethod('put');
+//                $this->curlController->setRequestBody(file_get_contents($tmpFolder . $newName));
+//                $this->curlController->run();
+            } else if($tmpParts['extension'] == 'csv'){
+                $values = $this->_get2DArrayFromCsv($tmpFolder . $newName);
+                $index = 1;
+                foreach($values as $val){
 
-            $this->curlController->setUrl('/workspaces/' . $workspace .'/datastores/' . $layer .'/file.shp');
-            $this->curlController->setRequestMethod('put');
-            $this->curlController->setRequestBody(file_get_contents($tmpFolder . $newName));
-            $this->curlController->run();
+                }
+            }
         }
-        die();
+
+        $this->curlController->setUrl('/workspaces/'.$workspace.'/datastores/'. $layer.'/featuretypes.json');
+        $this->curlController->run();
+
+        $responses = json_decode($this->curlController->responseBody[0]);
+        $featureTypes = $responses->featureTypes->featureType;
+        $layerNames = [];
+
+        foreach($featureTypes as $featureType){
+            array_push ($layerNames, $featureType->name);
+        }
+        $this->xmlRequestProcessor->createLayerGroup($workspace, $layer, $layerNames);
+
+        return ["OK"];
     }
 
     private function _setupColumnAndData($type, $val)
