@@ -5,8 +5,8 @@ angular.module('pkfrontendApp')
         '$scope', 'Upload', 'svcWorkspace', 'CONFIG', '$timeout',
         function ($scope, Upload, svcWorkspace, CONFIG, $timeout) {
             var vm = this;
-            $scope.log = '';
 
+            vm.timeNow = '';
             vm.workspaces = '';
             vm.selectedWorkspace = '';
             vm.showPoint = false; vm.showLineString = false; vm.showPolygon = false;
@@ -31,6 +31,8 @@ angular.module('pkfrontendApp')
                 vm.showPolygon = false;
                 svcWorkspace.getWorkspaceWithDrawTyp(workspace, function(result){
                     var drawTypes = result.records;
+                    var date = new Date();
+                    vm.timeNow = date.getTime();
                     for(var i=0; i<drawTypes.length; i++){
                         if(drawTypes[i] == "Point"){
                             vm.showPoint = true;
@@ -54,7 +56,7 @@ angular.module('pkfrontendApp')
                     }
 
                     Upload.upload({
-                        url: CONFIG.http.rest_host + '/upload/' + type,
+                        url: CONFIG.http.rest_host + '/upload/' + type +'/' + vm.timeNow,
                         method: 'POST',
                         file: $file
                     }).then(function(response){

@@ -40,6 +40,7 @@ class AppConfig extends Config
                 'processorDir'   => __DIR__ . '/../Api/Processors/',
                 'configDir'      => __DIR__ . '/../Config/',
                 'logsDir'        => __DIR__ . '/../Logs/',
+                'tmpDir'         => __DIR__ . '/../Files/',
                 'development'    => [
                     'staticBaseUri' => '',
                     'baseUri'       => '/'

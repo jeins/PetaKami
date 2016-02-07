@@ -14,8 +14,10 @@ return call_user_func(function(){
     $collection->get('/workspace/{workspace}/layer/{layer}/bbox', 'getBBox');
 
     $collection->post('/layer', 'postAction');
+    $collection->post('/upload/{type}/{key}', 'upload');
 
     $collection->put('/layer/{id}', 'putAction');
+    $collection->put('/uploadtogs/{workspace}/{layer}/{key}', 'uploadFileToGeoServer');
 
     return $collection;
 });

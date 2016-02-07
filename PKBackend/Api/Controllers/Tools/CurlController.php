@@ -70,8 +70,9 @@ class CurlController extends BaseController
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $this->requestBody);
                 break;
             case 'put':
-                curl_setopt($ch, CURLOPT_PUT, true);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: text/xml"));
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/zip"));
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $this->requestBody);
                 break;
             case 'delete':

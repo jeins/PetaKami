@@ -48,6 +48,17 @@ class XmlRequestProcessor
         );
     }
 
+    public function createDataStore($workspace, $layerName)
+    {
+        $this->xml->workspace = $workspace; //TODO: set static
+        $this->xml->dataStore = $layerName;
+        $this->_doCurl(
+            '/workspaces/' . $this->xml->workspace . '/datastores.xml',
+            'post',
+            $this->xml->dataStoreXML()
+        );
+    }
+
     private function _doCurl($url, $reqMethod, $reqBody)
     {
         $this->curl->setRequestMethod($reqMethod);

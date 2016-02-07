@@ -18,7 +18,7 @@ class LayerController extends BaseController
 
     public function onConstruct()
     {
-        $this->xmlRequestProcessor = new XmlRequestProcessor($this->di->get('config'));
+        $this->xmlRequestProcessor = new XmlRequestProcessor();
         $this->queryBuilder = new QueryController();
         $this->curlController = new CurlController();
     }
@@ -190,6 +190,60 @@ class LayerController extends BaseController
         $this->xmlRequestProcessor->createLayer($request->workspace, $layerNames, $request->name);
 
         return ["OK"];
+    }
+
+    public function upload($type, $key)
+    {
+        $tmpFolder = $this->di->get('config')->application->tmpDir . $key.'/';
+
+        if($this->request->hasFiles() == true){
+            foreach($this->request->getUploadedFiles() as $file){
+                if(!file_exists($tmpFolder)){
+                    mkdir($tmpFolder, 0777, true);
+                }
+
+                $files = scandir($tmpFolder);
+                foreach($files as $fileName){
+                    if($type == $this->_splitFilenameFromDrawType($fileName)){
+                        unlink($tmpFolder . $fileName);
+                    }
+                }
+
+                $file->moveTo($tmpFolder . $type.'._.'.$file->getName());
+            }
+        }
+        return ["OK"];
+    }
+
+    private function _splitFilenameFromDrawType($file)
+    {
+        $tmp = explode('._.', $file);
+        return $tmp[0];
+    }
+
+    public function uploadFileToGeoServer($workspace, $layer, $key)
+    {
+        $tmpFolder = $this->di->get('config')->application->tmpDir . $key.'/';
+        $files = scandir($tmpFolder);
+
+        foreach($files as $file){
+            if($file == '.' || $file == '..') continue;
+
+            $fullFilePath = $tmpFolder . '/' . $file;
+            $type = $this->_splitFilenameFromDrawType($file);
+            $tmpParts = pathinfo($fullFilePath);
+            $newName = $type . '_' . $layer . '.' .$tmpParts['extension'];
+
+            rename($fullFilePath, $tmpFolder . '/' . $newName);
+
+            $this->xmlRequestProcessor->createDataStore($workspace, $type . '_' . $layer);
+
+            $this->curlController->setUrl('/workspaces/' . $workspace .'/datastores/' . $layer .'/file.shp');
+            $this->curlController->setRequestMethod('put');
+            $this->curlController->setRequestBody(file_get_contents($tmpFolder . $newName));
+            $this->curlController->run();
+        }
+        die();
     }
 
     private function _setupColumnAndData($type, $val)
