@@ -1,0 +1,24 @@
+paths:
+    migrations: database/migrations
+    seeds: database/seeds
+
+environments:
+    default_migration_table: phinxlog
+    default_database: development
+    production:
+        adapter: pgsql
+        host: 128.199.125.35
+        name: db_petakami
+        user: pk_geouser
+        pass: P3t4K4M1!
+        port: 5432
+        charset: utf8
+
+    development:
+        adapter: pgsql
+        host: 192.168.1.134
+        name: db_petakami
+        user: geouser
+        pass: geouser
+        port: 5432
+        charset: utf8

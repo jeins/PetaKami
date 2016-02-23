@@ -61,19 +61,15 @@ class LayerController extends BaseController
 
     public function getLayerDrawTypeInGeoJSON($workspace, $layerGroupName, $drawType)
     {
-        $dTypes = explode('_', str_replace('d', '', $drawType));
+        $dTypes = explode(',', $drawType);
 
         $isFirst = true;
         $geoJson = [];
         foreach($dTypes as $dType){
             if($dType != ""){
-                if($dType == 'p') $dType = 'point';
-                if($dType == 'l') $dType = 'line';
-                if($dType == 'pl') $dType = 'poly';
-
                 $this->curlController->setUrl('/'.$workspace.
                     '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='
-                    .$workspace.':'.$layerGroupName.'_'.$dType.
+                    .$workspace.':'.$dType.
                     '&maxFeatures=50&outputFormat=application%2Fjson', true);
                 $this->curlController->run();
                 $response = json_decode($this->curlController->responseBody[0]);
@@ -88,6 +84,22 @@ class LayerController extends BaseController
         }
 
         return $geoJson;
+    }
+
+    public function getDrawTypeFromLayer($workspace, $layerGroupName, $layer)
+    {
+        $this->curlController->setUrl('/workspaces/'.$workspace.'/datastores/' . $layerGroupName . '/featuretypes/' . $layer . '.json');
+        $this->curlController->setRequestMethod('get');
+        $this->curlController->run();
+
+        $response = $this->curlController->responseBody[0];
+        $drawType = [];
+        if(strpos($response, 'Point') !== false) $drawType[0] = 'point';
+        if(strpos($response, 'LineString') !== false) $drawType[0] = 'linestring';
+        if(strpos($response, 'Polygon') !== false) $drawType[0] = 'polygon';
+
+        $drawType[1] = $layer;
+        return $drawType;
     }
 
     public function getLayerByWorkspace($workspace)
@@ -264,25 +276,33 @@ class LayerController extends BaseController
             $tmpParts = pathinfo($fullFilePath);
             $newName = $type . '_' . $layer . '.' .$tmpParts['extension'];
 
-            #rename($fullFilePath, $tmpFolder . '/' . $newName);
+            rename($fullFilePath, $tmpFolder . '/' . $newName);
 
             if($tmpParts['extension'] == 'zip'){
-//                $this->xmlRequestProcessor->createDataStore($workspace, $layer);
-//
-//                $this->curlController->setUrl('/workspaces/' . $workspace .'/datastores/' . $layer .'/file.shp');
-//                $this->curlController->setRequestMethod('put');
-//                $this->curlController->setRequestBody(file_get_contents($tmpFolder . $newName));
-//                $this->curlController->run();
+                $this->xmlRequestProcessor->createDataStore($workspace, $layer);
+
+                $this->curlController->setUrl('/workspaces/' . $workspace .'/datastores/' . $layer .'/file.shp');
+                $this->curlController->setRequestMethod('put');
+                $this->curlController->setRequestBody(file_get_contents($tmpFolder . $newName));
+                $this->curlController->run();
             } else if($tmpParts['extension'] == 'csv'){
                 $values = $this->_get2DArrayFromCsv($tmpFolder . $newName);
-                $index = 1;
-                foreach($values as $val){
-
-                }
+//                $index = 1;
+//                foreach($values as $val){
+//
+//                }
             }
         }
+        $layerNames = $this->getLayerFromWorkspace($workspace, $layer);
 
-        $this->curlController->setUrl('/workspaces/'.$workspace.'/datastores/'. $layer.'/featuretypes.json');
+        $this->xmlRequestProcessor->createLayerGroup($workspace, $layer, $layerNames);
+
+        return ["OK"];
+    }
+
+    public function getLayerFromWorkspace($workspace, $layerGroupName){
+        $this->curlController->setUrl('/workspaces/'.$workspace.'/datastores/'. $layerGroupName.'/featuretypes.json');
+        $this->curlController->setRequestMethod('get');
         $this->curlController->run();
 
         $responses = json_decode($this->curlController->responseBody[0]);
@@ -292,9 +312,8 @@ class LayerController extends BaseController
         foreach($featureTypes as $featureType){
             array_push ($layerNames, $featureType->name);
         }
-        $this->xmlRequestProcessor->createLayerGroup($workspace, $layer, $layerNames);
 
-        return ["OK"];
+        return $layerNames;
     }
 
     private function _setupColumnAndData($type, $val)

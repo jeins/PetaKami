@@ -60,6 +60,20 @@ angular.module('pkfrontendApp')
                     });
             }
 
+            function getDrawTypeFromLayer(workspace, layerGroup, layer, doneCallback){
+                $http(setupRequest('/drawtype/' + workspace +'/' + layerGroup +'/' + layer +'', 'GET'))
+                    .then(function(response){
+                        doneCallback(response.data);
+                    });
+            }
+
+            function getLayerFromWorkspace(workspace, layerGroup, doneCallback){
+                $http(setupRequest('/layers/' + workspace +'/' + layerGroup, 'GET'))
+                    .then(function(response){
+                        doneCallback(response.data);
+                    });
+            }
+
             function setupRequest(uri, method, data){
                 return {
                     url: CONFIG.http.rest_host + uri,
@@ -76,6 +90,8 @@ angular.module('pkfrontendApp')
                 getLayersInGeoJSON: getLayersInGeoJSON,
                 getLayerDrawTypeInGeoJSON: getLayerDrawTypeInGeoJSON,
                 getBBox: getBBox,
+                getDrawTypeFromLayer: getDrawTypeFromLayer,
+                getLayerFromWorkspace: getLayerFromWorkspace,
                 uploadFileToGeoServer: uploadFileToGeoServer
             }
         }]);

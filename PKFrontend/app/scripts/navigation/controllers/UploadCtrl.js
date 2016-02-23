@@ -2,8 +2,8 @@
 
 angular.module('pkfrontendApp')
     .controller('UploadCtrl', [
-        '$scope', 'Upload', 'svcWorkspace', 'svcLayer','CONFIG', '$timeout',
-        function ($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout) {
+        '$scope', 'Upload', 'svcWorkspace', 'svcLayer','CONFIG', '$timeout', '$window',
+        function ($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$window) {
             var vm = this;
 
             vm.timeNow = '';
@@ -63,7 +63,6 @@ angular.module('pkfrontendApp')
                         file: $file
                     }).then(function(response){
                         $timeout(function(){
-                            console.log(response);
                         });
                     })
                 }
@@ -71,7 +70,7 @@ angular.module('pkfrontendApp')
 
             function _isMimeTypeAllow(name){
                 var res = name.toLowerCase().split('.');
-                if(res[res.length-1] == 'zip' || res[res.length-1] == 'csv' || res[res.length-1] == 'json'){
+                if(res[res.length-1] == 'zip'){// || res[res.length-1] == 'csv' || res[res.length-1] == 'json'){
                     return true;
                 }
                 return false;
@@ -79,7 +78,7 @@ angular.module('pkfrontendApp')
 
             function uploadToGeoServer(){
                 svcLayer.uploadFileToGeoServer(vm.selectedWorkspace, vm.layerGroupName, vm.timeNow, function(result){
-
+                    $window.location.href = 'http://petakami.com/#/view/' + vm.selectedWorkspace + ':' + vm.layerGroupName.replace(/ /g, '_').toLowerCase() + ':d';
                 });
             }
         }

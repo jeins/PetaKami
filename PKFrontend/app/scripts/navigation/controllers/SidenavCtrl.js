@@ -17,16 +17,15 @@ angular.module('pkfrontendApp')
 
             if($location.path().match("view")){
                 toggleSideNav('browse');
-            } else if($location.path().match("upload")){
-                vm.sidenavClass = "pk-sidenav_hide";
-                vm.mapClass = "pk-map_canvas100";
-                vm.sideNavContent = 'upload';
             }
         }
 
         function toggleSideNav(content){
-            vm.sidenavClass = "pk-sidenav_show";
-            vm.mapClass = "pk-map_canvas80";
+            hideSideNav();
+            if(content != "upload"){
+                vm.sidenavClass = "pk-sidenav_show";
+                vm.mapClass = "pk-map_canvas80";
+            }
             vm.sideNavContent = content;
         }
 
