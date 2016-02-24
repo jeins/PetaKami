@@ -41,12 +41,12 @@ class LayerController extends BaseController
         return $geoJson;
     }
 
-//    public function getLayerDrawTypeInFormatGeoJson($workspace, $drawType)
-//    {
-//        $geoJson = $this->jsonProcessor->drawTypeFormatInGeoJson($workspace, $drawType);
-//
-//        return $geoJson;
-//    }
+    public function getFeatureCollectionFilterByLayer($workspace, $layers)
+    {
+        $geoJson = $this->jsonProcessor->featureCollection($workspace, $layers, true);
+
+        return $geoJson;
+    }
 
     public function getLayersFromWorkspace($workspace)
     {

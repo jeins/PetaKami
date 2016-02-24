@@ -13,10 +13,10 @@ class LayerCollection extends Collection
         $this->setHandler('\PetaKami\Controllers\LayerController', true);
         $this->setPrefix('/layer');
 
-        #$this->get('/{workspace}/{drawType}/geojson', 'getLayerDrawTypeInFormatGeoJson');
         $this->get('/{workspace}',                                      'getLayersFromWorkspace');
         $this->get('/{workspace}/{layerGroupName}',                     'getLayerAndDrawType');
         $this->get('/{workspace}/{layerGroupName}/geojson',             'getFeatureCollectionGeoJson');
+        $this->get('/{workspace}/{layers}/bylayer/geojson',             'getFeatureCollectionFilterByLayer');
         $this->get('/{workspace}/{layerGroupName}/bbox',                'getBbox');
         $this->get('/{workspace}/{layerGroupName}/{layer}/drawtype',    'getDrawType');
 

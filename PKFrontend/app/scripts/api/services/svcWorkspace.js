@@ -4,7 +4,7 @@ angular.module('pkfrontendApp')
     .factory('svcWorkspace', [
         '$q', '$http', 'CONFIG', function($q, $http, CONFIG) {
             function getWorkspaces(doneCallback){
-                $http(setupRequest('/workspaces', 'GET', ''))
+                $http(setupRequest('/workspace/all', 'GET', ''))
                     .then(function (response){
                         doneCallback(response.data);
                     });

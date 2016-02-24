@@ -39,7 +39,7 @@ class JsonRequestProcessor extends Injectable
 
         foreach ($layers as $layer) {
             $drawType = $this->drawTypeFilterByLayer($workspace, $layerGroupName, $layer);
-            array_push($layersAndDrawTypes, ['layer' => $drawType[1], 'drawType' => $drawType[0]]);
+            array_push($layersAndDrawTypes, ['layer' => $drawType['layer'], 'drawType' => $drawType['drawType']]);
         }
 
         return $layersAndDrawTypes;
@@ -70,9 +70,9 @@ class JsonRequestProcessor extends Injectable
 
         $drawType = [];
 
-        if(strpos($response, ucfirst(GeoServer::POINT)) !== false) $drawType['drawType'] = GeoServer::POINT;
-        if(strpos($response, ucfirst(GeoServer::LINESTRING)) !== false) $drawType['drawType'] = GeoServer::LINESTRING;
-        if(strpos($response, ucfirst(GeoServer::POLYGON)) !== false) $drawType['drawType'] = GeoServer::POLYGON;
+        if(strpos(strtolower($response), GeoServer::POINT) !== false) $drawType['drawType'] = GeoServer::POINT;
+        if(strpos(strtolower($response), GeoServer::LINESTRING) !== false) $drawType['drawType'] = GeoServer::LINESTRING;
+        if(strpos(strtolower($response), GeoServer::POLYGON) !== false) $drawType['drawType'] = GeoServer::POLYGON;
 
         $drawType['layer'] = $layer;
 
@@ -90,47 +90,33 @@ class JsonRequestProcessor extends Injectable
         return explode(',', $responses);
     }
 
-//    public function drawTypeFormatInGeoJson($workspace, $drawType)
-//    {
-//        $dTypes = explode(',', $drawType);
-//
-//        $isFirst = true;
-//        $geoJson = [];
-//        foreach($dTypes as $dType){
-//            if($dType != ""){
-//                $response = json_decode($this->_doCurl(
-//                    '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='
-//                    .$workspace.':'.$dType.
-//                    '&maxFeatures=50&outputFormat=application%2Fjson',
-//                    true
-//                ));
-//
-//                if($isFirst){
-//                    $geoJson = $response;
-//                    $isFirst = false;
-//                } else{
-//                    $geoJson->features = array_merge($response->features, $geoJson->features);
-//                }
-//            }
-//        }
-//
-//        return $geoJson;
-//    }
-
-    public function featureCollection($workspace, $layerGroupName)
+    public function featureCollection($workspace, $layerGroupName, $filterByLayer = false)
     {
-        $layers = $this->layersFromLayerGroup($workspace, $layerGroupName);
+        $layers = explode(',', $layerGroupName);
+
+        if(!$filterByLayer) $layers = $this->layersFromLayerGroup($workspace, $layerGroupName);
 
         $featureTypes = [];
 
+        $isFirst = true;
         foreach($layers as $layer){
-            array_push($featureTypes, [$layer => json_decode($this->_doCurl(
+
+            if($layer == "") continue;
+
+            $response = json_decode($this->_doCurl(
                 '/'.$workspace.
                 '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='
                 .$workspace.':'.$layer.
                 '&maxFeatures=50&outputFormat=application%2Fjson',
                 true
-            ))]);
+            ));
+
+            if($isFirst){
+                $featureTypes = $response;
+                $isFirst = false;
+            } else{
+                $featureTypes->features = array_merge($response->features, $featureTypes->features);
+            }
         }
 
         return $featureTypes;

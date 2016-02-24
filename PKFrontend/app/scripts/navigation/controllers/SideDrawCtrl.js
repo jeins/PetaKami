@@ -22,7 +22,7 @@ angular.module('pkfrontendApp')
 
             function init(){
                 svcWorkspace.getWorkspaces(function(result){
-                    vm.setWorkspaces = result.records;
+                    vm.setWorkspaces = result.data;
                 });
 
 
@@ -75,7 +75,7 @@ angular.module('pkfrontendApp')
 
             function changeWorkspace(workspace){
                 svcWorkspace.getWorkspaceWithDrawTyp(workspace, function(result){
-                    vm.setDrawTypes = result.records;
+                    vm.setDrawTypes = result.data;
                 });
             }
 

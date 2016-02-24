@@ -2,8 +2,8 @@
 
 angular.module('pkfrontendApp')
     .controller('ViewLayerCtrl', [
-        '$scope', '$stateParams', 'svcSharedProperties', 'svcLayer', 'olData',
-        function ($scope, $stateParams, svcSharedProperties, svcLayer, olData) {
+        '$scope', '$stateParams', 'svcSharedProperties', 'svcLayer', 'olData', 'svcSecurity',
+        function ($scope, $stateParams, svcSharedProperties, svcLayer, olData, svcSecurity) {
             var vm = this;
             vm.init = init;
 
@@ -12,23 +12,32 @@ angular.module('pkfrontendApp')
             function init(){
                 svcSharedProperties.setSelectedNav('browse');
 
-                var workspace = $stateParams.layer.split(':')[0];
-                var layer = $stateParams.layer.split(':')[1];
-                var drawType = $stateParams.layer.split(':')[2];
+                var params = svcSecurity.decode($stateParams.layer);
+                var workspace = params.split(':')[0];
+                var layerGroup = params.split(':')[1];
+                var layerAndDrawType = params.split(':')[2].split(';');
+                var layers = '';
+                for(var i=0; i<layerAndDrawType.length; i++){
+                    var layer = layerAndDrawType[i].split('?')[0];
+                    if(layer != ""){
+                        layers += layer + ',';
+                    }
+                }
 
-                svcLayer.getLayerDrawTypeInGeoJSON(workspace, layer, drawType, function(response){
+console.log(layers);
+                svcLayer.getFeatureCollectionFilterByLayer(workspace, layers, function(response){
                     $scope.layer = {
                         source: {
                             type: 'GeoJSON',
                             geojson: {
-                                object: response.records,
+                                object: response,
                                 projection: 'EPSG:3857'
                             }
                         }
                     };
 
-                    svcLayer.getBBox(workspace, layer, function(response){
-                        var records = response.records;
+                    svcLayer.getBbox(workspace, layerGroup, function(response){
+                        var records = response.data;
                         for(var i=0; i<records.length; i++){
                             records[i] = parseFloat(records[i]);
                         }

@@ -29,7 +29,7 @@
         <label for="selectedLayer">Tampilkan Layer:</label>
         <div ng-repeat="layer in CSB.layers">
             <div class="checkbox">
-                <label><input type="checkbox" ng-model="CSB.selectedLayer[layer.type]" ng-change="CSB.layerSelectChange()">{{layer.name}}</label>
+                <label><input type="checkbox" ng-model="CSB.selectedLayer[layer.type]" ng-change="CSB.layerSelectChange()">{{layer.type}}</label>
             </div>
         </div>
     </div>
