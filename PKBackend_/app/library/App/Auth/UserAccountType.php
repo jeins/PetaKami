@@ -3,7 +3,7 @@
 
 namespace PetaKami\Auth;
 
-use PetaKami\Constants\Services;
+use PetaKami\Constants\PKConst;
 use PetaKami\Models\User;
 use Phalcon\Di;
 use PhalconRest\Auth\Manager;
@@ -20,7 +20,7 @@ class UserAccountType implements AccountType
      */
     public function login($data)
     {
-        $security = Di::getDefault()->get(Services::SECURITY);
+        $security = Di::getDefault()->get(PKConst::SECURITY);
 
         $username = $data[Manager::LOGIN_DATA_USERNAME];
         $password = $data[Manager::LOGIN_DATA_PASSWORD];

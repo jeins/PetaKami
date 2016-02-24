@@ -12,6 +12,7 @@ switch($application_env){
 }
 
 $defaultConfig = require_once __DIR__ . '/../configs/default.php';
-$config = array_merge($defaultConfig, $serverConfig);
+$aclConfig = require_once __DIR__ . '/../configs/acl.php';
+$config = array_merge($defaultConfig, $serverConfig, $aclConfig);
 
 return new \Phalcon\Config($config);

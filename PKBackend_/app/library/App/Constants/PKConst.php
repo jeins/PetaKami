@@ -5,10 +5,12 @@ namespace PetaKami\Constants;
 
 use PhalconRest\Constants\Services as PRServices;
 
-class Services extends PRServices
+class PKConst extends PRServices
 {
     const DB_GEO = 'db_geo';
     const DB_PK = 'db_pk';
+
+    const RESPONSE_KEY = 'data';
 
     const CONFIG = 'config';
 

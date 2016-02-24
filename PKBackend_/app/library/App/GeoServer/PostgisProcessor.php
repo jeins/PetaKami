@@ -4,7 +4,7 @@
 namespace PetaKami\GeoServer;
 
 use PetaKami\Constants\GeoServer;
-use PetaKami\Constants\Services;
+use PetaKami\Constants\PKConst;
 use Phalcon\Di\Injectable;
 
 class PostgisProcessor extends Injectable
@@ -13,7 +13,7 @@ class PostgisProcessor extends Injectable
 
     public function __construct()
     {
-        $this->queryBuilder = new QueryBuilder($this->di->get(Services::DB_GEO));
+        $this->queryBuilder = new QueryBuilder($this->di->get(PKConst::DB_GEO));
     }
 
     public function addLayerToPostgis($layerName, $drawTypeAndCoordinates){

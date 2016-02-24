@@ -3,7 +3,7 @@
 
 namespace PetaKami\Mvc;
 
-use PetaKami\Constants\Services;
+use PetaKami\Constants\PKConst;
 use Phalcon\Mvc\Model;
 use PhalconRest\Constants\ErrorCodes;
 use PhalconRest\Exceptions\UserException;
@@ -22,7 +22,7 @@ class BaseModel extends Model
 
     public function initialize()
     {
-        $this->setConnectionService(Services::DB_PK);
+        $this->setConnectionService(PKConst::DB_PK);
     }
 
     /**

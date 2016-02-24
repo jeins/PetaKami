@@ -1,6 +1,6 @@
 <?php
 
-use PetaKami\Constants\Services as PKServices;
+use PetaKami\Constants\PKConst as PKServices;
 
 $application_env = getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development';
 

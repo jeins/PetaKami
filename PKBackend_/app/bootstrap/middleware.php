@@ -1,8 +1,8 @@
 <?php
 
-use PetaKami\Constants\Services as PKServices;
+use PetaKami\Constants\PKConst;
 
-$eventsManager = $di->get(PKServices::EVENTS_MANAGER);
+$eventsManager = $di->get(PKConst::EVENTS_MANAGER);
 
 /**
  * NotFound handler

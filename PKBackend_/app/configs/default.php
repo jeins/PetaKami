@@ -4,23 +4,12 @@ return [
 
     'application' => [
         'baseUri' => '/',
+        'tmpFolder' => __DIR__ . '/../../tmp_files',
     ],
 
     'authentication' => [
         'secret' => 'this_should_be_changed',
         'expirationTime' => 86400 * 7, // One week till token expires
-    ],
-    'acl' => [
-        'publicEndpoints' => [
-            '/user/authenticate',
-            '/workspace/all',
-            '/workspace/{workspace}/draw',
-            '/layer/{workspace}',
-            '/layer/{workspace}/{layer}/geojson'
-        ],
-        'privateEndpoints' => [
-            '/user/me'
-        ],
     ],
     'geoserver' => [
         'username'      => 'admin',

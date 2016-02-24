@@ -4,7 +4,7 @@
 namespace PetaKami\Mvc;
 
 use PhalconRest\Mvc\FractalController;
-use PetaKami\Constants\Services as PKService;
+use PetaKami\Constants\PKConst as PKService;
 use PetaKami\Services\UserService;
 
 /**

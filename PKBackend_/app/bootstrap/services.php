@@ -1,21 +1,22 @@
 <?php
 
-use PetaKami\Constants\Services as PKServices;
+use PetaKami\Constants\PKConst;
 use PetaKami\Auth\UserAccountType;
 use PetaKami\Services\UserService;
 use Phalcon\Db\Adapter\Pdo\Postgresql as DatabaseConnection;
 use Phalcon\Mvc\Url;
 use Phalcon\Mvc\Router;
 use PhalconRest\Auth\TokenParser\JWT;
-use PhalconRest\Auth\Manager;
+use PhalconRest\Auth\Manager as PRManager;
+use Phalcon\Mvc\Model\Manager;
 
 $di = new \PhalconRest\Di\FactoryDefault();
 
-$di->setShared(PKServices::CONFIG, function() use($config){
+$di->setShared(PKConst::CONFIG, function() use($config){
    return $config;
 });
 
-$di->set(PKServices::DB_GEO, function() use($config, $di){
+$di->set(PKConst::DB_GEO, function() use($config, $di){
     $connection = new DatabaseConnection([
         'host'       => $config->database->host,
         'dbname'     => $config->database->db_geo,
@@ -23,12 +24,12 @@ $di->set(PKServices::DB_GEO, function() use($config, $di){
         'password'   => $config->database->password,
     ]);
 
-    $connection->setEventsManager($di->get(PKServices::EVENTS_MANAGER));
+    $connection->setEventsManager($di->get(PKConst::EVENTS_MANAGER));
 
     return $connection;
 });
 
-$di->set(PKServices::DB_PK, function() use($config, $di){
+$di->set(PKConst::DB_PK, function() use($config, $di){
     $connection = new DatabaseConnection([
         'host'       => $config->database->host,
         'dbname'     => $config->database->db_pk,
@@ -36,26 +37,26 @@ $di->set(PKServices::DB_PK, function() use($config, $di){
         'password'   => $config->database->password,
     ]);
 
-    $connection->setEventsManager($di->get(PKServices::EVENTS_MANAGER));
+    $connection->setEventsManager($di->get(PKConst::EVENTS_MANAGER));
 
     return $connection;
 });
 
-$di->set(PKServices::URL, function() use($config){
+$di->set(PKConst::URL, function() use($config){
     $url = new Url();
     $url->setBaseUri($config->application->baseUri);
 
     return $url;
 });
 
-$di->set(PKServices::ROUTER, function(){
+$di->set(PKConst::ROUTER, function(){
     return new Router();
 });
 
 /**
  * @description TokenParser
  */
-$di->setShared(PKServices::TOKEN_PARSER, function () use ($di, $config) {
+$di->setShared(PKConst::TOKEN_PARSER, function () use ($di, $config) {
 
     return new JWT($config->authentication->secret, JWT::ALGORITHM_HS256);
 });
@@ -63,18 +64,27 @@ $di->setShared(PKServices::TOKEN_PARSER, function () use ($di, $config) {
 /**
  * @description AuthManager
  */
-$di->setShared(PKServices::AUTH_MANAGER, function () use ($di, $config) {
+$di->setShared(PKConst::AUTH_MANAGER, function () use ($di, $config) {
 
-    $authManager = new Manager($config->authentication->expirationTime);
+    $authManager = new PRManager($config->authentication->expirationTime);
     $authManager->registerAccountType(UserAccountType::EMAIL, new UserAccountType());
 
     return $authManager;
 });
 
 /**
+ * @description Phalcon - \Phalcon\Mvc\Model\Manager
+ */
+$di->setShared(PKConst::MODELS_MANAGER, function () use ($di) {
+
+    $modelsManager = new Manager;
+    return $modelsManager->setEventsManager($di->get(PKConst::EVENTS_MANAGER));
+});
+
+/**
  * @description App - \Library\App\Services\UserService
  */
-$di->setShared(PKServices::USER_SERVICE, function () {
+$di->setShared(PKConst::USER_SERVICE, function () {
     return new UserService;
 });
 

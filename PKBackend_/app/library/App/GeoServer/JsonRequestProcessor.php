@@ -4,7 +4,7 @@
 namespace PetaKami\GeoServer;
 
 
-use PetaKami\Constants\Services;
+use PetaKami\Constants\PKConst;
 use Phalcon\Di\Injectable;
 
 class JsonRequestProcessor extends Injectable
@@ -14,12 +14,12 @@ class JsonRequestProcessor extends Injectable
 
     public function __construct()
     {
-        $this->curl = new Curl($this->di->get(Services::CONFIG));
+        $this->curl = new Curl($this->di->get(PKConst::CONFIG));
     }
 
-    public function layersFromLayerGroup($workspace, $layerGroupName)
+    public function layersFromLayerGroup($workspace, $dataStore)
     {
-        $responses = json_decode($this->_doCurl('/workspaces/'.$workspace.'/datastores/'. $layerGroupName.'/featuretypes.json'));
+        $responses = json_decode($this->_doCurl('/workspaces/'.$workspace.'/datastores/'. $dataStore.'/featuretypes.json'));
         $featureTypes = $responses->featureTypes->featureType;
         $layerNames = [];
 
