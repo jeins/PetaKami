@@ -1,85 +1,88 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .controller('UploadCtrl', [
-        '$scope', 'Upload', 'svcWorkspace', 'svcLayer','CONFIG', '$timeout', '$window',
-        function ($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$window) {
-            var vm = this;
+    .controller('UploadCtrl', controller);
 
-            vm.timeNow = '';
-            vm.workspaces = '';
-            vm.selectedWorkspace = '';
-            vm.layerGroupName = '';
-            vm.showPoint = false; vm.showLineString = false; vm.showPolygon = false;
-            vm.isCollapsed = true;
-            vm.isPointSelected = 'pk-dropbox_brown'; vm.isLineSelected = 'pk-dropbox_brown'; vm.isPolySelected = 'pk-dropbox_brown';
-            vm.init = init;
-            vm.changeWorkspace = changeWorkspace;
-            vm.uploadLayerGroup = uploadLayerGroup;
-            vm.uploadToGeoServer = uploadToGeoServer;
+controller.$inject = ['$scope', 'Upload', 'svcWorkspace', 'svcLayer','CONFIG', '$timeout', '$window'];
 
-            init();
+function controller($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$window) {
+    var vm = this;
+    vm.init = init;
+    vm.changeWorkspace = changeWorkspace;
+    vm.uploadLayerGroup = uploadLayerGroup;
+    vm.uploadToGeoServer = uploadToGeoServer;
 
-            function init(){
-                svcWorkspace.getWorkspaces(function(result){
-                    vm.workspaces = result.records;
-                });
-            }
+    init();
 
-            function changeWorkspace(workspace){
-                vm.isCollapsed = false;
-                vm.showPoint = false;
-                vm.showLineString = false;
-                vm.showPolygon = false;
-                svcWorkspace.getWorkspaceWithDrawTyp(workspace, function(result){
-                    var drawTypes = result.records;
-                    var date = new Date();
-                    vm.timeNow = date.getTime();
-                    for(var i=0; i<drawTypes.length; i++){
-                        if(drawTypes[i] == "Point"){
-                            vm.showPoint = true;
-                        } else if(drawTypes[i] == "LineString"){
-                            vm.showLineString = true;
-                        } else if(drawTypes[i] == "Polygon"){
-                            vm.showPolygon = true;
-                        }
-                    }
-                });
-            }
+    function init(){
+        vm.timeNow = '';
+        vm.workspaces = '';
+        vm.selectedWorkspace = '';
+        vm.layerGroupName = '';
+        vm.showPoint = false; vm.showLineString = false; vm.showPolygon = false;
+        vm.isCollapsed = true;
+        vm.isPointSelected = 'pk-dropbox_brown'; vm.isLineSelected = 'pk-dropbox_brown'; vm.isPolySelected = 'pk-dropbox_brown';
 
-            function uploadLayerGroup($file, type){
-                if(_isMimeTypeAllow($file.name) && !$file.$error){
-                    if(type == 'point'){
-                        vm.isPointSelected = 'pk-dropbox_green';
-                    } else if(type == 'linestring'){
-                        vm.isLineSelected = 'pk-dropbox_green';
-                    } else if(type == 'polygon'){
-                        vm.isPolySelected = 'pk-dropbox_green';
-                    }
+        svcWorkspace.getWorkspaces(function(result){
+            vm.workspaces = result.data;
+        });
+    }
 
-                    Upload.upload({
-                        url: CONFIG.http.rest_host + '/upload/' + type +'/' + vm.timeNow,
-                        method: 'POST',
-                        file: $file
-                    }).then(function(response){
-                        $timeout(function(){
-                        });
-                    })
+    function changeWorkspace(workspace){
+        vm.isCollapsed = false;
+        vm.showPoint = false;
+        vm.showLineString = false;
+        vm.showPolygon = false;
+
+        svcWorkspace.getWorkspaceWithDrawTyp(workspace, function(result){
+            var drawTypes = result.data;
+            var date = new Date();
+            vm.timeNow = date.getTime();
+
+            for(var i in drawTypes){
+                if(drawTypes[i] == "Point"){
+                    vm.showPoint = true;
+                } else if(drawTypes[i] == "LineString"){
+                    vm.showLineString = true;
+                } else if(drawTypes[i] == "Polygon"){
+                    vm.showPolygon = true;
                 }
             }
+        });
+    }
 
-            function _isMimeTypeAllow(name){
-                var res = name.toLowerCase().split('.');
-                if(res[res.length-1] == 'zip'){// || res[res.length-1] == 'csv' || res[res.length-1] == 'json'){
-                    return true;
-                }
-                return false;
+    function uploadLayerGroup($file, type){
+        if(_isMimeTypeAllow($file.name) && !$file.$error){
+            if(type == 'point'){
+                vm.isPointSelected = 'pk-dropbox_green';
+            } else if(type == 'linestring'){
+                vm.isLineSelected = 'pk-dropbox_green';
+            } else if(type == 'polygon'){
+                vm.isPolySelected = 'pk-dropbox_green';
             }
 
-            function uploadToGeoServer(){
-                svcLayer.uploadFileToGeoServer(vm.selectedWorkspace, vm.layerGroupName, vm.timeNow, function(result){
-                    $window.location.href = 'http://petakami.com/#/view/' + vm.selectedWorkspace + ':' + vm.layerGroupName.replace(/ /g, '_').toLowerCase() + ':d';
+            Upload.upload({
+                url: CONFIG.http.rest_host + '/layer/upload_files/' + type +'/' + vm.timeNow,
+                method: 'POST',
+                file: $file
+            }).then(function(response){
+                $timeout(function(){
                 });
-            }
+            })
         }
-    ]);
+    }
+
+    function _isMimeTypeAllow(name){
+        var res = name.toLowerCase().split('.');
+        if(res[res.length-1] == 'zip'){// || res[res.length-1] == 'csv' || res[res.length-1] == 'json'){
+            return true;
+        }
+        return false;
+    }
+
+    function uploadToGeoServer(){
+        svcLayer.uploadFileToGeoServer(vm.selectedWorkspace, vm.layerGroupName, vm.timeNow, function(result){
+            $window.location.href = 'http://petakami.com/#/view/' + vm.selectedWorkspace + ':' + vm.layerGroupName.replace(/ /g, '_').toLowerCase() + ':d';
+        });
+    }
+}

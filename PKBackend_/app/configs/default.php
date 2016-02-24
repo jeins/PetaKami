@@ -4,7 +4,7 @@ return [
 
     'application' => [
         'baseUri' => '/',
-        'tmpFolder' => __DIR__ . '/../../tmp_files',
+        'tmpFolder' => __DIR__ . '/../../tmp_files/',
     ],
 
     'authentication' => [

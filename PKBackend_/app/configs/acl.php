@@ -6,6 +6,7 @@ return [
             '/user/authenticate',
             '/workspace/all',
             '/workspace/{workspace}/draw',
+            '/layer/add',
             '/layer/{workspace}',
             '/layer/{workspace}/{layerGroupName}/geojson',
             '/layer/{workspace}/{layers}/bylayer/geojson',

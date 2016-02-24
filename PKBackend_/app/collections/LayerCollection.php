@@ -20,7 +20,7 @@ class LayerCollection extends Collection
         $this->get('/{workspace}/{layerGroupName}/bbox',                'getBbox');
         $this->get('/{workspace}/{layerGroupName}/{layer}/drawtype',    'getDrawType');
 
-        $this->post('/', 'postLayer');
+        $this->post('/add', 'postLayer');
         $this->post('/upload_files/{type}/{key}', 'postUploadFiles');
         $this->post('/upload_layers/{workspace}/{dataStore}/{key}', 'postUploadLayers');
     }

@@ -54,7 +54,7 @@ angular.module('pkfrontendApp')
             }
 
             function addLayer(body, doneCallback){
-                $http(setupRequest('/layer/', 'POST', body))
+                $http(setupRequest('/layer/add', 'POST', body))
                     .then(function (response){
                         doneCallback(response.data);
                     });
