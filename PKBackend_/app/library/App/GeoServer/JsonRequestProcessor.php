@@ -4,6 +4,7 @@
 namespace PetaKami\GeoServer;
 
 
+use PetaKami\Constants\GeoServer;
 use PetaKami\Constants\PKConst;
 use Phalcon\Di\Injectable;
 
@@ -55,7 +56,7 @@ class JsonRequestProcessor extends Injectable
             $tmpLayer = [];
             foreach($layers as $layer){
                 $drawTypes = $this->drawTypeFilterByLayer($workspace, $response->name, $layer);
-                array_push($tmpLayer, ['layer' => $drawTypes[1], 'drawType' => $drawTypes[0]]);
+                array_push($tmpLayer, ['layer' => $drawTypes['layer'], 'drawType' => $drawTypes['drawType']]);
             }
             $newLayerGroups[$response->name] = $tmpLayer;
         }
@@ -69,11 +70,11 @@ class JsonRequestProcessor extends Injectable
 
         $drawType = [];
 
-        if(strpos($response, 'Point') !== false) $drawType[0] = 'point';
-        if(strpos($response, 'LineString') !== false) $drawType[0] = 'linestring';
-        if(strpos($response, 'Polygon') !== false) $drawType[0] = 'polygon';
+        if(strpos($response, ucfirst(GeoServer::POINT)) !== false) $drawType['drawType'] = GeoServer::POINT;
+        if(strpos($response, ucfirst(GeoServer::LINESTRING)) !== false) $drawType['drawType'] = GeoServer::LINESTRING;
+        if(strpos($response, ucfirst(GeoServer::POLYGON)) !== false) $drawType['drawType'] = GeoServer::POLYGON;
 
-        $drawType[1] = $layer;
+        $drawType['layer'] = $layer;
 
         return $drawType;
     }

@@ -73,7 +73,7 @@ class LayerController extends BaseController
     {
         $drawType = $this->jsonProcessor->drawTypeFilterByLayer($workspace, $layerGroupName, $layer);
 
-        return $this->respondArray($drawType[0], PKConst::RESPONSE_KEY);
+        return $this->respondArray($drawType, PKConst::RESPONSE_KEY);
     }
 
     public function postLayer()
