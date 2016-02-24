@@ -69,7 +69,7 @@ angular.module('pkfrontendApp')
                             vm.setType += records[i].layer;
                         }
 
-                        vm.setType += '?' + records[i].drawType +';'
+                        vm.setType += '?' + records[i].drawType +';';
                     }
                     $window.location.href = '/#/view/' + svcSecurity.encode(vm.selectedWorkspace+':'+layer+':'+vm.setType);
                 });

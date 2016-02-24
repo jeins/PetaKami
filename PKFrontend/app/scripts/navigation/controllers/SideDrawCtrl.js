@@ -3,9 +3,9 @@
 angular.module('pkfrontendApp')
     .controller('SideDrawCtrl', controller);
 
-controller.$inject = ['$scope', 'svcWorkspace', 'svcSharedProperties', 'svcLayer'];
+controller.$inject = ['$scope', 'svcWorkspace', 'svcSharedProperties', 'svcLayer', '$window', 'svcSecurity'];
 
-function controller($scope, svcWorkspace, svcSharedProperties, svcLayer){
+function controller($scope, svcWorkspace, svcSharedProperties, svcLayer, $window, svcSecurity){
         var vm = this;
         vm.addAlert = addAlert;
         vm.closeAlert = closeAlert;
@@ -83,20 +83,20 @@ function controller($scope, svcWorkspace, svcSharedProperties, svcLayer){
 
         function saveLayer(workspace, layerGroupName){
             var tmpVal = svcSharedProperties.getLayerValues();
-            var tmpType = {'point': '', 'line': '', 'poly':''};
+            var tmpType = {'point': '', 'linestring': '', 'polygon':''};
 
             if(tmpVal.point.length > 0){
                 tmpType.point =  tmpVal.point;
             } else {
                 delete tmpType['point'];
             }
-            if(tmpVal.line.length > 0){
-                tmpType.line =  tmpVal.line;
+            if(tmpVal.linestring.length > 0){
+                tmpType.linestring =  tmpVal.linestring;
             }else {
                 delete tmpType['line'];
             }
-            if(tmpVal.poly.length > 0){
-                tmpType.poly =  tmpVal.poly;
+            if(tmpVal.polygon.length > 0){
+                tmpType.polygon =  tmpVal.polygon;
             }else {
                 delete tmpType['poly'];
             }
@@ -109,7 +109,14 @@ function controller($scope, svcWorkspace, svcSharedProperties, svcLayer){
             };
 
             svcLayer.addLayer(obj, function(response){
-                //TODO: what should i do after add layer?
+                var data = response.data;
+                var setType = '';
+
+                for(var i=0; i<data.length; i++){
+                    setType += data[i].layer + '?' + data[i].drawType +';';
+                }
+
+                $window.location.href = '/#/view/' + svcSecurity.encode(workspace+':'+layerGroupName+':'+setType);
             });
         }
 }

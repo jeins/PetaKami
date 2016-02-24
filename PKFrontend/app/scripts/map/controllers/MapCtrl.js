@@ -51,7 +51,7 @@ angular.module('pkfrontendApp')
                       break;
               }
 
-              svcSharedProperties.setLayerValues({'point':point, 'line':line, 'poly':poly});
+              svcSharedProperties.setLayerValues({'point':point, 'linestring':line, 'polygon':poly});
           });
 
           $scope.$on('openlayers.map.pointermove', function(event, data){

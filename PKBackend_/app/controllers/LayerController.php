@@ -85,7 +85,9 @@ class LayerController extends BaseController
 
         $this->xmlProcessor->createLayers($groupLayers, $requestBody->workspace, $requestBody->name);
 
-        return $this->respondOK();
+        $layersAndDrawType = $this->jsonProcessor->layersAndDrawTypeFromLayerGroup($requestBody->workspace, $requestBody->name);
+
+        return $this->respondArray($layersAndDrawType, PKConst::RESPONSE_KEY);
     }
 
     public function postUploadFiles($type, $key)

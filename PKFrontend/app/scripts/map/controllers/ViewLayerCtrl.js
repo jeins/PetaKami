@@ -24,7 +24,6 @@ angular.module('pkfrontendApp')
                     }
                 }
 
-console.log(layers);
                 svcLayer.getFeatureCollectionFilterByLayer(workspace, layers, function(response){
                     $scope.layer = {
                         source: {
