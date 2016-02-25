@@ -28,6 +28,11 @@ angular
                     templateUrl: 'views/map/map.html',
                     controller: 'ViewLayerCtrl as CVL'
                 })
+                .state('edit', {
+                    url: '/edit',
+                    templateUrl: 'views/map/map.html',
+                    controller: 'EditLayerCtrl as CEL'
+                })
                 .state('upload', {
                     url: '/upload',
                     templateUrl: 'views/navigation/upload.html',

@@ -71,13 +71,15 @@ angular.module('pkfrontendApp')
             }
 
             var controls = ol.control.defaults(defaults.controls);
-            var interactions = ol.interaction.defaults(defaults.interactions);
             var view = createView(defaults.view);
             var features = new ol.Collection();
-            var source = new ol.source.Vector({features: features});
+            var source = new ol.source.Vector({features: features, wrapX: false});
+            var selectInteraction = new ol.interaction.Select({wrapX: false});
+            var modifyInteraction = new ol.interaction.Modify({features: selectInteraction.getFeatures()});
 
             // Create the Openlayers Map Object with the options
             var map = new ol.Map({
+                interactions: ol.interaction.defaults().extend([selectInteraction, modifyInteraction]),
                 layers : [
                     new ol.layer.Tile({
                         source: new ol.source.OSM()
@@ -148,7 +150,7 @@ angular.module('pkfrontendApp')
             //Set the Default events for the map view
             setViewEvents(defaults.events, map, scope);
 
-            source.on(['addfeature', 'changefeature'], function(evt){
+            source.on(['addfeature', 'changefeature'], function(evt){console.log(evt.feature);
                 scope.$emit('pk.draw.feature', evt.feature);
             });
 
