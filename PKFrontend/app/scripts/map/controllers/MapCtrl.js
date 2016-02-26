@@ -3,16 +3,16 @@
 angular.module('pkfrontendApp')
   .controller('MapCtrl', ['$scope', 'svcSharedProperties', function ($scope, svcSharedProperties) {
       var vm = this;
-      vm.drawType = '';
-      vm.drawValue = [];
-      var point = [], line=[], poly=[];
-
       vm.init = init;
       vm.selectedDrawType = selectedDrawType;
 
       init();
 
       function init(){
+          vm.drawType = '';
+          vm.drawValue = [];
+          var point = [], line=[], poly=[];
+
           angular.extend($scope, {
               defaults: {
                   events: {

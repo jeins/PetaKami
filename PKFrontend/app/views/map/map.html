@@ -1,5 +1,4 @@
-<pk-maps id="pk-map" ng-class="CSN.mapClass" ol-draw-type="'{{CMP.drawType}}'" ol-center="indonesia" ol-defaults="defaults">
-    <ol-layer ol-layer-properties="layer"></ol-layer>
+<pk-maps id="pk-map" ol-properties="geoproperties" ng-class="CSN.mapClass" ol-draw-type="'{{vm.drawType}}'" ol-layer-mode="'{{vm.isDrawOrModify}}'" ol-center="indonesia" ol-defaults="defaults">
 </pk-maps>
 
 <!--<div class="pk-mouse_position" ng-class="CSN.mapClass">-->

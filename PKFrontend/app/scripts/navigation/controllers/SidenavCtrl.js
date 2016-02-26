@@ -17,6 +17,8 @@ angular.module('pkfrontendApp')
 
             if($location.path().match("view")){
                 toggleSideNav('browse');
+            } else if($location.path().match('edit')){
+                toggleSideNav('draw');
             }
         }
 

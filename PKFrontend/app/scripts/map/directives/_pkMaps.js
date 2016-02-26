@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .directive('pkMaps', [
-        "$q", "$compile", "olHelpers", "olMapDefaults", "olData",
-        function($q, $compile, olHelpers, olMapDefaults, olData) {
+    .directive('pkMaps', directive);
+
+directive.$inject = ["$q", "$compile", "olHelpers", "olMapDefaults", "olData", 'CONFIG'];
+
+function directive($q, $compile, olHelpers, olMapDefaults, olData, CONFIG) {
     return {
         restrict: 'EA',
         transclude: true,
@@ -13,24 +15,26 @@ angular.module('pkfrontendApp')
             defaults: '=olDefaults',
             view: '=olView',
             events: '=olEvents',
-            drawtype: '=olDrawType'
+            drawtype: '=olDrawType',
+            layerMode: '=olLayerMode',
+            properties: '=olProperties'
         },
         template: '<div class="angular-openlayers-map" ng-transclude></div>',
-        controller: ["$scope", function($scope) {
+        controller: ["$scope", function ($scope) {
             var _map = $q.defer();
-            $scope.getMap = function() {
+            $scope.getMap = function () {
                 return _map.promise;
             };
 
-            $scope.setMap = function(map) {
+            $scope.setMap = function (map) {
                 _map.resolve(map);
             };
 
-            this.getOpenlayersScope = function() {
+            this.getOpenlayersScope = function () {
                 return $scope;
             };
         }],
-        link: function(scope, element, attrs) {
+        link: function (scope, element, attrs) {
             var isDefined = olHelpers.isDefined;
             var createLayer = olHelpers.createLayer;
             var setMapEvents = olHelpers.setMapEvents;
@@ -73,14 +77,19 @@ angular.module('pkfrontendApp')
             var controls = ol.control.defaults(defaults.controls);
             var view = createView(defaults.view);
             var features = new ol.Collection();
-            var source = new ol.source.Vector({features: features, wrapX: false});
-            var selectInteraction = new ol.interaction.Select({wrapX: false});
-            var modifyInteraction = new ol.interaction.Modify({features: selectInteraction.getFeatures()});
+            var source = new ol.source.Vector({features: features});
+
+            if(scope.properties){
+                source = new ol.source.Vector({
+                    'url': 'http://openlayers.org/en/v3.14.0/examples/data/geojson/countries.geojson',//CONFIG.http.rest_host + '/layer/' + scope.properties.workspace +'/'+ scope.properties.layers +'/bylayer/geojson',
+                    format: new ol.format.GeoJSON()
+                });
+            }
+
 
             // Create the Openlayers Map Object with the options
             var map = new ol.Map({
-                interactions: ol.interaction.defaults().extend([selectInteraction, modifyInteraction]),
-                layers : [
+                layers: [
                     new ol.layer.Tile({
                         source: new ol.source.OSM()
                     })
@@ -90,18 +99,9 @@ angular.module('pkfrontendApp')
                 view: view
             });
 
-            // If no layer is defined, set the default tileLayer
-            if (!attrs.customLayers) {
-                var l = {
-                    type: 'Tile',
-                    source: {
-                        type: 'OSM'
-                    }
-                };
-                var layer = createVectorLayerForDraw(source);//createLayer(l, view.getProjection(), 'default');
-                map.addLayer(layer);
-                map.set('default', true);
-            }
+            var layer = createVectorLayerForDraw(source);
+            map.addLayer(layer);
+            map.set('default', true);
 
             if (!isDefined(attrs.olCenter)) {
                 var c = ol.proj.transform([defaults.center.lon,
@@ -114,34 +114,56 @@ angular.module('pkfrontendApp')
             }
 
             var draw;
-            var ipo= 0, ils= 0, ipl=0;
-            attrs.$observe('olDrawType', function(value) {
-                value = value.replace("{0}", value).replace(/\'/g, '');
+            var ipo = 0, ils = 0, ipl = 0;
 
-                if(value != ""){
-                    map.removeInteraction(draw);
-                    draw = addDrawInteraction(source, value, features);
-                    map.addInteraction(draw);
-                    map.addInteraction(addDrawModifyInteraction(features));
+            attrs.$observe('olLayerMode', function (value) {
+                map.removeInteraction(draw);
+                if (value == "'modify'") {
+                    console.log('modif');
+                    var select = new ol.interaction.Select();
+                    var modify = new ol.interaction.Modify({features: select.getFeatures()});
+                    var selectedFeatures = select.getFeatures();
 
-                    draw.on('drawend', function(e){
-                        var drawType = e.feature.getGeometry().getType();
-                        switch(drawType){
-                            case 'Point':
-                                e.feature.setProperties({'id': ipo});
-                                ipo++;
-                                break;
-                            case 'LineString':
-                                e.feature.setProperties({'id': ils});
-                                ils++;
-                                break;
-                            case 'Polygon':
-                                e.feature.setProperties({'id': ipl});
-                                ipl++;
-                                break;
+                    map.addInteraction(select);
+                    map.addInteraction(modify);
+                    select.on('change:active', function () {
+                        selectedFeatures.forEach(selectedFeatures.remove, selectedFeatures);
+                    });
+                } else {
+                    attrs.$observe('olDrawType', function (value) {
+                        map.removeInteraction(draw);
+                        value = value.replace("{0}", value).replace(/\'/g, '');
+
+                        if (value != "") {
+                            draw = addDrawInteraction(source, value, features);
+                            map.addInteraction(draw);
+                            map.addInteraction(addDrawModifyInteraction(features));
+
+                            draw.on('drawend', function (e) {
+                                var drawType = e.feature.getGeometry().getType();
+                                switch (drawType) {
+                                    case 'Point':
+                                        e.feature.setProperties({'id': ipo});
+                                        ipo++;
+                                        break;
+                                    case 'LineString':
+                                        e.feature.setProperties({'id': ils});
+                                        ils++;
+                                        break;
+                                    case 'Polygon':
+                                        e.feature.setProperties({'id': ipl});
+                                        ipl++;
+                                        break;
+                                }
+                            });
                         }
                     });
                 }
+
+                source.on(['addfeature', 'changefeature'], function (evt) {
+                    console.log(evt.feature.getGeometry().getType());
+                    scope.$emit('pk.draw.feature', evt.feature);
+                });
             });
 
             // Set the Default events for the map
@@ -150,13 +172,9 @@ angular.module('pkfrontendApp')
             //Set the Default events for the map view
             setViewEvents(defaults.events, map, scope);
 
-            source.on(['addfeature', 'changefeature'], function(evt){console.log(evt.feature);
-                scope.$emit('pk.draw.feature', evt.feature);
-            });
-
             // Resolve the map object to the promises
             scope.setMap(map);
             olData.setMap(map, attrs.id);
         }
     };
-}]);
+}

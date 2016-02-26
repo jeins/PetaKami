@@ -21,7 +21,7 @@ angular
                 .state('home', {
                     url: '/',
                     templateUrl: 'views/map/map.html',
-                    controller: 'MapCtrl as CMP'
+                    controller: 'MapCtrl as vm'
                 })
                 .state('view', {
                     url: '/view/:layer',
@@ -29,9 +29,9 @@ angular
                     controller: 'ViewLayerCtrl as CVL'
                 })
                 .state('edit', {
-                    url: '/edit',
+                    url: '/edit/:layer',
                     templateUrl: 'views/map/map.html',
-                    controller: 'EditLayerCtrl as CEL'
+                    controller: 'EditLayerCtrl as vm'
                 })
                 .state('upload', {
                     url: '/upload',
