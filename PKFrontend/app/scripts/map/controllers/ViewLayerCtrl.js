@@ -12,44 +12,34 @@ function controller($scope, $stateParams, svcSharedProperties, svcLayer, olData,
 
     function init(){
         svcSharedProperties.setSelectedNav('browse');
+        var request = _getRequestProperties(svcSecurity.decode($stateParams.layer));
 
-        var params = svcSecurity.decode($stateParams.layer);
-        var workspace = params.split(':')[0];
-        var layerGroup = params.split(':')[1];
-        var layerAndDrawType = params.split(':')[2].split(';');
-        var layers = '';
-        for(var i=0; i<layerAndDrawType.length; i++){
-            var layer = layerAndDrawType[i].split('?')[0];
-            if(layer != ""){
-                layers += layer + ',';
+        $scope.geoproperties = {
+            'workspace': request.workspace,
+            'layerGroup': request.layerGroup,
+            'layers': request.layers
+        };
+
+        _setupMap();
+        _setupMapZoom(request.workspace, request.layerGroup);
+    }
+
+    function _setupMapZoom(workspace, layerGroup){
+        svcLayer.getBbox(workspace, layerGroup, function(response){
+            var records = response.data;
+            for(var i=0; i<records.length; i++){
+                records[i] = parseFloat(records[i]);
             }
-        }
-
-        svcLayer.getFeatureCollectionFilterByLayer(workspace, layers, function(response){
-            $scope.layer = {
-                source: {
-                    type: 'GeoJSON',
-                    geojson: {
-                        object: response,
-                        projection: 'EPSG:3857'
-                    }
-                }
-            };
-
-            svcLayer.getBbox(workspace, layerGroup, function(response){
-                var records = response.data;
-                for(var i=0; i<records.length; i++){
-                    records[i] = parseFloat(records[i]);
-                }
-                olData.getMap().then(function(map) {
-                    var view = map.getView();
-                    var extent = records;
-                    extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", "EPSG:3857"));
-                    view.fit(extent, map.getSize(), {nearest: true});
-                });
+            olData.getMap().then(function(map) {
+                var view = map.getView();
+                var extent = records;
+                extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", "EPSG:3857"));
+                view.fit(extent, map.getSize(), {nearest: true});
             });
         });
+    }
 
+    function _setupMap(){
         angular.extend($scope, {
             defaults: {
                 events: {
@@ -62,7 +52,23 @@ function controller($scope, $stateParams, svcSharedProperties, svcLayer, olData,
                 zoom: 5
             },
             mouseposition: '',
-            layer: {}
+            layer: {},
+            projection: 'EPSG:4326'
         });
+    }
+
+    function _getRequestProperties(params){
+        var request = {};
+        request.workspace = params.split(':')[0];
+        request.layerGroup = params.split(':')[1];
+        var layerAndDrawType = params.split(':')[2].split(';');
+        request.layers = '';
+        for(var i=0; i<layerAndDrawType.length; i++){
+            var layer = layerAndDrawType[i].split('?')[0];
+            if(layer != ""){
+                request.layers += layer + ',';
+            }
+        }
+        return request;
     }
 }

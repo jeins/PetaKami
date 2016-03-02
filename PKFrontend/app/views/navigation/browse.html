@@ -5,31 +5,31 @@
 
 <div class="form-group">
     <label for="selectWorkspace">Pilih Workspace: </label>
-    <select id="selectWorkspace" ng-model="CSB.selectedWorkspace"
-            ng-options="workspace as workspace for workspace in CSB.setWorkspaces"
-            ng-change="CSB.changeWorkspace(CSB.selectedWorkspace)"
+    <select id="selectWorkspace" ng-model="vm.selectedWorkspace"
+            ng-options="workspace as workspace for workspace in vm.setWorkspaces"
+            ng-change="vm.changeWorkspace(vm.selectedWorkspace)"
             style="width: 100%">
     </select>
 </div>
 
-<div ng-show="CSB.selectedWorkspace">
-    <div class="list-group panel" ng-repeat="layerGroup in CSB.layerGroups">
+<div ng-show="vm.selectedWorkspace">
+    <div class="list-group panel" ng-repeat="layerGroup in vm.layerGroups">
         <a href="" class="list-group-item" style="text-transform: capitalize;"
-           ng-click="CSB.viewLayer(CSB.selectedWorkspace, layerGroup.name)">
+           ng-click="vm.viewLayer(vm.selectedWorkspace, layerGroup.name)">
             {{layerGroup.name}}<span class="pull-right">{{layerGroup.type}}</span>
         </a>
     </div>
 
-    <div ng-show="CSB.displayLayer" class="form-group">
+    <div ng-show="vm.displayLayer" class="form-group">
         <label for="selectedLayer">Layer Group:</label>
-        <input type="text" id="selectedLayer" placeholder="{{CSB.layerGroupName}}" disabled>
+        <input type="text" id="selectedLayer" placeholder="{{vm.layerGroupName}}" disabled>
     </div>
 
-    <div ng-show="CSB.displayLayer">
+    <div ng-show="vm.displayLayer">
         <label for="selectedLayer">Tampilkan Layer:</label>
-        <div ng-repeat="layer in CSB.layers">
+        <div ng-repeat="layer in vm.layers">
             <div class="checkbox">
-                <label><input type="checkbox" ng-model="CSB.selectedLayer[layer.type]" ng-change="CSB.layerSelectChange()">{{layer.type}}</label>
+                <label><input type="checkbox" ng-model="vm.selectedLayer[layer.type]" ng-change="vm.layerSelectChange()">{{layer.type}}</label>
             </div>
         </div>
     </div>

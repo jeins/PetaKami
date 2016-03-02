@@ -1,30 +1,34 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .controller('SideDrawCtrl', controller);
+    .controller('SideEditCtrl', controller);
 
-controller.$inject = ['$scope', '$log', 'svcWorkspace', 'svcSharedProperties', 'svcLayer', '$window', 'svcSecurity'];
+controller.$inject = ['$scope', 'svcWorkspace', 'svcSharedProperties', 'svcLayer', '$window', 'svcSecurity'];
 
-function controller($scope, $log, svcWorkspace, svcSharedProperties, svcLayer, $window, svcSecurity){
+function controller($scope, svcWorkspace, svcSharedProperties, svcLayer, $window, svcSecurity){
     var vm = this;
     vm.addAlert = addAlert;
     vm.closeAlert = closeAlert;
-    vm.changeWorkspace = changeWorkspace;
-    vm.saveLayer = saveLayer;
-    vm.isDisabled = isDisabled;
+    vm.updateLayer = updateLayer;
     vm.selectedDrawType = selectedDrawType;
+    vm.selectDrawOrModify = selectDrawOrModify;
 
     init();
 
     function init(){
         var point = [], line=[], poly=[];
-        vm.setDrawTypes = [];
-        vm.setWorkspaces = [];
+        vm.drawType = '';
         vm.layerGroupName = '';
         vm.alerts = [];
 
-        svcWorkspace.getWorkspaces(function(result){
-            vm.setWorkspaces = result.data;
+        $scope.$on('pk.edit.layerGroup', function(event, data){
+            vm.disabledTextLayer = true;
+            vm.selectedWorkspace = data.workspace;
+            vm.layerGroupName = data.layerGroup;
+
+            svcWorkspace.getWorkspaceWithDrawTyp(data.workspace, function(result){
+                vm.setDrawTypes = result.data;
+            });
         });
 
         $scope.$on('pk.draw.feature', function(event, data){
@@ -58,36 +62,27 @@ function controller($scope, $log, svcWorkspace, svcSharedProperties, svcLayer, $
         });
     }
 
-    function selectedDrawType(value){
-        svcSharedProperties.sendBroadcast(function(v){
-            $scope.$emit('pk.draw.selectedDrawType', value);
-        });
-    }
-
-    function isDisabled(text){
-        var tmpVal = svcSharedProperties.getLayerValues();
-        if(text == undefined || tmpVal == undefined){
-            return true;
-        }
-        return false;
-    }
-
     function addAlert(layerGroupName){
-        vm.alerts.push({type: 'success', msg: 'Layer '+layerGroupName+' telah dibuat!'});
+        vm.alerts.push({type: 'success', msg: 'Layer '+layerGroupName+' telah simpan!'});
     }
 
     function closeAlert(index){
         vm.alerts.splice(index, 1);
     }
 
-    function changeWorkspace(workspace){
-        $log.info("selected workspace: %s", workspace);
-        svcWorkspace.getWorkspaceWithDrawTyp(workspace, function(result){
-            vm.setDrawTypes = result.data;
+    function selectedDrawType(value){
+        svcSharedProperties.sendBroadcast(function(v){
+            $scope.$emit('pk.edit.selectedDrawType', value);
         });
     }
 
-    function saveLayer(workspace, layerGroupName){
+    function selectDrawOrModify(value){
+        svcSharedProperties.sendBroadcast(function(v){
+            $scope.$emit('pk.edit.isDrawOrModify', value);
+        });
+    }
+
+    function updateLayer(workspace, layerGroupName){
         var tmpVal = svcSharedProperties.getLayerValues();
         var tmpType = {'point': '', 'linestring': '', 'polygon':''};
 
@@ -99,12 +94,12 @@ function controller($scope, $log, svcWorkspace, svcSharedProperties, svcLayer, $
         if(tmpVal.linestring.length > 0){
             tmpType.linestring =  tmpVal.linestring;
         }else {
-            delete tmpType['linestring'];
+            delete tmpType['line'];
         }
         if(tmpVal.polygon.length > 0){
             tmpType.polygon =  tmpVal.polygon;
         }else {
-            delete tmpType['polygon'];
+            delete tmpType['poly'];
         }
 
         var obj = {
@@ -113,17 +108,17 @@ function controller($scope, $log, svcWorkspace, svcSharedProperties, svcLayer, $
             "type": tmpType
         };
 
-        svcLayer.addLayer(obj, function(response){
-            layerGroupName = layerGroupName.replace(/ /g, '_');
-            var data = response.data;
-            var setType = '';
+        console.log(obj);
 
-            for(var i=0; i<data.length; i++){
-                setType += data[i].layer + '?' + data[i].drawType +';';
-            }
-
-            $window.location.href = '/#/view/' + svcSecurity.encode(workspace+':'+layerGroupName+':'+setType);
-            $window.location.reload();
-        });
+        //svcLayer.addLayer(obj, function(response){
+        //    var data = response.data;
+        //    var setType = '';
+        //
+        //    for(var i=0; i<data.length; i++){
+        //        setType += data[i].layer + '?' + data[i].drawType +';';
+        //    }
+        //
+        //    $window.location.href = '/#/view/' + svcSecurity.encode(workspace+':'+layerGroupName+':'+setType);
+        //});
     }
 }

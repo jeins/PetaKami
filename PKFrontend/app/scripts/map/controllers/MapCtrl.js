@@ -3,11 +3,10 @@
 angular.module('pkfrontendApp')
   .controller('MapCtrl', controller);
 
-controller.$inject = ['$scope', 'svcSharedProperties'];
-function controller($scope, svcSharedProperties) {
+controller.$inject = ['$scope', '$log', 'svcSharedProperties']
+function controller($scope, $log, svcSharedProperties) {
     var vm = this;
     vm.init = init;
-    vm.selectedDrawType = selectedDrawType;
 
     init();
 
@@ -29,6 +28,11 @@ function controller($scope, svcSharedProperties) {
             },
             mouseposition: '',
             projection: 'EPSG:4326'
+        });
+
+        $scope.$on('pk.draw.selectedDrawType', function(event, data){
+            $log.info("selected drawType: %s", data);
+            vm.drawType = data;
         });
 
         $scope.$on('pk.draw.feature', function(event, data) {
@@ -53,7 +57,7 @@ function controller($scope, svcSharedProperties) {
                     else poly.id = data;
                     break;
             }
-
+            $log.info(point);$log.info(line);$log.info(poly);
             svcSharedProperties.setLayerValues({'point':point, 'linestring':line, 'polygon':poly});
         });
 
@@ -68,9 +72,5 @@ function controller($scope, svcSharedProperties) {
                 }
             })
         });
-    }
-
-    function selectedDrawType(value){
-        vm.drawType = value;
     }
 }

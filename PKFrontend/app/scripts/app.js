@@ -10,8 +10,7 @@ angular
   ])
     .constant('CONFIG', {
         'http': {
-            'rest_host': 'http://pkbackend.127.0.0.1.xip.io',
-            'redirectUri': 'http://localhost:9000/'
+            'rest_host': 'http://pkbackend.127.0.0.1.xip.io'
         }
     })
     .config(['$urlRouterProvider', '$stateProvider', '$locationProvider',

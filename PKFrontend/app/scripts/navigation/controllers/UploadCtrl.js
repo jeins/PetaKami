@@ -3,9 +3,8 @@
 angular.module('pkfrontendApp')
     .controller('UploadCtrl', controller);
 
-controller.$inject = ['$scope', 'Upload', 'svcWorkspace', 'svcLayer','CONFIG', '$timeout', '$window'];
-
-function controller($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$window) {
+controller.$inject = ['$scope', 'Upload', 'svcWorkspace', 'svcLayer','CONFIG', '$timeout', '$window', 'svcSecurity'];
+function controller($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$window, svcSecurity) {
     var vm = this;
     vm.init = init;
     vm.changeWorkspace = changeWorkspace;
@@ -81,8 +80,17 @@ function controller($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$wi
     }
 
     function uploadToGeoServer(){
-        svcLayer.uploadFileToGeoServer(vm.selectedWorkspace, vm.layerGroupName, vm.timeNow, function(result){
-            $window.location.href = 'http://petakami.com/#/view/' + vm.selectedWorkspace + ':' + vm.layerGroupName.replace(/ /g, '_').toLowerCase() + ':d';
+        svcLayer.uploadFileToGeoServer(vm.selectedWorkspace, vm.layerGroupName, vm.timeNow, function(response){
+            var layerGroupName = vm.layerGroupName.replace(/ /g, '_');
+            var data = response.data;
+            var setType = '';
+
+            for(var i=0; i<data.length; i++){
+                setType += data[i].layer + '?' + data[i].drawType +';';
+            }
+
+            $window.location.href = '/#/view/' + svcSecurity.encode(vm.selectedWorkspace+':'+layerGroupName+':'+setType);
+            $window.location.reload();
         });
     }
 }

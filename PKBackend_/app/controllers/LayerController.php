@@ -101,6 +101,8 @@ class LayerController extends BaseController
     {
         $this->uploadProcessor->uploadFileToGeoServer($workspace, $dataStore, $key);
 
-        return $this->respondOK();
+        $layersAndDrawType = $this->jsonProcessor->layersAndDrawTypeFromLayerGroup($workspace, strtolower(str_replace(' ','_', $dataStore)));
+
+        return $this->respondArray($layersAndDrawType, PKConst::RESPONSE_KEY);
     }
 }

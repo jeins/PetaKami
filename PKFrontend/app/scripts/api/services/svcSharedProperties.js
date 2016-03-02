@@ -1,31 +1,41 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .factory('svcSharedProperties', [
-        '$q', function($q) {
-            var layerValues;
-            var selectedNav;
+    .factory('svcSharedProperties', factory);
 
-            function setLayerValues(values){
-                layerValues = values;
-            }
+factory.$inject = ['$timeout'];
 
-            function getLayerValues(){
-                return layerValues;
-            }
+function factory($timeout){
+    var layerValues;
+    var selectedNav;
 
-            function setSelectedNav(nav){
-                selectedNav = nav;
-            }
+    function setLayerValues(values){
+        layerValues = values;
+    }
 
-            function getSelectedNav(){
-                return selectedNav;
-            }
+    function getLayerValues(){
+        return layerValues;
+    }
 
-            return {
-                setSelectedNav:setSelectedNav,
-                getSelectedNav:getSelectedNav,
-                setLayerValues: setLayerValues,
-                getLayerValues: getLayerValues
-            }
-        }]);
+    function setSelectedNav(nav){
+        selectedNav = nav;
+    }
+
+    function getSelectedNav(){
+        return selectedNav;
+    }
+
+    function sendBroadcast(doneCallback){
+        $timeout(function(){
+            doneCallback("ok");
+        }, 10);
+    }
+
+    return {
+        setSelectedNav:setSelectedNav,
+        getSelectedNav:getSelectedNav,
+        setLayerValues: setLayerValues,
+        getLayerValues: getLayerValues,
+        sendBroadcast: sendBroadcast
+    }
+}

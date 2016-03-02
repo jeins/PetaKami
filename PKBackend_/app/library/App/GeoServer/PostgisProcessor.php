@@ -33,6 +33,10 @@ class PostgisProcessor extends Injectable
         return $layerNames;
     }
 
+    public function updateLayerToPostgis($layerName, $drawTypeAndCoordinates){
+
+    }
+
     private function _setupColumnAndData($type, $coordinates)
     {
         $this->queryBuilder->columns = [];
