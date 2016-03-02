@@ -12,6 +12,13 @@ class User extends BaseModel
     public $email;
     public $password;
 
+    public function initialize()
+    {
+        $this->hasMany('id', Layer::class, 'userId', [
+           'alias' => 'Users'
+        ]);
+    }
+
     public function getSource()
     {
         return 'users';
@@ -19,22 +26,11 @@ class User extends BaseModel
 
     public function columnMap()
     {
-        return [
+        return parent::columnMap() + [
             'id'            => 'id',
-            'full_name'     => 'fullName',
             'email'         => 'email',
-            'password'      => 'password',
-            'created_at'    => 'createdAt',
-            'updated_at'    => 'updatedAt'
-        ];
-    }
-
-    public function whiteList()
-    {
-        return [
-            'fullName',
-            'email',
-            'password'
+            'full_name'     => 'fullName',
+            'password'      => 'password'
         ];
     }
 }

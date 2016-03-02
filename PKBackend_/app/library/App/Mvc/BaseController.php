@@ -3,6 +3,7 @@
 
 namespace PetaKami\Mvc;
 
+use Phalcon\Security;
 use PhalconRest\Mvc\FractalController;
 use PetaKami\Constants\PKConst as PKService;
 use PetaKami\Services\UserService;
@@ -24,6 +25,8 @@ class BaseController extends FractalController
 
     protected $config;
 
+    public $hash;
+
     public function onConstruct()
     {
         parent::onConstruct();
@@ -31,5 +34,7 @@ class BaseController extends FractalController
         $this->user = $this->userService->getUser();
 
         $this->config = $this->di->get(PKService::CONFIG);
+
+        $this->hash = new Security();
     }
 }

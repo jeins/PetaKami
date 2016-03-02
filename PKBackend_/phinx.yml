@@ -16,7 +16,7 @@ environments:
 
     development:
         adapter: pgsql
-        host: 192.168.1.134
+        host: 192.168.1.122
         name: db_petakami
         user: geouser
         pass: geouser

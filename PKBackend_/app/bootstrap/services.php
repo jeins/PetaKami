@@ -29,7 +29,7 @@ $di->set(PKConst::DB_GEO, function() use($config, $di){
     return $connection;
 });
 
-$di->set(PKConst::DB_PK, function() use($config, $di){
+$di->set(PKConst::DB, function() use($config, $di){
     $connection = new DatabaseConnection([
         'host'       => $config->database->host,
         'dbname'     => $config->database->db_pk,

@@ -4,6 +4,7 @@ return [
     'acl' => [
         'publicEndpoints' => [
             '/user/authenticate',
+            '/user/register',
             '/workspace/all',
             '/workspace/{workspace}/draw',
             '/layer/add',
@@ -17,7 +18,8 @@ return [
             '/layer/upload_layers/{workspace}/{dataStore}/{key}'
         ],
         'privateEndpoints' => [
-            '/user/me'
+            '/user/me',
+            '/ulayer'
         ],
     ],
 ];
