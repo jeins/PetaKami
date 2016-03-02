@@ -15,7 +15,7 @@ return [
         'username'      => 'admin',
         'password'      => 'geoserver',
         'db_host'       => 'localhost',
-        'rest_url'      => 'http://192.168.1.134:8080/geoserver/rest',#'http://128.199.125.35:8080/geoserver/rest',
+        'rest_url'      => 'http://192.168.1.122:8080/geoserver/rest',#'http://128.199.125.35:8080/geoserver/rest',
         'datastore_type'=> 'PostGIS',
         'workspaces'    => [
             'IDBangunan'        => ['Point', 'LineString', 'Polygon'],

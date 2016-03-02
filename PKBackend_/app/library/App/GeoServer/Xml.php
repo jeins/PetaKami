@@ -32,7 +32,7 @@ class Xml
                 <entry key="passwd">'.$this->config->database->password.'</entry>
                 <entry key="dbtype">postgis</entry>
                 <entry key="host">'.$this->config->geoserver->db_host.'</entry>
-                <entry key="database">'.$this->config->database->dbname.'</entry>
+                <entry key="database">'.$this->config->database->db_geo.'</entry>
                 <entry key="schema">public</entry>
               </connectionParameters>
               <__default>false</__default>
