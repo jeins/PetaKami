@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .factory('olHelpers', [
-        "$q", "$http", function($q, $http) {
+    .factory('olHelpers', service);
+
+service.$inject = ["$q", "$http"];
+function service($q, $http) {
 
     var isDefined = function(value) {
         return angular.isDefined(value);
@@ -1006,4 +1008,4 @@ angular.module('pkfrontendApp')
             return ov;
         }
     };
-}]);
+}

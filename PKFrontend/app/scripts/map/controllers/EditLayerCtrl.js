@@ -3,13 +3,10 @@
 angular.module('pkfrontendApp')
     .controller('EditLayerCtrl', controller);
 
-controller.$inject = ['$scope', '$stateParams', 'svcSharedProperties', 'svcLayer', 'olData', 'svcSecurity', '$http'];
-
-function controller($scope, $stateParams, svcSharedProperties, svcLayer, olData, svcSecurity, $http){
+controller.$inject = ['$scope', '$stateParams', 'svcSharedProperties', 'svcLayer', 'olData', 'svcSecurity'];
+function controller($scope, $stateParams, svcSharedProperties, svcLayer, olData, svcSecurity){
     var vm = this;
     vm.init = init;
-    vm.selectedDrawType = selectedDrawType;
-    vm.setDrawOrModify = setDrawOrModify;
 
     init();
 
@@ -19,17 +16,28 @@ function controller($scope, $stateParams, svcSharedProperties, svcLayer, olData,
         vm.isDrawOrModify = 'draw';
         vm.geoproperties = '';
         var point = [], line=[], poly=[];
-        if($stateParams.layer != undefined){
-            var request = getRequestProperties(svcSecurity.decode($stateParams.layer));
-        }
-
-        setupMap();
+        var request = _getRequestProperties(svcSecurity.decode($stateParams.layer));
 
         $scope.geoproperties = {
             'workspace': request.workspace,
             'layerGroup': request.layerGroup,
             'layers': request.layers
         };
+
+        _setupMap();
+        _setupMapZoom(request.workspace, request.layerGroup);
+
+        svcSharedProperties.sendBroadcast(function(r){
+            $scope.$broadcast('pk.edit.layerGroup', $scope.geoproperties);
+        });
+
+        $scope.$on('pk.edit.selectedDrawType', function(event, data){
+            vm.drawType = data;
+        });
+
+        $scope.$on('pk.edit.isDrawOrModify', function(event, data){console.log(data);
+            vm.isDrawOrModify = data;
+        });
 
         $scope.$on('pk.draw.feature', function(event, data) {
             var feature = data;
@@ -58,7 +66,7 @@ function controller($scope, $stateParams, svcSharedProperties, svcLayer, olData,
         });
     }
 
-    function setupMap()
+    function _setupMap()
     {
         angular.extend($scope, {
             defaults: {
@@ -77,7 +85,22 @@ function controller($scope, $stateParams, svcSharedProperties, svcLayer, olData,
         });
     }
 
-    function getRequestProperties(params){console.log(params)
+    function _setupMapZoom(workspace, layerGroup){
+        svcLayer.getBbox(workspace, layerGroup, function(response){
+            var records = response.data;
+            for(var i=0; i<records.length; i++){
+                records[i] = parseFloat(records[i]);
+            }
+            olData.getMap().then(function(map) {
+                var view = map.getView();
+                var extent = records;
+                extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", "EPSG:3857"));
+                view.fit(extent, map.getSize(), {nearest: true});
+            });
+        });
+    }
+
+    function _getRequestProperties(params){
         var request = {};
         request.workspace = params.split(':')[0];
         request.layerGroup = params.split(':')[1];
@@ -90,13 +113,5 @@ function controller($scope, $stateParams, svcSharedProperties, svcLayer, olData,
             }
         }
         return request;
-    }
-
-    function setDrawOrModify(value){
-        vm.isDrawOrModify = value;
-    }
-
-    function selectedDrawType(value){
-        vm.drawType = value;
     }
 }

@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .directive('olMarker', [
-        "$q", "olMapDefaults", "olHelpers",
-        function($q, olMapDefaults, olHelpers) {
+    .directive('olMarker', directive);
+
+directive.$inject = ["$q", "olMapDefaults", "olHelpers"];
+function directive($q, olMapDefaults, olHelpers) {
 
     var getMarkerDefaults = function() {
         return {
@@ -417,4 +418,4 @@ angular.module('pkfrontendApp')
             });
         }
     };
-}]);
+}

@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .service('olData', [
-        "$q", function($q) {
+    .service('olData', service);
+
+service.$inject = ["$q"];
+function service($q) {
 
     var maps = {};
 
@@ -72,4 +74,4 @@ angular.module('pkfrontendApp')
         return id;
     }
 
-}]);
+}

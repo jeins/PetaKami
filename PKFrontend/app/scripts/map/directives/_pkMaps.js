@@ -4,7 +4,6 @@ angular.module('pkfrontendApp')
     .directive('pkMaps', directive);
 
 directive.$inject = ["$q", "$compile", "olHelpers", "olMapDefaults", "olData", 'CONFIG'];
-
 function directive($q, $compile, olHelpers, olMapDefaults, olData, CONFIG) {
     return {
         restrict: 'EA',
@@ -77,11 +76,11 @@ function directive($q, $compile, olHelpers, olMapDefaults, olData, CONFIG) {
             var controls = ol.control.defaults(defaults.controls);
             var view = createView(defaults.view);
             var features = new ol.Collection();
-            var source = new ol.source.Vector({features: features});
+            //var source = new ol.source.Vector({features: features});
 
-            if(scope.properties){
-                source = new ol.source.Vector({
-                    'url': 'http://openlayers.org/en/v3.14.0/examples/data/geojson/countries.geojson',//CONFIG.http.rest_host + '/layer/' + scope.properties.workspace +'/'+ scope.properties.layers +'/bylayer/geojson',
+            if(scope.properties){console.log("OK");
+                var source = new ol.source.Vector({
+                    'url': CONFIG.http.rest_host + '/layer/' + scope.properties.workspace +'/'+ scope.properties.layers +'/bylayer/geojson',
                     format: new ol.format.GeoJSON()
                 });
             }
@@ -160,9 +159,25 @@ function directive($q, $compile, olHelpers, olMapDefaults, olData, CONFIG) {
                     });
                 }
 
-                source.on(['addfeature', 'changefeature'], function (evt) {
-                    console.log(evt.feature.getGeometry().getType());
-                    scope.$emit('pk.draw.feature', evt.feature);
+                source.on(['addfeature', 'changefeature'], function (e) {
+                    draw.on('drawend', function (e) {
+                        var drawType = e.feature.getGeometry().getType();
+                        switch (drawType) {
+                            case 'Point':
+                                e.feature.setProperties({'id': ipo});
+                                ipo++;
+                                break;
+                            case 'LineString':
+                                e.feature.setProperties({'id': ils});
+                                ils++;
+                                break;
+                            case 'Polygon':
+                                e.feature.setProperties({'id': ipl});
+                                ipl++;
+                                break;
+                        }
+                    });
+                    scope.$emit('pk.draw.feature', e.feature);
                 });
             });
 

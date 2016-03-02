@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .factory('olMapDefaults', [
-        "$q", "olHelpers", function($q, olHelpers) {
+    .factory('olMapDefaults', service);
+
+service.$inject = ["$q", "olHelpers"];
+function service($q, olHelpers) {
 
     var base64icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAGmklEQVRYw' +
         '7VXeUyTZxjvNnfELFuyIzOabermMZEeQC/OclkO49CpOHXOLJl/CAURuYbQi3KLgEhbrhZ1aDwmaoGq' +
@@ -146,4 +148,4 @@ angular.module('pkfrontendApp')
             return newDefaults;
         }
     };
-}]);
+}

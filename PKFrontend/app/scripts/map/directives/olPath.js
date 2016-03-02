@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .directive('olPath', [
-        "$q", "olMapDefaults", "olHelpers",
-        function($q, olMapDefaults, olHelpers) {
+    .directive('olPath', directive);
+
+directive.$inject = ["$q", "olMapDefaults", "olHelpers"];
+function directive($q, olMapDefaults, olHelpers) {
 
     return {
         restrict: 'E',
@@ -59,4 +60,4 @@ angular.module('pkfrontendApp')
             });
         }
     };
-}]);
+}

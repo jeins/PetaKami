@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .directive('olView', [
-        "$q", "olData", "olMapDefaults", "olHelpers",
-        function($q, olData, olMapDefaults, olHelpers) {
+    .directive('olView', directive);
+
+directive.$inject = ["$q", "olData", "olMapDefaults", "olHelpers"];
+function directive($q, olData, olMapDefaults, olHelpers) {
     return {
         restrict: 'A',
         scope: false,
@@ -53,4 +54,4 @@ angular.module('pkfrontendApp')
             });
         }
     };
-}]);
+}
