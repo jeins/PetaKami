@@ -1,0 +1,27 @@
+<div class="pk-content_heading">
+    <div class="pk-heading_inner">
+        <h1 style="font-size: 22px">Login</h1>
+    </div>
+</div>
+<div class="pk-content_body">
+    <uib-alert type="{{vm.alert[0].type}}" close="vm.closeAlert(0)" ng-show="vm.alert[0].show">{{vm.alert[0].message}}</uib-alert>
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="inputFullname">Full Name: </label>
+                <input type="text" class="form-control" id="inputFullname" placeholder="Full Name" ng-model="vm.data.fullName">
+            </div>
+            <div class="form-group">
+                <label for="inputEmail">Email Address: </label>
+                <input type="email" class="form-control" id="inputEmail" placeholder="Email" ng-model="vm.data.email">
+            </div>
+            <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password" ng-model="vm.data.password">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary" ng-click="vm.register()" style="width: 100%;">Register</button>
+            </div>
+        </div>
+    </div>
+</div>

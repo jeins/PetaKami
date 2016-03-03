@@ -20,8 +20,9 @@ class PkUserController extends BaseController
 
     public function authenticate()
     {
-        $email = $this->request->getUsername();
-        $password = $this->request->getPassword();
+        $data = $this->request->getJsonRawBody();
+        $email = $data->email;
+        $password = $data->password;
 
         $session = $this->authManager->loginWithUsernamePassword(UserAccountType::EMAIL, $email, $password);
         $response = [
@@ -29,12 +30,21 @@ class PkUserController extends BaseController
             'expires'   => $session->getExpirationTime()
         ];
 
-        return $this->respondArray($response, 'data');
+        return $this->respond($response);
     }
 
     public function register()
     {
         $data = $this->request->getJsonRawBody();
+
+//        $user = User::findFirst([
+//            'conditions' => 'email = :email:',
+//            'bind'      => ['email' => $data->email]
+//        ]);
+//
+//        if($user){
+//            return $this->respond(['error' => true, 'message' => 'User Already Exist!']);
+//        }
 
         $user = new User();
         $user->email = $data->email;
@@ -45,6 +55,13 @@ class PkUserController extends BaseController
             throw new UserException(ErrorCodes::DATA_FAIL, 'Could not save users.');
         }
 
-        return $this->respondItem($user, new UserTransformer, 'user');
+        $session = $this->authManager->loginWithUsernamePassword(UserAccountType::EMAIL, $data->email, $data->password);
+        $response = [
+            'token'     => $session->getToken(),
+            'expires'   => $session->getExpirationTime()
+        ];
+
+        return $this->respond($response);
+        #return $this->respondItem($user, new UserTransformer, 'user');
     }
 }

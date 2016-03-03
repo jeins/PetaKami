@@ -3,11 +3,9 @@
 angular.module('pkfrontendApp')
     .controller('SidenavCtrl', controller);
 
-controller.$inject = ['$scope', '$location'];
-function controller($scope, $location) {
+controller.$inject = ['$rootScope', '$location', '$log', 'svcSession'];
+function controller($scope, $location, $log, svcSession) {
     var vm = this;
-    vm.sideNavContent = 'home';
-
     vm.init = init;
     vm.toggleSideNav = toggleSideNav;
     vm.hideSideNav = hideSideNav;
@@ -16,7 +14,16 @@ function controller($scope, $location) {
     init();
 
     function init(){
+        vm.sideNavContent = 'home';
+        vm.session = svcSession.getSession();
+        vm.isLogedIn = vm.session.loggedIn;
+
         hideSideNav();
+
+        $scope.$on('session:update', function (event, data) {
+            vm.isLogedIn = data.loggedIn;
+            $log.info("User is login");
+        });
 
         if($location.path().match("view")){
             toggleSideNav('browse');
