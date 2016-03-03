@@ -31,6 +31,7 @@ class AddTableLayers extends AbstractMigration
         $table->addColumn('user_id', 'integer')
             ->addForeignKey('user_id', 'users', 'id')
             ->addColumn('name', 'string')
+            ->addColumn('workspace', 'string')
             ->addColumn('description', 'string')
             ->addColumn('created_at', 'datetime')
             ->addColumn('updated_at', 'datetime')

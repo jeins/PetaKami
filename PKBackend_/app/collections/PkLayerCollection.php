@@ -13,9 +13,10 @@ class PkLayerCollection extends Collection
         $this->setHandler('\PetaKami\Controllers\PkLayerController', true);
         $this->setPrefix('/ulayer');
 
-        $this->get('/', 			'getAll');
-        $this->get('/{userId}', 	'getByUser');
+        $this->get('/', 						'getAll');
+        $this->get('/user', 		        	'getByUser');
+        $this->get('/workspace/{workspace}', 	'getByWorkspace');
 
-        $this->post('/', 			'addUserLayer');
+        $this->post('/', 						'addUserLayer');
     }
 }

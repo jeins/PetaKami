@@ -3,9 +3,9 @@
 angular.module('pkfrontendApp')
     .controller('SideBrowseCtrl', controller);
 
-controller.$inject = ['$scope', 'svcLayer', 'svcWorkspace', '$window', '$stateParams', '$log', 'svcSecurity'];
+controller.$inject = ['$scope', 'svcLayer', 'svcWorkspace', '$window', '$stateParams', '$log', 'svcSecurity', 'svcPkLayer'];
 
-function controller($scope, svcLayer, svcWorkspace, $window, $stateParams, $log, svcSecurity) {
+function controller($scope, svcLayer, svcWorkspace, $window, $stateParams, $log, svcSecurity, svcPkLayer) {
     var vm = this;
     vm.init = init;
     vm.changeWorkspace = changeWorkspace;
@@ -93,14 +93,23 @@ function controller($scope, svcLayer, svcWorkspace, $window, $stateParams, $log,
     function changeWorkspace(workspace){
         vm.displayLayer = false;
         vm.layerGroups = [];
-        svcLayer.getLayersFromWorkspace(workspace, function(response){
+        svcPkLayer.getByWorkspace(workspace, function(response){
             var records = response.data;
             $log.info('Layers From Workspace %s :', workspace);
             $log.info(records);
-            for(var layerName in records){
+            for(var record in records){
                 var type = '';
-                vm.layerGroups.push({'name':(layerName).replace(/_/g, ' '), 'type': type});
+                vm.layerGroups.push({'name':(records[record].name).replace(/_/g, ' '), 'type': type});
             }
         });
+//        svcLayer.getLayersFromWorkspace(workspace, function(response){
+//            var records = response.data;
+//            $log.info('Layers From Workspace %s :', workspace);
+//            $log.info(records);
+//            for(var layerName in records){
+//                var type = '';
+//                vm.layerGroups.push({'name':(layerName).replace(/_/g, ' '), 'type': type});
+//            }
+//        });
     }
 }

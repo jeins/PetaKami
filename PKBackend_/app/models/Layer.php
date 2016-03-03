@@ -11,6 +11,7 @@ class Layer extends BaseModel
     public $id;
     public $userId;
     public $name;
+    public $workspace;
     public $description;
 
     public function initialize()
@@ -31,6 +32,7 @@ class Layer extends BaseModel
             'id'            => 'id',
             'user_id'       => 'userId',
             'name'          => 'name',
+            'workspace'     => 'workspace',
             'description'   => 'description'
         ];
     }

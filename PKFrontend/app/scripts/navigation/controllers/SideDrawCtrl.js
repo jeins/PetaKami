@@ -3,9 +3,9 @@
 angular.module('pkfrontendApp')
     .controller('SideDrawCtrl', controller);
 
-controller.$inject = ['$scope', '$log', 'svcWorkspace', 'svcSharedProperties', 'svcLayer', '$window', 'svcSecurity'];
+controller.$inject = ['$scope', '$log', 'svcWorkspace', 'svcSharedProperties', 'svcLayer', '$window', 'svcSecurity', 'svcPkLayer'];
 
-function controller($scope, $log, svcWorkspace, svcSharedProperties, svcLayer, $window, svcSecurity){
+function controller($scope, $log, svcWorkspace, svcSharedProperties, svcLayer, $window, svcSecurity, svcPkLayer){
     var vm = this;
     vm.addAlert = addAlert;
     vm.closeAlert = closeAlert;
@@ -112,6 +112,10 @@ function controller($scope, $log, svcWorkspace, svcSharedProperties, svcLayer, $
             "workspace": workspace,
             "type": tmpType
         };
+
+        svcPkLayer.addUserLayer({name: layerGroupName, description: "abc test",workspace: workspace}, function(response){
+            $log.info("Add UserLayer: LayerName= %s & Workspace= %s ", layerGroupName, workspace)
+        });
 
         svcLayer.addLayer(obj, function(response){
             layerGroupName = layerGroupName.replace(/ /g, '_');
