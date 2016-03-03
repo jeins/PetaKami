@@ -14,4 +14,7 @@ class UserTransformer extends ModelTransformer
         return ['password'];
     }
 
+    public function includeLayers(User $user){
+        return $this->collection($user->getLayers(), new UserLayerTransformer, 'parent');
+    }
 }

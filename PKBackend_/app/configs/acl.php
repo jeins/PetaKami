@@ -19,7 +19,8 @@ return [
         ],
         'privateEndpoints' => [
             '/user/me',
-            '/ulayer'
+            '/ulayer',
+            '/ulayer/{userId}'
         ],
     ],
 ];

@@ -16,7 +16,7 @@ class Layer extends BaseModel
     public function initialize()
     {
         $this->belongsTo('userId', User::class, 'id', [
-           'alias' => 'UserLayer'
+           'alias' => 'User'
         ]);
     }
 

@@ -27,4 +27,24 @@ class PkLayerController extends BaseController
 
         return $this->respondItem($uLayer, new UserLayerTransformer, 'uLayer');
     }
+
+    public function getAll()
+    {
+        $userLayer = Layer::find();
+
+        return $this->respondCollection($userLayer, new UserLayerTransformer(), 'uLayers');
+    }
+
+    public function getByUser($userId)
+    {
+        $uLayer = Layer::find([
+            "userId" => $userId
+        ]);
+
+        if (!$uLayer) {
+            throw new UserException(ErrorCodes::DATA_NOTFOUND, 'Product with id: #' . (int)$userId . ' could not be found.');
+        }
+
+        return $this->respondCollection($uLayer, new UserLayerTransformer(), 'uLayers');
+    }
 }

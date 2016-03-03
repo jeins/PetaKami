@@ -15,7 +15,7 @@ class User extends BaseModel
     public function initialize()
     {
         $this->hasMany('id', Layer::class, 'userId', [
-           'alias' => 'Users'
+           'alias' => 'Layers'
         ]);
     }
 
