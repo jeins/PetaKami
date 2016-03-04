@@ -35,7 +35,7 @@ angular
                 .state('upload', {
                     url: '/upload',
                     templateUrl: 'views/navigation/upload.html',
-                    controller: 'UploadCtrl as CU'
+                    controller: 'UploadCtrl as vm'
                 })
                 .state('register', {
                     url: '/register',

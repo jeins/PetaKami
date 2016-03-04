@@ -14,6 +14,7 @@ function controller($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$wi
     init();
 
     function init(){
+        vm.loading = false;
         vm.timeNow = '';
         vm.workspaces = '';
         vm.selectedWorkspace = '';
@@ -80,6 +81,7 @@ function controller($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$wi
     }
 
     function uploadToGeoServer(){
+        vm.loading = true;
         svcLayer.uploadFileToGeoServer(vm.selectedWorkspace, vm.layerGroupName, vm.timeNow, function(response){
             var layerGroupName = vm.layerGroupName.replace(/ /g, '_');
             var data = response.data;

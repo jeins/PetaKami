@@ -33,5 +33,5 @@
 
 <button ng-show="vm.selectedWorkspace" type="submit"
         ng-click="vm.saveLayer(vm.selectedWorkspace, vm.layerGroupName);vm.addAlert(vm.layerGroupName)"
-        ng-disabled="vm.isDisabled(vm.layerGroupName)"
-        class="btn btn-primary" style="width: 100%; margin-top: 20px">Save</button>
+        ng-disabled="vm.loading; vm.isDisabled(vm.layerGroupName)"
+        class="btn btn-primary" style="width: 100%; margin-top: 20px"><i ng-if="vm.loading" class='fa fa-circle-o-notch fa-spin'></i> Save</button>

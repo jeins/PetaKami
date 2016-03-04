@@ -8,22 +8,22 @@
         <div class="panel-body">
             <div class="form-group">
                 <label for="inputLayerName">Layer Group Name: </label>
-                <input type="text" ng-model="CU.layerGroupName" id="inputLayerName" placeholder="Tuliskan Nama Layer Group" style="width: 100%">
+                <input type="text" ng-model="vm.layerGroupName" id="inputLayerName" placeholder="Tuliskan Nama Layer Group" style="width: 100%">
             </div>
             <div class="form-group">
                 <label for="selectWorkspace">Pilih Workspace: </label>
-                <select id="selectWorkspace" ng-model="CU.selectedWorkspace"
-                        ng-options="workspace as workspace for workspace in CU.workspaces"
-                        style="width: 100%" ng-change="CU.changeWorkspace(CU.selectedWorkspace)">
+                <select id="selectWorkspace" ng-model="vm.selectedWorkspace"
+                        ng-options="workspace as workspace for workspace in vm.workspaces"
+                        style="width: 100%" ng-change="vm.changeWorkspace(vm.selectedWorkspace)">
                 </select>
             </div>
-            <div class="form-group" uib-collapse="CU.isCollapsed">
+            <div class="form-group" uib-collapse="vm.isCollapsed">
                 <label for="uploadLayer">Upload Layer: </label>
                 <div class="row" id="uploadLayer">
-                    <div class="col-sm-6 col-md-4" ng-if="CU.showPoint">
+                    <div class="col-sm-6 col-md-4" ng-if="vm.showPoint">
                         <div class="thumbnail">
-                            <div ngf-select="CU.uploadLayerGroup($file, 'point')"
-                                 ngf-drop="CU.uploadLayerGroup($file, 'point')" class="drop-box" ng-class="CU.isPointSelected"
+                            <div ngf-select="vm.uploadLayerGroup($file, 'point')"
+                                 ngf-drop="vm.uploadLayerGroup($file, 'point')" class="drop-box" ng-class="vm.isPointSelected"
                                  ngf-drag-over-class="'dragover'" ngf-multiple="false">
                                 Drop File SHP (.zip)</div>
                             <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
@@ -33,10 +33,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-4" ng-if="CU.showLineString">
+                    <div class="col-sm-6 col-md-4" ng-if="vm.showLineString">
                         <div class="thumbnail">
-                            <div ngf-select="CU.uploadLayerGroup($file, 'linestring')"
-                                 ngf-drop="CU.uploadLayerGroup($file, 'linestring')" class="drop-box" ng-class="CU.isLineSelected"
+                            <div ngf-select="vm.uploadLayerGroup($file, 'linestring')"
+                                 ngf-drop="vm.uploadLayerGroup($file, 'linestring')" class="drop-box" ng-class="vm.isLineSelected"
                                  ngf-drag-over-class="'dragover'" ngf-multiple="false">
                                 Drop File SHP (.zip)</div>
                             <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
@@ -46,10 +46,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-4" ng-if="CU.showPolygon">
+                    <div class="col-sm-6 col-md-4" ng-if="vm.showPolygon">
                         <div class="thumbnail">
-                            <div ngf-select="CU.uploadLayerGroup($file, 'polygon')"
-                                 ngf-drop="CU.uploadLayerGroup($file, 'polygon')" class="drop-box" ng-class="CU.isPolySelected"
+                            <div ngf-select="vm.uploadLayerGroup($file, 'polygon')"
+                                 ngf-drop="vm.uploadLayerGroup($file, 'polygon')" class="drop-box" ng-class="vm.isPolySelected"
                                  ngf-drag-over-class="'dragover'" ngf-multiple="false">
                                 Drop File SHP (.zip)</div>
                             <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
@@ -62,7 +62,9 @@
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-primary" ng-click="CU.uploadToGeoServer()" style="width: 100%;">Upload</button>
+                <button type="submit" class="btn btn-primary" ng-click="vm.uploadToGeoServer()" style="width: 100%;" ng-disabled="vm.loading">
+                    <i ng-if="vm.loading" class='fa fa-circle-o-notch fa-spin'></i> Upload
+                </button>
             </div>
         </div>
     </div>

@@ -18,6 +18,7 @@ function controller($scope, $log, svcWorkspace, svcSharedProperties, svcLayer, $
 
     function init(){
         var point = [], line=[], poly=[];
+        vm.loading = false;
         vm.setDrawTypes = [];
         vm.setWorkspaces = [];
         vm.layerGroupName = '';
@@ -65,8 +66,7 @@ function controller($scope, $log, svcWorkspace, svcSharedProperties, svcLayer, $
     }
 
     function isDisabled(text){
-        var tmpVal = svcSharedProperties.getLayerValues();
-        if(text == undefined || tmpVal == undefined){
+        if(text == "" || svcSharedProperties.getLayerValues() == undefined){
             return true;
         }
         return false;
@@ -88,6 +88,7 @@ function controller($scope, $log, svcWorkspace, svcSharedProperties, svcLayer, $
     }
 
     function saveLayer(workspace, layerGroupName){
+        vm.loading = true;
         var tmpVal = svcSharedProperties.getLayerValues();
         var tmpType = {'point': '', 'linestring': '', 'polygon':''};
 

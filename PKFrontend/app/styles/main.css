@@ -77,7 +77,8 @@ html, body{
   /*height: 98%;*/
   /*float:left;*/
   position: absolute;
-  width: 15%;
+  min-width: 200px;
+  max-width: 250px;
   height: 100%;
   float: left;
   background: #fff;
