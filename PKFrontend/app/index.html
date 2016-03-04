@@ -14,15 +14,15 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/bootstrap.min.css">
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
-      <link rel="stylesheet" href="styles/spinner.css">
+      <!--<link rel="stylesheet" href="styles/spinner.css">-->
+      <link rel="stylesheet" href="styles/loader.css">
     <link rel="stylesheet" href="styles/main.css">
-    <!--<link rel="stylesheet" href="styles/loader.css">-->
     <!-- endbuild -->
       <base href="/">
   </head>
   <body ng-app="pkfrontendApp" ng-controller="SidenavCtrl as CSN">
 
-    <div class="header">
+    <div class="header" ng-cloak>
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -57,9 +57,21 @@
       </nav>
     </div>
 
-    <div id="pk-wrapper">
+    <div id="pk-wrapper" ng-cloak>
       <div id="pk-content" ui-view>
       </div>
+    </div>
+
+    <div class='pk-loader' ng-cloak>
+        <div class='loader'>
+            <div class='loader--dot'></div>
+            <div class='loader--dot'></div>
+            <div class='loader--dot'></div>
+            <div class='loader--dot'></div>
+            <div class='loader--dot'></div>
+            <div class='loader--dot'></div>
+            <div class='loader--text'></div>
+        </div>
     </div>
 
     <!-- build:js(.) scripts/vendor.js -->
