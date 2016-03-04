@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .controller('SideEditCtrl', controller);
+    .controller('SideEditCtrl', SideEditCtrl);
 
-controller.$inject = ['$scope', 'svcWorkspace', 'svcSharedProperties', 'svcLayer', '$window', 'svcSecurity', '$log'];
+SideEditCtrl.$inject = ['$scope', 'svcWorkspace', 'svcSharedProperties', 'svcLayer', '$window', 'svcSecurity', '$log'];
 
-function controller($scope, svcWorkspace, svcSharedProperties, svcLayer, $window, svcSecurity, $log){
+function SideEditCtrl($scope, svcWorkspace, svcSharedProperties, svcLayer, $window, svcSecurity, $log){
     var vm = this;
     vm.addAlert = addAlert;
     vm.closeAlert = closeAlert;

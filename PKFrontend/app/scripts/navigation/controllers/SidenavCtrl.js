@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .controller('SidenavCtrl', controller);
+    .controller('SidenavCtrl', SidenavCtrl);
 
-controller.$inject = ['$scope', '$location', '$log', 'svcSession'];
-function controller($scope, $location, $log, svcSession) {
+SidenavCtrl.$inject = ['$scope', '$location', '$log', 'svcSession'];
+function SidenavCtrl($scope, $location, $log, svcSession) {
     var vm = this;
     vm.init = init;
     vm.toggleSideNav = toggleSideNav;

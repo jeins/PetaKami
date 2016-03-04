@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .controller('UploadCtrl', controller);
+    .controller('UploadCtrl', UploadCtrl);
 
-controller.$inject = ['$scope', 'Upload', 'svcWorkspace', 'svcLayer','CONFIG', '$timeout', '$window', 'svcSecurity'];
-function controller($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$window, svcSecurity) {
+UploadCtrl.$inject = ['$scope', 'Upload', 'svcWorkspace', 'svcLayer','CONFIG', '$timeout', '$window', 'svcSecurity'];
+function UploadCtrl($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$window, svcSecurity) {
     var vm = this;
     vm.init = init;
     vm.changeWorkspace = changeWorkspace;

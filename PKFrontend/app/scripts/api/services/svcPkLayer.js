@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .factory('svcPkLayer', service);
+    .factory('svcPkLayer', svcPkLayer);
 
-service.$inject = ['$http', 'CONFIG'];
-function service($http, CONFIG){
+svcPkLayer.$inject = ['$http', 'CONFIG'];
+function svcPkLayer($http, CONFIG){
 	return {
 		getUserLayers: getUserLayers,
 		getByWorkspace: getByWorkspace,

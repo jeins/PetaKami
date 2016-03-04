@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .controller('ViewLayerCtrl', controller);
+    .controller('ViewLayerCtrl', ViewLayerCtrl);
 
-controller.$inject = ['$scope', '$stateParams', 'svcSharedProperties', 'svcLayer', 'olData', 'svcSecurity'];
-function controller($scope, $stateParams, svcSharedProperties, svcLayer, olData, svcSecurity) {
+ViewLayerCtrl.$inject = ['$scope', '$stateParams', 'svcSharedProperties', 'svcLayer', 'olData', 'svcSecurity'];
+function ViewLayerCtrl($scope, $stateParams, svcSharedProperties, svcLayer, olData, svcSecurity) {
     var vm = this;
     vm.init = init;
 

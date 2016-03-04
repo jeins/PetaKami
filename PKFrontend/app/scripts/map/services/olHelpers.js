@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .factory('olHelpers', service);
+    .factory('olHelpers', olHelpers);
 
-service.$inject = ["$q", "$http", "$log"];
-function service($q, $http, $log) {
+olHelpers.$inject = ["$q", "$http", "$log"];
+function olHelpers($q, $http, $log) {
 
     var isDefined = function(value) {
         return angular.isDefined(value);

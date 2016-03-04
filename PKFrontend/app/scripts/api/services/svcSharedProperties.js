@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .factory('svcSharedProperties', factory);
+    .factory('svcSharedProperties', svcSharedProperties);
 
-factory.$inject = ['$timeout'];
+svcSharedProperties.$inject = ['$timeout'];
 
-function factory($timeout){
+function svcSharedProperties($timeout){
     var layerValues;
     var selectedNav;
 

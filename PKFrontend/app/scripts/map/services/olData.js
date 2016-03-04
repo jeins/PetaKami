@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .service('olData', service);
+    .service('olData', olData);
 
-service.$inject = ["$q", "$log"];
-function service($q, $log) {
+olData.$inject = ["$q", "$log"];
+function olData($q, $log) {
 
     var maps = {};
 

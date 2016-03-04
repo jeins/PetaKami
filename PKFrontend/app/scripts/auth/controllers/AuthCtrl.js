@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .controller('AuthCtrl', controller);
+    .controller('AuthCtrl', AuthCtrl);
 
-controller.$inject = ["$auth", "$log", "$window"];
-function controller($auth, $log, $window){
+AuthCtrl.$inject = ["$auth", "$log", "$window"];
+function AuthCtrl($auth, $log, $window){
 	var vm = this;
 	vm.init = init;
 	vm.login = login;

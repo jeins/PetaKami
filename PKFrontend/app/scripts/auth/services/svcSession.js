@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .factory('svcSession', service);
+    .factory('svcSession', svcSession);
 
-service.$inject = ['$rootScope', '$log', 'CONFIG', '$window'];
-function service($rootScope, $log, CONFIG, $window){
+svcSession.$inject = ['$rootScope', '$log', 'CONFIG', '$window'];
+function svcSession($rootScope, $log, CONFIG, $window){
     var session = {};
 
     function resetSession(){

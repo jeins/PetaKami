@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .directive('olCenter', directive);
+    .directive('olCenter', olCenter);
 
-directive.$inject = ["$location", "olMapDefaults", "olHelpers"];
-function directive($location, olMapDefaults, olHelpers) {
+olCenter.$inject = ["$location", "olMapDefaults", "olHelpers"];
+function olCenter($location, olMapDefaults, olHelpers) {
     return {
         restrict: 'A',
         scope: false,

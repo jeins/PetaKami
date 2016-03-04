@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .directive('pkMaps', directive);
+    .directive('pkMaps', pkMaps);
 
-directive.$inject = ["$q", "$compile", "olHelpers", "olMapDefaults", "olData", 'CONFIG'];
-function directive($q, $compile, olHelpers, olMapDefaults, olData, CONFIG) {
+pkMaps.$inject = ["$q", "$compile", "olHelpers", "olMapDefaults", "olData", 'CONFIG'];
+function pkMaps($q, $compile, olHelpers, olMapDefaults, olData, CONFIG) {
     return {
         restrict: 'EA',
         transclude: true,

@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .controller('SideBrowseCtrl', controller);
+    .controller('SideBrowseCtrl', SideBrowseCtrl);
 
-controller.$inject = ['$scope', 'svcLayer', 'svcWorkspace', '$window', '$stateParams', '$log', 'svcSecurity', 'svcPkLayer'];
+SideBrowseCtrl.$inject = ['$scope', 'svcLayer', 'svcWorkspace', '$window', '$stateParams', '$log', 'svcSecurity', 'svcPkLayer'];
 
-function controller($scope, svcLayer, svcWorkspace, $window, $stateParams, $log, svcSecurity, svcPkLayer) {
+function SideBrowseCtrl($scope, svcLayer, svcWorkspace, $window, $stateParams, $log, svcSecurity, svcPkLayer) {
     var vm = this;
     vm.init = init;
     vm.changeWorkspace = changeWorkspace;

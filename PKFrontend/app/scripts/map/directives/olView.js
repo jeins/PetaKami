@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .directive('olView', directive);
+    .directive('olView', olView);
 
-directive.$inject = ["$q", "olData", "olMapDefaults", "olHelpers"];
-function directive($q, olData, olMapDefaults, olHelpers) {
+olView.$inject = ["$q", "olData", "olMapDefaults", "olHelpers"];
+function olView($q, olData, olMapDefaults, olHelpers) {
     return {
         restrict: 'A',
         scope: false,

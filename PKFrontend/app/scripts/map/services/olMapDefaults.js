@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .factory('olMapDefaults', service);
+    .factory('olMapDefaults', olMapDefaults);
 
-service.$inject = ["$q", "olHelpers"];
-function service($q, olHelpers) {
+olMapDefaults.$inject = ["$q", "olHelpers"];
+function olMapDefaults($q, olHelpers) {
 
     var base64icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAGmklEQVRYw' +
         '7VXeUyTZxjvNnfELFuyIzOabermMZEeQC/OclkO49CpOHXOLJl/CAURuYbQi3KLgEhbrhZ1aDwmaoGq' +

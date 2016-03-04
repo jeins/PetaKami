@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-    .directive('olMarker', directive);
+    .directive('olMarker', olMarker);
 
-directive.$inject = ["$q", "olMapDefaults", "olHelpers", "$log"];
-function directive($q, olMapDefaults, olHelpers, $log) {
+olMarker.$inject = ["$q", "olMapDefaults", "olHelpers", "$log"];
+function olMarker($q, olMapDefaults, olHelpers, $log) {
 
     var getMarkerDefaults = function() {
         return {

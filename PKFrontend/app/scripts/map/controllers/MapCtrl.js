@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('pkfrontendApp')
-  .controller('MapCtrl', controller);
+  .controller('MapCtrl', MapCtrl);
 
-controller.$inject = ['$scope', '$log', 'svcSharedProperties']
-function controller($scope, $log, svcSharedProperties) {
+MapCtrl.$inject = ['$scope', '$log', 'svcSharedProperties']
+function MapCtrl($scope, $log, svcSharedProperties) {
     var vm = this;
     vm.init = init;
 
