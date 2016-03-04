@@ -11,6 +11,7 @@ class PKConst extends PRServices
     const DB_PK = 'db_pk';
 
     const RESPONSE_KEY = 'data';
+    const RESPONSE_ULAYERS = 'uLayers';
 
     const CONFIG = 'config';
 

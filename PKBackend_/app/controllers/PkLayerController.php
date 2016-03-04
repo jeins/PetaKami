@@ -39,12 +39,10 @@ class PkLayerController extends BaseController
 
     public function getByUser()
     {
-        $uLayer = Layer::find([
-            "userId" => $this->user->id
-        ]);
+        $uLayer = Layer::find("userId='" . $this->user->id."''");
 
         if (!$uLayer) {
-            throw new UserException(ErrorCodes::DATA_NOTFOUND, 'Product with id: #' . (int)$userId . ' could not be found.');
+            throw new UserException(ErrorCodes::DATA_NOTFOUND, 'Product with id: #' . (int)$this->user->id . ' could not be found.');
         }
 
         return $this->respondCollection($uLayer, new UserLayerTransformer(), PKConst::RESPONSE_ULAYERS);
@@ -52,9 +50,7 @@ class PkLayerController extends BaseController
 
     public function getByWorkspace($workspace)
     {
-        $uLayer = Layer::find([
-            "workspace" => $workspace
-        ]);
+        $uLayer = Layer::find("workspace='$workspace'");
 
         if (!$uLayer) {
             throw new UserException(ErrorCodes::DATA_NOTFOUND, 'Product with workspace: #' . (int)$workspace . ' could not be found.');
