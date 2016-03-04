@@ -3,7 +3,7 @@
 angular.module('pkfrontendApp')
     .controller('SidenavCtrl', controller);
 
-controller.$inject = ['$rootScope', '$location', '$log', 'svcSession'];
+controller.$inject = ['$scope', '$location', '$log', 'svcSession'];
 function controller($scope, $location, $log, svcSession) {
     var vm = this;
     vm.init = init;
