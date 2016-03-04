@@ -15,4 +15,9 @@ class Mail
     {
         $this->sendgrid = new SendGrid(PKConst::SENDGRID_API);
     }
+
+    public function send($to, $key)
+    {
+
+    }
 }

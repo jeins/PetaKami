@@ -3,8 +3,8 @@
 angular.module('pkfrontendApp')
     .directive('olMarker', directive);
 
-directive.$inject = ["$q", "olMapDefaults", "olHelpers"];
-function directive($q, olMapDefaults, olHelpers) {
+directive.$inject = ["$q", "olMapDefaults", "olHelpers", "$log"];
+function directive($q, olMapDefaults, olHelpers, $log) {
 
     var getMarkerDefaults = function() {
         return {
@@ -180,7 +180,7 @@ function directive($q, olMapDefaults, olHelpers) {
 
                     marker = createFeature(data, viewProjection);
                     if (!isDefined(marker)) {
-                        console.log('[AngularJS - Openlayers] Received invalid data on ' +
+                        $log.warn('[AngularJS - Openlayers] Received invalid data on ' +
                             'the marker.');
                     }
                     // Add a link between the feature and the marker properties
@@ -345,7 +345,7 @@ function directive($q, olMapDefaults, olHelpers) {
 
                         marker = createFeature(data, viewProjection);
                         if (!isDefined(marker)) {
-                            console.log('[AngularJS - Openlayers] Received invalid data on ' +
+                            $log.warn('[AngularJS - Openlayers] Received invalid data on ' +
                                 'the marker.');
                         }
                         // Add a link between the feature and the marker properties

@@ -3,9 +3,9 @@
 angular.module('pkfrontendApp')
     .controller('SideEditCtrl', controller);
 
-controller.$inject = ['$scope', 'svcWorkspace', 'svcSharedProperties', 'svcLayer', '$window', 'svcSecurity'];
+controller.$inject = ['$scope', 'svcWorkspace', 'svcSharedProperties', 'svcLayer', '$window', 'svcSecurity', '$log'];
 
-function controller($scope, svcWorkspace, svcSharedProperties, svcLayer, $window, svcSecurity){
+function controller($scope, svcWorkspace, svcSharedProperties, svcLayer, $window, svcSecurity, $log){
     var vm = this;
     vm.addAlert = addAlert;
     vm.closeAlert = closeAlert;
@@ -108,7 +108,7 @@ function controller($scope, svcWorkspace, svcSharedProperties, svcLayer, $window
             "type": tmpType
         };
 
-        console.log(obj);
+        $log.info(obj);
 
         //svcLayer.addLayer(obj, function(response){
         //    var data = response.data;

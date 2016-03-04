@@ -3,8 +3,8 @@
 angular.module('pkfrontendApp')
     .factory('olHelpers', service);
 
-service.$inject = ["$q", "$http"];
-function service($q, $http) {
+service.$inject = ["$q", "$http", "$log"];
+function service($q, $http, $log) {
 
     var isDefined = function(value) {
         return angular.isDefined(value);
@@ -125,7 +125,7 @@ function service($q, $http) {
                 var valConstructor = styleMap[val];
                 if (styleConstructor && valConstructor &&
                     valConstructor.prototype instanceof styleMap[styleName]) {
-                    console.assert(array.length === 1, 'Extra parameters for ' + styleName);
+                    $log.warn(array.length === 1, 'Extra parameters for ' + styleName);
                     styleObject = recursiveStyle(style, val);
                     return optionalFactory(styleObject, valConstructor);
                 } else {
@@ -171,7 +171,7 @@ function service($q, $http) {
         switch (view.projection) {
             case 'pixel':
                 if (!isDefined(view.extent)) {
-                    console.log('[AngularJS - Openlayers] - You must provide the extent of the image ' +
+                    $log.warn('[AngularJS - Openlayers] - You must provide the extent of the image ' +
                         'if using pixel projection');
                     return;
                 }
@@ -200,7 +200,7 @@ function service($q, $http) {
         switch (source.type) {
             case 'MapBox':
                 if (!source.mapId || !source.accessToken) {
-                    console.log('[AngularJS - Openlayers] - MapBox layer requires the map id and the access token');
+                    $log.warn('[AngularJS - Openlayers] - MapBox layer requires the map id and the access token');
                     return;
                 }
                 var url = 'http://api.tiles.mapbox.com/v4/' + source.mapId + '/{z}/{x}/{y}.png?access_token=' +
@@ -220,7 +220,7 @@ function service($q, $http) {
                 break;
             case 'ImageWMS':
                 if (!source.url || !source.params) {
-                    console.log('[AngularJS - Openlayers] - ImageWMS Layer needs ' +
+                    $log.warn('[AngularJS - Openlayers] - ImageWMS Layer needs ' +
                         'valid server url and params properties');
                 }
                 oSource = new ol.source.ImageWMS({
@@ -233,7 +233,7 @@ function service($q, $http) {
 
             case 'TileWMS':
                 if ((!source.url && !source.urls) || !source.params) {
-                    console.log('[AngularJS - Openlayers] - TileWMS Layer needs ' +
+                    $log.warn('[AngularJS - Openlayers] - TileWMS Layer needs ' +
                         'valid url (or urls) and params properties');
                 }
 
@@ -260,7 +260,7 @@ function service($q, $http) {
 
             case 'WMTS':
                 if ((!source.url && !source.urls) || !source.tileGrid) {
-                    console.log('[AngularJS - Openlayers] - WMTS Layer needs valid url ' +
+                    $log.warn('[AngularJS - Openlayers] - WMTS Layer needs valid url ' +
                         '(or urls) and tileGrid properties');
                 }
 
@@ -302,7 +302,7 @@ function service($q, $http) {
                 break;
             case 'BingMaps':
                 if (!source.key) {
-                    console.log('[AngularJS - Openlayers] - You need an API key to show the Bing Maps.');
+                    $log.warn('[AngularJS - Openlayers] - You need an API key to show the Bing Maps.');
                     return;
                 }
 
@@ -322,7 +322,7 @@ function service($q, $http) {
 
             case 'MapQuest':
                 if (!source.layer || mapQuestLayers.indexOf(source.layer) === -1) {
-                    console.log('[AngularJS - Openlayers] - MapQuest layers needs a valid \'layer\' property.');
+                    $log.warn('[AngularJS - Openlayers] - MapQuest layers needs a valid \'layer\' property.');
                     return;
                 }
 
@@ -335,7 +335,7 @@ function service($q, $http) {
 
             case 'EsriBaseMaps':
                 if (!source.layer || esriBaseLayers.indexOf(source.layer) === -1) {
-                    console.log('[AngularJS - Openlayers] - ESRI layers needs a valid \'layer\' property.');
+                    $log.warn('[AngularJS - Openlayers] - ESRI layers needs a valid \'layer\' property.');
                     return;
                 }
 
@@ -351,7 +351,7 @@ function service($q, $http) {
 
             case 'GeoJSON':
                 if (!(source.geojson || source.url)) {
-                    console.log('[AngularJS - Openlayers] - You need a geojson ' +
+                    $log.warn('[AngularJS - Openlayers] - You need a geojson ' +
                         'property to add a GeoJSON layer.');
                     return;
                 }
@@ -378,7 +378,7 @@ function service($q, $http) {
                 break;
             case 'JSONP':
                 if (!(source.url)) {
-                    console.log('[AngularJS - Openlayers] - You need an url properly configured to add a JSONP layer.');
+                    $log.warn('[AngularJS - Openlayers] - You need an url properly configured to add a JSONP layer.');
                     return;
                 }
 
@@ -393,7 +393,7 @@ function service($q, $http) {
                                     oSource.addFeatures(geojsonFormat.readFeatures(response));
                                 })
                                 .error(function(response) {
-                                    console.log(response);
+                                    $log.error(response);
                                 });
                         },
                         projection: projection
@@ -402,7 +402,7 @@ function service($q, $http) {
                 break;
             case 'TopoJSON':
                 if (!(source.topojson || source.url)) {
-                    console.log('[AngularJS - Openlayers] - You need a topojson ' +
+                    $log.warn('[AngularJS - Openlayers] - You need a topojson ' +
                         'property to add a TopoJSON layer.');
                     return;
                 }
@@ -428,7 +428,7 @@ function service($q, $http) {
 
             case 'TileVector':
                 if (!source.url || !source.format) {
-                    console.log('[AngularJS - Openlayers] - TileVector Layer needs valid url and format properties');
+                    $log.warn('[AngularJS - Openlayers] - TileVector Layer needs valid url and format properties');
                 }
                 oSource = new ol.source.TileVector({
                     url: source.url,
@@ -443,7 +443,7 @@ function service($q, $http) {
 
             case 'TileTMS':
                 if (!source.url || !source.tileGrid) {
-                    console.log('[AngularJS - Openlayers] - TileTMS Layer needs valid url and tileGrid properties');
+                    $log.warn('[AngularJS - Openlayers] - TileTMS Layer needs valid url and tileGrid properties');
                 }
                 oSource = new ol.source.TileImage({
                     url: source.url,
@@ -500,7 +500,7 @@ function service($q, $http) {
                 break;
             case 'Stamen':
                 if (!source.layer || !isValidStamenLayer(source.layer)) {
-                    console.log('[AngularJS - Openlayers] - You need a valid Stamen layer.');
+                    $log.warn('[AngularJS - Openlayers] - You need a valid Stamen layer.');
                     return;
                 }
                 oSource = new ol.source.Stamen({
@@ -509,7 +509,7 @@ function service($q, $http) {
                 break;
             case 'ImageStatic':
                 if (!source.url || !angular.isArray(source.imageSize) || source.imageSize.length !== 2) {
-                    console.log('[AngularJS - Openlayers] - You need a image URL to create a ImageStatic layer.');
+                    $log.warn('[AngularJS - Openlayers] - You need a image URL to create a ImageStatic layer.');
                     return;
                 }
 
@@ -524,7 +524,7 @@ function service($q, $http) {
                 break;
             case 'XYZ':
                 if (!source.url && !source.tileUrlFunction) {
-                    console.log('[AngularJS - Openlayers] - XYZ Layer needs valid url or tileUrlFunction properties');
+                    $log.warn('[AngularJS - Openlayers] - XYZ Layer needs valid url or tileUrlFunction properties');
                 }
                 oSource = new ol.source.XYZ({
                     url: source.url,
@@ -539,7 +539,7 @@ function service($q, $http) {
 
         // log a warning when no source could be created for the given type
         if (!oSource) {
-            console.log('[AngularJS - Openlayers] - No source could be found for type "' + source.type + '"');
+            $log.warn('[AngularJS - Openlayers] - No source could be found for type "' + source.type + '"');
         }
 
         return oSource;

@@ -118,7 +118,6 @@ function directive($q, $compile, olHelpers, olMapDefaults, olData, CONFIG) {
             attrs.$observe('olLayerMode', function (value) {
                 map.removeInteraction(draw);
                 if (value == "'modify'") {
-                    console.log('modif');
                     var select = new ol.interaction.Select();
                     var modify = new ol.interaction.Modify({features: select.getFeatures()});
                     var selectedFeatures = select.getFeatures();

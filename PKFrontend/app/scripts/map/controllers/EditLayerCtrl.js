@@ -35,7 +35,7 @@ function controller($scope, $stateParams, svcSharedProperties, svcLayer, olData,
             vm.drawType = data;
         });
 
-        $scope.$on('pk.edit.isDrawOrModify', function(event, data){console.log(data);
+        $scope.$on('pk.edit.isDrawOrModify', function(event, data){
             vm.isDrawOrModify = data;
         });
 

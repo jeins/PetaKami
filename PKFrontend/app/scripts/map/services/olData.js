@@ -3,8 +3,8 @@
 angular.module('pkfrontendApp')
     .service('olData', service);
 
-service.$inject = ["$q"];
-function service($q) {
+service.$inject = ["$q", "$log"];
+function service($q, $log) {
 
     var maps = {};
 
@@ -65,7 +65,7 @@ function service($q) {
             } else if (Object.keys(d).length === 0) {
                 id = 'main';
             } else {
-                console.log('[AngularJS - Openlayers] - You have more than 1 map on the DOM, ' +
+                $log.warn('[AngularJS - Openlayers] - You have more than 1 map on the DOM, ' +
                     'you must provide the map ID to the olData.getXXX call');
             }
         } else {
