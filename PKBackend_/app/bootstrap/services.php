@@ -6,11 +6,12 @@ use PetaKami\Services\UserService;
 use Phalcon\Db\Adapter\Pdo\Postgresql as DatabaseConnection;
 use Phalcon\Mvc\Url;
 use Phalcon\Mvc\Router;
+use Phalcon\Mvc\Model\Manager;
 use PhalconRest\Auth\TokenParser\JWT;
 use PhalconRest\Auth\Manager as PRManager;
-use Phalcon\Mvc\Model\Manager;
+use PhalconRest\DI\FactoryDefault;
 
-$di = new \PhalconRest\Di\FactoryDefault();
+$di = new FactoryDefault();
 
 $di->setShared(PKConst::CONFIG, function() use($config){
    return $config;

@@ -3,8 +3,8 @@
 angular.module('pkfrontendApp')
     .controller('UploadCtrl', UploadCtrl);
 
-UploadCtrl.$inject = ['$scope', 'Upload', 'svcWorkspace', 'svcLayer','CONFIG', '$timeout', '$window', 'svcSecurity'];
-function UploadCtrl($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$window, svcSecurity) {
+UploadCtrl.$inject = ['$scope', 'Upload', 'svcWorkspace', 'svcLayer','CONFIG', '$timeout', '$window', 'svcSecurity', 'svcPkLayer', '$log'];
+function UploadCtrl($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$window, svcSecurity, svcPkLayer, $log) {
     var vm = this;
     vm.init = init;
     vm.changeWorkspace = changeWorkspace;
@@ -82,6 +82,11 @@ function UploadCtrl($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$wi
 
     function uploadToGeoServer(){
         vm.loading = true;
+
+        svcPkLayer.addUserLayer({name: vm.layerGroupName, description: "abc test",workspace: vm.selectedWorkspace}, function(response){
+            $log.info("Add UserLayer: LayerName= %s & Workspace= %s ", vm.layerGroupName, vm.selectedWorkspace)
+        });
+
         svcLayer.uploadFileToGeoServer(vm.selectedWorkspace, vm.layerGroupName, vm.timeNow, function(response){
             var layerGroupName = vm.layerGroupName.replace(/ /g, '_');
             var data = response.data;

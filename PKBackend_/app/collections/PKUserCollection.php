@@ -3,7 +3,6 @@
 
 namespace PetaKami\Collections;
 
-
 use Phalcon\Mvc\Micro\Collection;
 
 class PkUserCollection extends Collection
@@ -14,9 +13,9 @@ class PkUserCollection extends Collection
         $this->setHandler('\PetaKami\Controllers\PkUserController', true);
         $this->setPrefix('/user');
 
-        $this->get('/me', 'me');
+        $this->get('/me',                       'me');
 
-        $this->post('/authenticate', 'authenticate');
-        $this->post('/register', 'register');
+        $this->post('/authenticate',            'authenticate');
+        $this->post('/register',                'register');
     }
 }
