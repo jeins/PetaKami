@@ -20,7 +20,9 @@
                 <input type="password" class="form-control" id="inputPassword" placeholder="Password" ng-model="vm.data.password">
             </div>
             <div>
-                <button type="submit" class="btn btn-primary" ng-click="vm.register()" style="width: 100%;" translate="app.button.register"></button>
+                <button type="submit" class="btn btn-primary" ng-click="vm.register()" style="width: 100%;" ng-disabled="vm.loading">
+                    <i ng-if="vm.loading" class='fa fa-circle-o-notch fa-spin'></i> <span translate="app.button.register"></span>
+                </button>
             </div>
         </div>
     </div>

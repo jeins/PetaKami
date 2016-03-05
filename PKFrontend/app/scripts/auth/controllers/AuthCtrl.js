@@ -15,9 +15,10 @@ function AuthCtrl($auth, $log, $window){
 	init();
 
 	function init(){
+		vm.loading = false;
 		vm.data = {};
-		vm.data.email = "";
-		vm.data.password = "";
+		vm.data.email = "demo@demo.com";
+		vm.data.password = "demo";
 		vm.data.fullName = "";
 
         vm.alert = [
@@ -27,6 +28,7 @@ function AuthCtrl($auth, $log, $window){
 	}
 
 	function login(){
+		vm.loading = true;
 		$auth.login({ email: vm.data.email, password: vm.data.password })
             .then(function() {
                 $log.info("Success Login Manual");
@@ -34,12 +36,14 @@ function AuthCtrl($auth, $log, $window){
                 $window.location.reload();
             })
             .catch(function(response) {
+				vm.loading = false;
                 vm.alert[1].show = true;
                 $log.error(response.data.message);
             });
 	}
 
 	function register(){
+		vm.loading = true;
 		$auth.signup(vm.data)
 			.then(function(){
 				$log.info("Success Signup Manual");
@@ -47,6 +51,7 @@ function AuthCtrl($auth, $log, $window){
 				$window.location.reload();
 			})
 			.catch(function(response){
+				vm.loading = false;
                 vm.alert[0].show = true;
 				$log.error(response.data.message);
 			});
@@ -58,12 +63,14 @@ function AuthCtrl($auth, $log, $window){
 		}
 		$auth.logout()
 			.then(function(){
+				$window.location.href = '#/';
                 $window.location.reload();
 				$log.info("Logout");
 			});
 	}
 
     function closeAlert($index){
+		vm.loading = false;
         vm.alert[$index].show = false;
     }
 }
