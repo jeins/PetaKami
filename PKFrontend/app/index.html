@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title translate="app.name"></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -22,6 +22,18 @@
   </head>
   <body ng-app="pkfrontendApp" ng-controller="SidenavCtrl as CSN">
 
+  <div class='pk-loader' ng-cloak>
+      <div class='loader'>
+          <div class='loader--dot'></div>
+          <div class='loader--dot'></div>
+          <div class='loader--dot'></div>
+          <div class='loader--dot'></div>
+          <div class='loader--dot'></div>
+          <div class='loader--dot'></div>
+          <div class='loader--text'></div>
+      </div>
+  </div>
+
     <div class="header" ng-cloak>
       <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -32,25 +44,25 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Peta Kami</a>
+            <a class="navbar-brand" href="/">PetaKami</a>
           </div>
 
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav" ng-if="CSN.isLogedIn">
                 <li ng-class="CSN.isNavActive('draw')">
-                    <a href="/" ng-click="CSN.toggleSideNav('draw')">Draw Features</a>
+                    <a href="/" ng-click="CSN.toggleSideNav('draw')" translate="app.menu.draw"></a>
                 </li>
                 <li ng-class="CSN.isNavActive('browse')">
-                    <a href="/" ng-click="CSN.toggleSideNav('browse')">Browse Features</a>
+                    <a href="/" ng-click="CSN.toggleSideNav('browse')" translate="app.menu.browse"></a>
                 </li>
                 <li ng-class="CSN.isNavActive('upload')">
-                    <a href="#/upload" ng-click="CSN.toggleSideNav('upload')">Upload Feature</a>
+                    <a href="#/upload" ng-click="CSN.toggleSideNav('upload')" translate="app.menu.upload"></a>
                 </li>
             </ul>
             <div class="nav navbar-nav navbar-right btn-group">
-              <a ng-href="#/login" class="btn btn-default" role="button" ng-if="!CSN.isLogedIn">Login</a>
-              <a ng-href="#/register" class="btn btn-default" role="button" ng-if="!CSN.isLogedIn">Register</a>
-                <a ng-controller="AuthCtrl as ctrl" ng-click="ctrl.logout()" class="btn btn-default" role="button" ng-if="CSN.isLogedIn">Logout</a>
+              <a ng-href="#/login" class="btn btn-default" role="button" ng-if="!CSN.isLogedIn" translate="app.button.login"></a>
+              <a ng-href="#/register" class="btn btn-default" role="button" ng-if="!CSN.isLogedIn" translate="app.button.register"></a>
+                <a ng-controller="AuthCtrl as ctrl" ng-click="ctrl.logout()" class="btn btn-default" role="button" ng-if="CSN.isLogedIn" translate="app.button.logout"></a>
             </div>
           </div>
         </div>
@@ -60,18 +72,6 @@
     <div id="pk-wrapper" ng-cloak>
       <div id="pk-content" ui-view>
       </div>
-    </div>
-
-    <div class='pk-loader' ng-cloak>
-        <div class='loader'>
-            <div class='loader--dot'></div>
-            <div class='loader--dot'></div>
-            <div class='loader--dot'></div>
-            <div class='loader--dot'></div>
-            <div class='loader--dot'></div>
-            <div class='loader--dot'></div>
-            <div class='loader--text'></div>
-        </div>
     </div>
 
     <!-- build:js(.) scripts/vendor.js -->
@@ -84,11 +84,16 @@
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
     <script src="bower_components/satellizer/satellizer.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.js"></script>
+    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/constant.js"></script>
+        <script src="scripts/config.js"></script>
+        <script src="scripts/routes.js"></script>
 
         <script src="scripts/map/directives/_pkMaps.js"></script>
         <script src="scripts/map/directives/olCenter.js"></script>

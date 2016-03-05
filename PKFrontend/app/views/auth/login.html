@@ -1,6 +1,6 @@
 <div class="pk-content_heading">
     <div class="pk-heading_inner">
-        <h1 style="font-size: 22px">Login</h1>
+        <h1 style="font-size: 22px" translate="pk_login.name"></h1>
     </div>
 </div>
 <div class="pk-content_body">
@@ -8,15 +8,15 @@
     <div class="panel panel-primary">
         <div class="panel-body">
             <div class="form-group">
-                <label for="inputEmail">Email Address: </label>
+                <label for="inputEmail" translate="pk_login.label.email"></label>
                 <input type="email" class="form-control" id="inputEmail" placeholder="Email" ng-model="vm.data.email">
             </div>
             <div class="form-group">
-                <label for="inputPassword">Password</label> 
+                <label for="inputPassword" translate="pk_login.label.password"></label>
                 <input type="password" class="form-control" id="inputPassword" placeholder="Password" ng-model="vm.data.password">
             </div>
             <div>
-                <button type="submit" class="btn btn-primary" ng-click="vm.login()" style="width: 100%;">Login</button>
+                <button type="submit" class="btn btn-primary" ng-click="vm.login()" style="width: 100%;" translate="app.button.login"></button>
             </div>
         </div>
     </div>
