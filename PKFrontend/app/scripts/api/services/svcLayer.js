@@ -32,13 +32,6 @@ angular.module('pkfrontendApp')
                     })
             }
 
-            //function getLayerDrawTypeInGeoJSON(workspace, layer, drawType, doneCallback){
-            //    $http(setupRequest('/workspace/'+workspace+'/layer/'+layer+'/draw/'+drawType+'/geojson', 'GET'))
-            //        .then(function(response){
-            //            doneCallback(response.data);
-            //        });
-            //}
-
             function getBbox(workspace, layerGroupName, doneCallback){
                 $http(setupRequest('/layer/'+workspace+'/'+layerGroupName+'/bbox', 'GET'))
                     .then(function(response){
@@ -60,12 +53,12 @@ angular.module('pkfrontendApp')
                     });
             }
 
-            //function editLayer(body, doneCallback){
-            //    $http(setupRequest('/layer/1', 'PUT', body))
-            //        .then(function (response){
-            //            doneCallback(response.data);
-            //        });
-            //}
+            function editLayer(body, doneCallback){
+                $http(setupRequest('/layer/edit', 'PUT', body))
+                    .then(function (response){
+                        doneCallback(response.data);
+                    });
+            }
 
             function uploadFileToGeoServer(workspace, dataStore, key, doneCallback){
                 $http(setupRequest('/layer/upload_layers/' + workspace +'/' +dataStore +'/'+ key, 'POST'))
@@ -73,13 +66,6 @@ angular.module('pkfrontendApp')
                         doneCallback(response.data);
                     });
             }
-
-            //function getLayerFromWorkspace(workspace, layerGroup, doneCallback){
-            //    $http(setupRequest('/layers/' + workspace +'/' + layerGroup, 'GET'))
-            //        .then(function(response){
-            //            doneCallback(response.data);
-            //        });
-            //}
 
             function setupRequest(uri, method, data){
                 return {
@@ -91,16 +77,14 @@ angular.module('pkfrontendApp')
 
             return {
                 addLayer: addLayer,
-                //editLayer: editLayer,
+                editLayer: editLayer,
                 uploadFileToGeoServer: uploadFileToGeoServer,
 
                 getLayersFromWorkspace: getLayersFromWorkspace,
                 getLayerAndDrawType: getLayerAndDrawType,
                 getFeatureCollectionGeoJson: getFeatureCollectionGeoJson,
-                //getLayerDrawTypeInGeoJSON: getLayerDrawTypeInGeoJSON,
                 getFeatureCollectionFilterByLayer: getFeatureCollectionFilterByLayer,
                 getBbox: getBbox,
-                getDrawType: getDrawType,
-                //getLayerFromWorkspace: getLayerFromWorkspace
+                getDrawType: getDrawType
             }
         }]);

@@ -3,8 +3,8 @@
 angular.module('pkfrontendApp')
     .controller('EditLayerCtrl', EditLayerCtrl);
 
-EditLayerCtrl.$inject = ['$scope', '$stateParams', 'svcSharedProperties', 'svcLayer', 'olData', 'svcSecurity'];
-function EditLayerCtrl($scope, $stateParams, svcSharedProperties, svcLayer, olData, svcSecurity){
+EditLayerCtrl.$inject = ['$scope', '$stateParams', 'svcSharedProperties', 'svcLayer', 'olData', 'svcSecurity', '$log'];
+function EditLayerCtrl($scope, $stateParams, svcSharedProperties, svcLayer, olData, svcSecurity, $log){
     var vm = this;
     vm.init = init;
 
@@ -44,24 +44,29 @@ function EditLayerCtrl($scope, $stateParams, svcSharedProperties, svcLayer, olDa
             switch(feature.getGeometry().getType()){
                 case 'Point':
                     var pointCoor = new ol.geom.Point(feature.getGeometry().getCoordinates()).transform("EPSG:3857", "EPSG:4326");
+                    $log.debug(pointCoor.getCoordinates());
                     if(point.id != feature.getProperties().id)
                         point[feature.getProperties().id] = pointCoor.getCoordinates();
                     else point.id = data;
                     break;
                 case 'LineString':
                     var lineCoor = new ol.geom.LineString(feature.getGeometry().getCoordinates()).transform("EPSG:3857", "EPSG:4326");
+                    $log.debug(lineCoor.getCoordinates());
                     if(line.id != feature.getProperties().id)
                         line[feature.getProperties().id] = lineCoor.getCoordinates();
                     else line.id = data;
                     break;
                 case 'Polygon':
                     var polyCoor = new ol.geom.Polygon(feature.getGeometry().getCoordinates()).transform("EPSG:3857", "EPSG:4326");
+                    $log.debug(polyCoor.getCoordinates());
                     if(poly.id != feature.getProperties().id)
                         poly[feature.getProperties().id] = polyCoor.getCoordinates();
                     else poly.id = data;
                     break;
             }
-
+            $log.info(point);
+            $log.info(line);
+            $log.info(poly);
             svcSharedProperties.setLayerValues({'point':point, 'linestring':line, 'polygon':poly});
         });
     }

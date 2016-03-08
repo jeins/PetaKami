@@ -136,29 +136,30 @@ function pkMaps($q, $compile, olHelpers, olMapDefaults, olData, CONFIG) {
                             draw = addDrawInteraction(source, value, features);
                             map.addInteraction(draw);
                             map.addInteraction(addDrawModifyInteraction(features));
-
-                            draw.on('drawend', function (e) {
-                                var drawType = e.feature.getGeometry().getType();
-                                switch (drawType) {
-                                    case 'Point':
-                                        e.feature.setProperties({'id': ipo});
-                                        ipo++;
-                                        break;
-                                    case 'LineString':
-                                        e.feature.setProperties({'id': ils});
-                                        ils++;
-                                        break;
-                                    case 'Polygon':
-                                        e.feature.setProperties({'id': ipl});
-                                        ipl++;
-                                        break;
-                                }
-                            });
                         }
                     });
                 }
 
-                source.on(['addfeature', 'changefeature'], function (e) {
+                source.on('addfeature', function(e){
+                    var drawType = e.feature.getGeometry().getType();
+                    switch (drawType) {
+                        case 'Point':
+                            e.feature.setProperties({'id': ipo});
+                            ipo++;
+                            break;
+                        case 'LineString':
+                            e.feature.setProperties({'id': ils});
+                            ils++;
+                            break;
+                        case 'Polygon':
+                            e.feature.setProperties({'id': ipl});
+                            ipl++;
+                            break;
+                    }
+                    scope.$emit('pk.draw.feature', e.feature);
+                });
+
+                source.on('changefeature', function (e) {
                     scope.$emit('pk.draw.feature', e.feature);
                 });
             });

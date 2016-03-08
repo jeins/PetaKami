@@ -27,7 +27,7 @@
     <label for="selectDrawType">Pilih Draw Type: </label>
     <div id="selectDrawType" ng-repeat="drawType in vm.setDrawTypes">
         <label>
-            <input type="radio" name="drawTypeRadio" ng-click="vm.selectedDrawType(drawType)">
+            <input type="radio" name="drawTypeRadio" ng-click="vm.selectedDrawType(drawType)" ng-disabled="vm.disabledDrawType">
             {{drawType}}
         </label>
     </div>

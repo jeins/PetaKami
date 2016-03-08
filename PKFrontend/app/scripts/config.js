@@ -5,7 +5,7 @@ angular
     .config(['$logProvider', '$provide', '$authProvider', 'CONFIG', '$translateProvider'
         , function($logProvider, $provide, $authProvider, CONFIG, $translateProvider){
             // Setup Logging/Debug
-            $logProvider.debugEnabled(false);
+            $logProvider.debugEnabled(true);
 
             $provide.decorator('$log', function ($delegate) {
                 var origInfo = $delegate.info, origLog = $delegate.log,
