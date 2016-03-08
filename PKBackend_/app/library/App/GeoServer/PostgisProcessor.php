@@ -19,6 +19,7 @@ class PostgisProcessor extends Injectable
     public function addLayerToPostgis($layerName, $drawTypeAndCoordinates){
         $layerNames = [];
         $index = 0;
+
         foreach($drawTypeAndCoordinates as $drawType=>$coordinates){
             $this->_setupTableName($layerName, $drawType);
             $this->_setupColumnAndData($drawType, $coordinates);
@@ -29,30 +30,33 @@ class PostgisProcessor extends Injectable
             $this->queryBuilder->createTable($drawType);
             $this->queryBuilder->insertAction();
         }
-
         return $layerNames;
     }
 
     public function updateLayerToPostgis($layerName, $layers, $drawTypeAndCoordinates){
         $layerArr = explode(',', $layers);
+        $layerNames = [];
         $index = 0;
 
         foreach($drawTypeAndCoordinates as $drawType=>$coordinates){
-            if($layerArr[$index] == "") continue;
+            if(empty($layerArr[$index])) continue;
 
             $this->_setupColumnAndData($drawType, $coordinates);
 
             if($this->queryBuilder->isTableExist($layerArr[$index])){
-                $this->_setupTableName($layerName, $drawType);
-                $this->queryBuilder->createTable($drawType);
-            } else{
                 $this->queryBuilder->table = $layerArr[$index];
                 $this->queryBuilder->clearTable();
+            } else{
+                $this->_setupTableName($layerName, $drawType);
+                $this->queryBuilder->createTable($drawType);
+
+                $layerNames[$index] = $this->queryBuilder->table;
             }
 
             $this->queryBuilder->insertAction();
             $index++;
         }
+        return $layerNames;
     }
 
     private function _setupColumnAndData($type, $coordinates)

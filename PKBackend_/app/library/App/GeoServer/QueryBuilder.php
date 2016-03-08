@@ -84,18 +84,11 @@ class QueryBuilder
 
     public function isTableExist($table)
     {
-        $isExist = false;
         try{
-            $query = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '$table'";
-            $result = $this->connection->execute($query);
-            if(str_replace(" ", "_", $result["table_name"]) == $table){
-                $isExist = true;
-            }
+            return $this->connection->tableExists($table, "public");
         } catch(\Exception $e){
-            $isExist = false;
         }
-
-        return $isExist;
+        return false;
     }
 
     public function insertAction()

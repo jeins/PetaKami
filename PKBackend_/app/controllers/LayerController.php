@@ -110,7 +110,11 @@ class LayerController extends BaseController
     {
         $requestBody = $this->request->getJsonRawBody();
 
-        $this->postgisProcessor->updateLayerToPostgis($requestBody->name, $requestBody->layers, $requestBody->coordinates);
+        $groupLayers = $this->postgisProcessor->updateLayerToPostgis($requestBody->name, $requestBody->layers, $requestBody->coordinates);
+
+        if(!empty($groupLayers)){
+            $this->xmlProcessor->createLayers($groupLayers, $requestBody->workspace, $requestBody->name);
+        }
 
         $layersAndDrawType = $this->jsonProcessor->layersAndDrawTypeFromLayerGroup($requestBody->workspace, $requestBody->name);
 
