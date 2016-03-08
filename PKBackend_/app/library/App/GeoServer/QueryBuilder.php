@@ -70,6 +70,34 @@ class QueryBuilder
         }
     }
 
+    public function clearTable()
+    {
+        try{
+            $query = "TRUNCATE TABLE " . $this->table;
+            $result = $this->connection->execute($query);
+        } catch(\Exception $e){
+            $result = $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    public function isTableExist($table)
+    {
+        $isExist = false;
+        try{
+            $query = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '$table'";
+            $result = $this->connection->execute($query);
+            if(str_replace(" ", "_", $result["table_name"]) == $table){
+                $isExist = true;
+            }
+        } catch(\Exception $e){
+            $isExist = false;
+        }
+
+        return $isExist;
+    }
+
     public function insertAction()
     {
         $this->_validate();

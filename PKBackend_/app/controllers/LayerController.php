@@ -105,4 +105,15 @@ class LayerController extends BaseController
 
         return $this->respondArray($layersAndDrawType, PKConst::RESPONSE_KEY);
     }
+
+    public function editLayer()
+    {
+        $requestBody = $this->request->getJsonRawBody();
+
+        $this->postgisProcessor->updateLayerToPostgis($requestBody->name, $requestBody->layers, $requestBody->coordinates);
+
+        $layersAndDrawType = $this->jsonProcessor->layersAndDrawTypeFromLayerGroup($requestBody->workspace, $requestBody->name);
+
+        return $this->respondArray($layersAndDrawType, PKConst::RESPONSE_KEY);
+    }
 }

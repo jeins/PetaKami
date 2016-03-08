@@ -33,8 +33,26 @@ class PostgisProcessor extends Injectable
         return $layerNames;
     }
 
-    public function updateLayerToPostgis($layerName, $drawTypeAndCoordinates){
+    public function updateLayerToPostgis($layerName, $layers, $drawTypeAndCoordinates){
+        $layerArr = explode(',', $layers);
+        $index = 0;
 
+        foreach($drawTypeAndCoordinates as $drawType=>$coordinates){
+            if($layerArr[$index] == "") continue;
+
+            $this->_setupColumnAndData($drawType, $coordinates);
+
+            if($this->queryBuilder->isTableExist($layerArr[$index])){
+                $this->_setupTableName($layerName, $drawType);
+                $this->queryBuilder->createTable($drawType);
+            } else{
+                $this->queryBuilder->table = $layerArr[$index];
+                $this->queryBuilder->clearTable();
+            }
+
+            $this->queryBuilder->insertAction();
+            $index++;
+        }
     }
 
     private function _setupColumnAndData($type, $coordinates)
