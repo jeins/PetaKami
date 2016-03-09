@@ -16,6 +16,11 @@ angular
                 templateUrl: 'views/map/map.html',
                 controller: 'ViewLayerCtrl as CVL'
             })
+            .state('browse', {
+                url:'/browse',
+                templateUrl: 'views/features/browse.html',
+                controller: 'BrowseCtrl as vm'
+            })
             .state('edit', {
                 url: '/edit/:layer',
                 templateUrl: 'views/map/map.html',
@@ -23,7 +28,7 @@ angular
             })
             .state('upload', {
                 url: '/upload',
-                templateUrl: 'views/navigation/upload.html',
+                templateUrl: 'views/features/upload.html',
                 controller: 'UploadCtrl as vm'
             })
             .state('register', {

@@ -53,7 +53,7 @@
                     <a href="/" ng-click="CSN.toggleSideNav('draw')" translate="app.menu.draw"></a>
                 </li>
                 <li ng-class="CSN.isNavActive('browse')">
-                    <a href="/" ng-click="CSN.toggleSideNav('browse')" translate="app.menu.browse"></a>
+                    <a href="#/browse" translate="app.menu.browse"></a>
                 </li>
                 <li ng-class="CSN.isNavActive('upload')">
                     <a href="#/upload" ng-click="CSN.toggleSideNav('upload')" translate="app.menu.upload"></a>
@@ -86,6 +86,7 @@
     <script src="bower_components/satellizer/satellizer.js"></script>
     <script src="bower_components/angular-translate/angular-translate.js"></script>
     <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+    <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -115,13 +116,14 @@
 
         <script src="scripts/auth/controllers/AuthCtrl.js"></script>
         <script src="scripts/navigation/controllers/SidenavCtrl.js"></script>
-        <script src="scripts/navigation/controllers/UploadCtrl.js"></script>
         <script src="scripts/navigation/controllers/SideDrawCtrl.js"></script>
         <script src="scripts/navigation/controllers/SideBrowseCtrl.js"></script>
         <script src="scripts/navigation/controllers/SideEditCtrl.js"></script>
         <script src="scripts/map/controllers/MapCtrl.js"></script>
         <script src="scripts/map/controllers/ViewLayerCtrl.js"></script>
         <script src="scripts/map/controllers/EditLayerCtrl.js"></script>
+        <script src="scripts/feature/controllers/UploadCtrl.js"></script>
+        <script src="scripts/feature/controllers/BrowseCtrl.js"></script>
         <!-- endbuild -->
 </body>
 </html>

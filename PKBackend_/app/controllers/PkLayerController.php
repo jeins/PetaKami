@@ -9,6 +9,7 @@ use PetaKami\Transformers\UserLayerTransformer;
 use PetaKami\Constants\PKConst;
 use PhalconRest\Constants\ErrorCodes;
 use PhalconRest\Exceptions\UserException;
+use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class PkLayerController extends BaseController
 {
@@ -30,11 +31,25 @@ class PkLayerController extends BaseController
         return $this->respondItem($uLayer, new UserLayerTransformer, PKConst::RESPONSE_ULAYERS);
     }
 
-    public function getAll()
+    public function getAll($limit, $currentPage)
     {
         $userLayer = Layer::find();
 
-        return $this->respondCollection($userLayer, new UserLayerTransformer(), PKConst::RESPONSE_ULAYERS);
+        $paginator = new PaginatorModel([
+            "data"  => $userLayer,
+            "limit" => $limit,
+            "page"  => $currentPage
+        ]);
+
+        $page = $paginator->getPaginate();
+
+        foreach($page->items as $p){
+            $p->allowEdit = false;
+            if($p->userId == $this->user->id){
+                $p->allowEdit = true;
+            }
+        }
+        return $this->respond($page);
     }
 
     public function getByUser()

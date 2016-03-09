@@ -2,6 +2,6 @@
 
 angular
   .module('pkfrontendApp', [
-      'ngAnimate', 'ui.router', 'ui.bootstrap',
+      'ngAnimate', 'ui.router', 'ui.bootstrap', 'smart-table',
       'ngSanitize', 'ngFileUpload', 'satellizer', 'pascalprecht.translate'
   ]);

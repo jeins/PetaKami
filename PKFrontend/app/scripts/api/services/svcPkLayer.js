@@ -26,8 +26,8 @@ function svcPkLayer($http, CONFIG){
             });
 	}
 
-	function getLayers(doneCallback){
-        $http(_setupRequest('/ulayer', 'GET'))
+	function getLayers(limit, currentPage, doneCallback){
+        $http(_setupRequest('/ulayer/' + limit + '/' + currentPage, 'GET'))
             .then(function(response){
                 doneCallback(response.data);
             });

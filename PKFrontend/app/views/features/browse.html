@@ -1,0 +1,50 @@
+<div class="pk-content_heading">
+    <div class="pk-heading_inner">
+        <h1 style="font-size: 22px" translate="pk_upload.name"></h1>
+    </div>
+</div>
+<div class="pk-content_body">
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <table st-table="vm.dataTables" st-pipe="vm.getData" class="table table-striped">
+                <thead>
+                <tr>
+                    <th st-sort="workspace">Workspace</th>
+                    <th st-sort="layerName">Layer Name</th>
+                    <th>Description</th>
+                    <th st-sort="lastEdit">Last Update</th>
+                </tr>
+                </thead>
+                <tbody ng-show="!vm.isLoading">
+                <tr ng-repeat="row in vm.dataTables">
+                    <td>{{row.workspace}}</td>
+                    <td>{{row.name}}</td>
+                    <td>{{row.description}}</td>
+                    <td>{{row.updatedAt}}</td>
+                    <td>
+                        <button type="button" ng-click="vm.viewLayer(row.name, row.workspace)">
+                            <i class="fa fa-map-o"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" ng-click="vm.editLayer(row.name, row.workspace)" ng-if="row.allowEdit">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+                <tbody ng-show="vm.isLoading">
+                <tr>
+                    <td colspan="4" class="text-center">Loading ... </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td class="text-center" st-pagination="" st-items-by-page="5" colspan="4">
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
