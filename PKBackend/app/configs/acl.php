@@ -9,6 +9,7 @@ return [
         ],
         'privateEndpoints' => [
             '/user/me',
+            '/ulayer/add',
             '/ulayer/{limit}/{currentPage}',
             '/ulayer/user',
             '/ulayer/workspace/{workspace}',

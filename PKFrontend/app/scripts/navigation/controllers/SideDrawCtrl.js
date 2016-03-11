@@ -90,6 +90,7 @@ function SideDrawCtrl($scope, $log, svcWorkspace, svcSharedProperties, svcLayer,
     function saveLayer(workspace, layerGroupName){
         vm.loading = true;
         var tmpVal = svcSharedProperties.getLayerValues();
+        $log.info(tmpVal);
         var tmpType = {'point': '', 'linestring': '', 'polygon':''};
 
         if(tmpVal.point.length > 0){

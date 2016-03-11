@@ -35,6 +35,10 @@ class PkLayerController extends BaseController
     {
         $userLayer = Layer::find();
 
+        if($currentPage > 1){
+            $currentPage = ($currentPage/$limit) + 1;
+        }
+
         $paginator = new PaginatorModel([
             "data"  => $userLayer,
             "limit" => $limit,

@@ -57,7 +57,7 @@ function MapCtrl($scope, $log, svcSharedProperties) {
                     else poly.id = data;
                     break;
             }
-            $log.info(point);$log.info(line);$log.info(poly);
+            //$log.info(point);$log.info(line);$log.info(poly);
             svcSharedProperties.setLayerValues({'point':point, 'linestring':line, 'polygon':poly});
         });
 

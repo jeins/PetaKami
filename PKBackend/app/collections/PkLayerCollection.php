@@ -17,6 +17,6 @@ class PkLayerCollection extends Collection
         $this->get('/user', 		        	'getByUser');
         $this->get('/workspace/{workspace}', 	'getByWorkspace');
 
-        $this->post('/', 						'addUserLayer');
+        $this->post('/add', 					'addUserLayer');
     }
 }

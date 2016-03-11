@@ -3,8 +3,8 @@
 angular.module('pkfrontendApp')
     .directive('pkMaps', pkMaps);
 
-pkMaps.$inject = ["$q", "$compile", "olHelpers", "olMapDefaults", "olData", 'CONFIG'];
-function pkMaps($q, $compile, olHelpers, olMapDefaults, olData, CONFIG) {
+pkMaps.$inject = ["$q", "$compile", "olHelpers", "olMapDefaults", "olData", 'CONFIG', '$log'];
+function pkMaps($q, $compile, olHelpers, olMapDefaults, olData, CONFIG, $log) {
     return {
         restrict: 'EA',
         transclude: true,
@@ -77,12 +77,14 @@ function pkMaps($q, $compile, olHelpers, olMapDefaults, olData, CONFIG) {
             var view = createView(defaults.view);
             var features = new ol.Collection();
             var source = new ol.source.Vector({features: features});
+            var setMapFromGeoJson = false;
 
             if(scope.properties){
                 source = new ol.source.Vector({
                     'url': CONFIG.http.rest_host + '/layer/' + scope.properties.workspace +'/'+ scope.properties.layers +'/bylayer/geojson',
                     format: new ol.format.GeoJSON()
                 });
+                setMapFromGeoJson = true;
             }
 
 
@@ -136,11 +138,32 @@ function pkMaps($q, $compile, olHelpers, olMapDefaults, olData, CONFIG) {
                             draw = addDrawInteraction(source, value, features);
                             map.addInteraction(draw);
                             map.addInteraction(addDrawModifyInteraction(features));
+
+                            draw.on('drawend', function (e) {
+                                var drawType = e.feature.getGeometry().getType();
+                                switch (drawType) {
+                                    case 'Point':
+                                        e.feature.setProperties({'id': ipo});
+                                        ipo++;
+                                        break;
+                                    case 'LineString':
+                                        e.feature.setProperties({'id': ils});
+                                        ils++;
+                                        break;
+                                    case 'Polygon':
+                                        e.feature.setProperties({'id': ipl});
+                                        ipl++;
+                                        break;
+                                }
+                                $log.info("draw feature");
+                            });
                         }
                     });
                 }
+            });
 
-                source.on('addfeature', function(e){
+            source.on('addfeature', function(e){
+                if(setMapFromGeoJson){
                     var drawType = e.feature.getGeometry().getType();
                     switch (drawType) {
                         case 'Point':
@@ -156,12 +179,14 @@ function pkMaps($q, $compile, olHelpers, olMapDefaults, olData, CONFIG) {
                             ipl++;
                             break;
                     }
-                    scope.$emit('pk.draw.feature', e.feature);
-                });
+                    setMapFromGeoJson = false;
+                }
+                scope.$emit('pk.draw.feature', e.feature);
+            });
 
-                source.on('changefeature', function (e) {
-                    scope.$emit('pk.draw.feature', e.feature);
-                });
+            source.on('changefeature', function (e) {
+                $log.info("change feature");
+                scope.$emit('pk.draw.feature', e.feature);
             });
 
             // Set the Default events for the map
