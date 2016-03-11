@@ -21,12 +21,12 @@
                     <td>{{row.name}}</td>
                     <td>{{row.description}}</td>
                     <td>{{row.updatedAt}}</td>
-                    <td>
+                    <td style="width: 50px">
                         <button type="button" ng-click="vm.viewLayer(row.name, row.workspace)">
                             <i class="fa fa-map-o"></i>
                         </button>
                     </td>
-                    <td>
+                    <td style="width: 50px">
                         <button type="button" ng-click="vm.editLayer(row.name, row.workspace)" ng-if="row.allowEdit">
                             <i class="fa fa-pencil-square-o"></i>
                         </button>

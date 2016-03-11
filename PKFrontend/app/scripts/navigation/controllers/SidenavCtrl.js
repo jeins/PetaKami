@@ -34,7 +34,7 @@ function SidenavCtrl($scope, $location, $log, svcSession) {
 
     function toggleSideNav(content){
         hideSideNav();
-        if(content != "upload"){
+        if(content != "upload" || content != "browse"){
             vm.sidenavClass = "pk-sidenav_show";
             vm.mapClass = "pk-map_canvas80";
         }
