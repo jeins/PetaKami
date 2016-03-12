@@ -116,12 +116,14 @@ function pkMaps($q, $compile, olHelpers, olMapDefaults, olData, CONFIG, $log) {
 
             var draw;
             var ipo = 0, ils = 0, ipl = 0;
+            var select = new ol.interaction.Select();
+            var modify = new ol.interaction.Modify({features: select.getFeatures()});
 
             attrs.$observe('olLayerMode', function (value) {
                 map.removeInteraction(draw);
                 if (value == "'modify'") {
-                    var select = new ol.interaction.Select();
-                    var modify = new ol.interaction.Modify({features: select.getFeatures()});
+                    select.setActive(true);
+                    modify.setActive(true);
                     var selectedFeatures = select.getFeatures();
 
                     map.addInteraction(select);
@@ -132,6 +134,8 @@ function pkMaps($q, $compile, olHelpers, olMapDefaults, olData, CONFIG, $log) {
                 } else {
                     attrs.$observe('olDrawType', function (value) {
                         map.removeInteraction(draw);
+                        select.setActive(false);
+                        modify.setActive(false);
                         value = value.replace("{0}", value).replace(/\'/g, '');
 
                         if (value != "") {
