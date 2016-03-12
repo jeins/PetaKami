@@ -32,21 +32,11 @@ function BrowseCtrl($scope, $log, svcPkLayer, svcSecurity, $window, svcLayer, $f
         vm.isLoading = true;
 
         var pagination = tableState.pagination;
-        console.log(tableState);
-        var start = pagination.start || 1;
-        var number = pagination.number || 5;
-        svcPkLayer.getLayers(0, 0, function(response){
-            var items = response.items;
 
-            var filtered = tableState.search.predicateObject ? $filter('filter')(items, tableState.search.predicateObject) : items;
-
-            if (tableState.sort.predicate) {
-                filtered = $filter('orderBy')(filtered, tableState.sort.predicate, tableState.sort.reverse);
-            }
-
-            var result = filtered.slice(start, start + number);
-
-            vm.dataTables = items;
+        var currentPage = pagination.start || 1;
+        var limit = pagination.number || 5;
+        svcPkLayer.getLayers(limit, currentPage, function(response){
+            vm.dataTables = response.items;
             tableState.pagination.numberOfPages = response.total_pages;
             vm.isLoading = false;
         })

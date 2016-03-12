@@ -14,14 +14,6 @@
                     <th st-ratio="20" st-sort="name">Layer Name</th>
                     <th st-ratio="20">Description</th>
                 </tr>
-                <tr>
-                    <th></th>
-                    <th>
-                        <st-select-multiple collection="collection" predicate="workspace"></st-select-multiple>
-                    </th>
-                    <th><input placeholder="Search Name" st-search="name" class="input-sm form-control" /></th>
-                    <th><input placeholder="Search Description" st-search="description" class="input-sm form-control" /></th>
-                </tr>
                 </thead>
                 <tbody ng-show="!vm.isLoading">
                 <tr ng-repeat="row in vm.dataTables">
