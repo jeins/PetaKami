@@ -34,6 +34,13 @@ class LayerController extends BaseController
         $this->uploadProcessor = new UploadProcessor();
     }
 
+    public function geoserver()
+    {
+        $url = str_replace('rest', '', $this->di->get(PKConst::CONFIG)->geoserver->rest_url);
+
+        return $this->respondArray([$url], PKConst::RESPONSE_KEY);
+    }
+
     public function getFeatureCollectionGeoJson($workspace, $layerGroupName)
     {
         $geoJson = $this->jsonProcessor->featureCollection($workspace, $layerGroupName);

@@ -9,25 +9,38 @@
             <table st-table="vm.dataTables" st-pipe="vm.getData" class="table table-striped">
                 <thead>
                 <tr>
-                    <th st-sort="workspace">Workspace</th>
-                    <th st-sort="layerName">Layer Name</th>
-                    <th>Description</th>
-                    <th st-sort="lastEdit">Last Update</th>
+                    <th st-ratio="15" st-sort="updatedAt">Last Update</th>
+                    <th st-ratio="20" st-sort="workspace">Workspace</th></st-select-multiple>
+                    <th st-ratio="20" st-sort="name">Layer Name</th>
+                    <th st-ratio="20">Description</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <st-select-multiple collection="collection" predicate="workspace"></st-select-multiple>
+                    </th>
+                    <th><input placeholder="Search Name" st-search="name" class="input-sm form-control" /></th>
+                    <th><input placeholder="Search Description" st-search="description" class="input-sm form-control" /></th>
                 </tr>
                 </thead>
                 <tbody ng-show="!vm.isLoading">
                 <tr ng-repeat="row in vm.dataTables">
-                    <td>{{row.workspace}}</td>
-                    <td>{{row.name}}</td>
-                    <td>{{row.description}}</td>
-                    <td>{{row.updatedAt}}</td>
-                    <td style="width: 50px">
-                        <button type="button" ng-click="vm.viewLayer(row.name, row.workspace)">
+                    <td st-ratio="15">{{row.updatedAt}}</td>
+                    <td st-ratio="20">{{row.workspace}}</td>
+                    <td st-ratio="20">{{row.name}}</td>
+                    <td st-ratio="20">{{row.description}}</td>
+                    <td st-ratio="5">
+                        <button type="button" ng-click="vm.viewLayer(row.name, row.workspace)" tooltip-placement="top" uib-tooltip="View">
                             <i class="fa fa-map-o"></i>
                         </button>
                     </td>
-                    <td style="width: 50px">
-                        <button type="button" ng-click="vm.editLayer(row.name, row.workspace)" ng-if="row.allowEdit">
+                    <td st-ratio="5">
+                        <button type="button" ng-click="vm.downloadLayer(row.name, row.workspace)" tooltip-placement="top" uib-tooltip="Download">
+                            <i class="fa fa-download"></i>
+                        </button>
+                    </td>
+                    <td st-ratio="5">
+                        <button type="button" ng-click="vm.editLayer(row.name, row.workspace)" ng-if="row.allowEdit" tooltip-placement="top" uib-tooltip="Edit">
                             <i class="fa fa-pencil-square-o"></i>
                         </button>
                     </td>

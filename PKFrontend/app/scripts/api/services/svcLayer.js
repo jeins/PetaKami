@@ -60,6 +60,13 @@ angular.module('pkfrontendApp')
                     });
             }
 
+            function geoserver(doneCallback){
+                $http(setupRequest('/layer/geoserver', 'POST'))
+                    .then(function (response){
+                        doneCallback(response.data);
+                    });
+            }
+
             function uploadFileToGeoServer(workspace, dataStore, key, doneCallback){
                 $http(setupRequest('/layer/upload_layers/' + workspace +'/' +dataStore +'/'+ key, 'POST'))
                     .then(function(response){
@@ -79,7 +86,7 @@ angular.module('pkfrontendApp')
                 addLayer: addLayer,
                 editLayer: editLayer,
                 uploadFileToGeoServer: uploadFileToGeoServer,
-
+                geoserver: geoserver,
                 getLayersFromWorkspace: getLayersFromWorkspace,
                 getLayerAndDrawType: getLayerAndDrawType,
                 getFeatureCollectionGeoJson: getFeatureCollectionGeoJson,

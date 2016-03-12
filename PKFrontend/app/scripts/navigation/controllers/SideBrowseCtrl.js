@@ -3,14 +3,16 @@
 angular.module('pkfrontendApp')
     .controller('SideBrowseCtrl', SideBrowseCtrl);
 
-SideBrowseCtrl.$inject = ['$scope', 'svcLayer', 'svcWorkspace', '$window', '$stateParams', '$log', 'svcSecurity', 'svcPkLayer'];
+SideBrowseCtrl.$inject = ['$scope', 'svcLayer', 'svcWorkspace', '$window', '$stateParams', '$log', 'svcSecurity', 'svcPkLayer', 'CONFIG'];
 
-function SideBrowseCtrl($scope, svcLayer, svcWorkspace, $window, $stateParams, $log, svcSecurity, svcPkLayer) {
+function SideBrowseCtrl($scope, svcLayer, svcWorkspace, $window, $stateParams, $log, svcSecurity, svcPkLayer, CONFIG) {
     var vm = this;
     vm.init = init;
     vm.changeWorkspace = changeWorkspace;
     vm.viewLayer = viewLayer;
     vm.layerSelectChange = layerSelectChange;
+    vm.downloadLayer = downloadLayer;
+    vm.downloadFeatureCollection = downloadFeatureCollection;
 
     init();
 
@@ -23,6 +25,7 @@ function SideBrowseCtrl($scope, svcLayer, svcWorkspace, $window, $stateParams, $
         vm.displayLayer = false;
         vm.layerGroupName = '';
         vm.tmpDrawTypes = [];
+        vm.disabledExport = true;
 
         svcWorkspace.getWorkspaces(function(result){
             vm.setWorkspaces = result.data;
@@ -44,7 +47,10 @@ function SideBrowseCtrl($scope, svcLayer, svcWorkspace, $window, $stateParams, $
                 var drawType = layerAndDrawType[1];
                 $log.info("Display Layer: " + layer);
                 if(layer != ""){
+                    vm.disabledExport = false;
                     vm.selectedLayer[drawType] = true;
+                } else{
+                    vm.selectedLayer[drawType] = false;
                 }
                 vm.tmpDrawTypes.push({drawType: layer});
                 vm.layers.push({'name': layer, 'type': drawType});
@@ -53,6 +59,40 @@ function SideBrowseCtrl($scope, svcLayer, svcWorkspace, $window, $stateParams, $
             vm.layerGroupName = layerGroup.replace(/_/g, ' ');
             vm.selectedWorkspace = workspace;
         }
+    }
+
+    function downloadFeatureCollection(){
+        var layerNames = "";
+        vm.layers.forEach(function(values){
+           if(values.name != ""){
+               layerNames += values.name + ',';
+           }
+        });
+        $window.open(CONFIG.http.rest_host + '/layer/' + vm.selectedWorkspace + '/' + layerNames + '/bylayer/geojson');
+    }
+
+    function downloadLayer(layer, type){
+        svcLayer.geoserver(function(response){
+            var url = response.data + vm.selectedWorkspace +
+                '/ows?service=WFS&version=1.0.0&request=GetFeature&typeName='+ vm.selectedWorkspace + ':' + layer +
+                '&maxFeatures=50&outputFormat=';
+
+            switch (type){
+                case 'shapefile':
+                    url += 'SHAPE-ZIP';
+                    break;
+                case 'csv':
+                    url += 'csv';
+                    break;
+                case 'geojson':
+                    url += 'application%2Fjson';
+                    break;
+                case 'kml':
+                    url += 'application%2Fvnd.google-earth.kml%2Bxml';
+                    break;
+            }
+            $window.open(url);
+        });
     }
 
     function layerSelectChange(){
@@ -102,14 +142,5 @@ function SideBrowseCtrl($scope, svcLayer, svcWorkspace, $window, $stateParams, $
                 vm.layerGroups.push({'name':(records[record].name).replace(/_/g, ' '), 'type': type});
             }
         });
-//        svcLayer.getLayersFromWorkspace(workspace, function(response){
-//            var records = response.data;
-//            $log.info('Layers From Workspace %s :', workspace);
-//            $log.info(records);
-//            for(var layerName in records){
-//                var type = '';
-//                vm.layerGroups.push({'name':(layerName).replace(/_/g, ' '), 'type': type});
-//            }
-//        });
     }
 }

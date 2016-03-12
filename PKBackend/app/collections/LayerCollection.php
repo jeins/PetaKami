@@ -22,6 +22,7 @@ class LayerCollection extends Collection
 
         $this->put('/edit',                                             'editLayer');
 
+        $this->post('/geoserver',                                       'geoserver');
         $this->post('/add',                                             'postLayer');
         $this->post('/upload_files/{type}/{key}',                       'postUploadFiles');
         $this->post('/upload_layers/{workspace}/{dataStore}/{key}',     'postUploadLayers');

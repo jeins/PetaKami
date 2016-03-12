@@ -16,6 +16,7 @@ return [
             '/ulayer/workspace/{workspace}',
             '/workspace/all',
             '/workspace/{workspace}/draw',
+            '/layer/geoserver',
             '/layer/add',
             '/layer/edit',
             '/layer/{workspace}',
