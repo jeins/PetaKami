@@ -7,6 +7,6 @@
     "league/fractal": "^0.13.0",
     "firebase/php-jwt": "^3.0",
     "robmorgan/phinx": "^0.5.1",
-    "sendgrid/sendgrid": "~4.0"
+    "swiftmailer/swiftmailer": "^5.4"
   }
 }

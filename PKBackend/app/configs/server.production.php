@@ -1,21 +1,21 @@
 <?php
 
 return [
-    'debugMode' => 1,
-    'hostName' => 'http://pkbackend.127.0.0.1.xip.io',
-    'clientHostName' => 'http://localhost:9000',
+    'debugMode' => 0,
+    'hostName' => 'http://petakami.com',
+    'clientHostName' => 'http://petakami.com',
     'database' => [
-        'host'       => '192.168.1.122',
-        'username'   => 'geouser',
-        'password'   => 'geouser',
-        'db_geo'     => 'db_geodb',
+        'host'       => '128.199.125.35',
+        'username'   => 'pk_geouser',
+        'password'   => 'P3t4K4M1!',
+        'db_geo'     => 'pk_geodb',
         'db_pk'      => 'db_petakami'
     ],
     'geoserver' => [
         'username'      => 'admin',
         'password'      => 'geoserver',
         'db_host'       => 'localhost',
-        'rest_url'      => 'http://192.168.1.122:8081/geoserver/rest',
+        'rest_url'      => 'http://128.199.125.35:8080/geoserver/rest',
         'datastore_type'=> 'PostGIS',
         'workspaces'    => [
             'IDBangunan'        => ['Point', 'LineString', 'Polygon'],

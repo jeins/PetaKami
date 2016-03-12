@@ -10,6 +10,8 @@ class User extends BaseModel
     public $id;
     public $fullName;
     public $email;
+    public $hash;
+    public $active;
     public $password;
 
     public function initialize()
@@ -30,6 +32,8 @@ class User extends BaseModel
             'id'            => 'id',
             'email'         => 'email',
             'full_name'     => 'fullName',
+            'hash'          => 'hash',
+            'active'        => 'active',
             'password'      => 'password'
         ];
     }

@@ -34,7 +34,7 @@ function svcPkLayer($http, CONFIG){
 	}
 
 	function addUserLayer(body, doneCallback){
-        $http(_setupRequest('/ulayer', 'POST', body))
+        $http(_setupRequest('/ulayer/add', 'POST', body))
             .then(function (response){
                 doneCallback(response.data);
             });

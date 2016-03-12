@@ -17,7 +17,15 @@ class UserSeeder extends AbstractSeed
     {
         $security = new Security();
         $this->insert('users', [
-            ['email' => 'demo@demo.com', 'password' => $security->hash('demo'), 'full_name' => 'demo user', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')]
+            [
+                'email' => 'demo@demo.com',
+                'password' => $security->hash('demo'),
+                'full_name' => 'demo user',
+                'hash'  => md5('demo@demo.com' .  date('jS \of F Y h:i:s')),
+                'active' => true,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]
         ]);
     }
 }

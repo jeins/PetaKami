@@ -14,6 +14,7 @@ class PkUserCollection extends Collection
         $this->setPrefix('/user');
 
         $this->get('/me',                       'me');
+        $this->get('/active/{hash}',            'setUserActive');
 
         $this->post('/authenticate',            'authenticate');
         $this->post('/register',                'register');

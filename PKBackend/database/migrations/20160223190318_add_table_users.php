@@ -31,6 +31,8 @@ class AddTableUsers extends AbstractMigration
         $table->addColumn('email', 'string')
             ->addColumn('password', 'string')
             ->addColumn('full_name', 'string')
+            ->addColumn('hash', 'string', ['null' => true])
+            ->addColumn('active', 'boolean')
             ->addColumn('created_at', 'datetime')
             ->addColumn('updated_at', 'datetime')
             ->addIndex(['email'], ['unique' => true])

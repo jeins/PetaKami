@@ -14,7 +14,7 @@ function SidenavCtrl($scope, $location, $log, svcSession) {
     init();
 
     function init(){
-        vm.sideNavContent = 'home';
+        vm.sideNavContent = $location.path();
         vm.session = svcSession.getSession();
         vm.isLogedIn = vm.session.loggedIn;
 
@@ -30,6 +30,8 @@ function SidenavCtrl($scope, $location, $log, svcSession) {
         } else if($location.path().match('edit')){
             toggleSideNav('edit');
         }
+
+        isNavActive($location.path());
     }
 
     function toggleSideNav(content){

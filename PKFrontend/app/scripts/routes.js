@@ -41,6 +41,11 @@ angular
                 templateUrl: 'views/auth/login.html',
                 controller: 'AuthCtrl as vm'
             })
+            .state('active', {
+                url: '/active/:hash',
+                templateUrl: 'views/auth/active.html',
+                controller: 'AuthCtrl as vm'
+            })
         ;
         //$locationProvider.html5Mode(true);
     }]);

@@ -20,7 +20,6 @@ angular
             });
 
             // Setup Authprovider
-            $authProvider.signupUrl = CONFIG.http.rest_host + '/user/register';
             $authProvider.loginUrl = CONFIG.http.rest_host + '/user/authenticate';
 
             // Setup Translation

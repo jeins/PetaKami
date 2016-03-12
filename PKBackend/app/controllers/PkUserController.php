@@ -3,6 +3,7 @@
 
 namespace PetaKami\Controllers;
 
+use PetaKami\Auth\Mail;
 use PetaKami\Auth\UserAccountType;
 use PetaKami\Models\User;
 use PetaKami\Mvc\BaseController;
@@ -23,6 +24,15 @@ class PkUserController extends BaseController
         $data = $this->request->getJsonRawBody();
         $email = $data->email;
         $password = $data->password;
+
+        $user = User::findFirst([
+            'conditions' => 'email = :email:',
+            'bind' => ['email' => $email]
+        ]);
+
+        if(!$user->active){
+            return $this->respond(["error" => true, "msg" => "Account is not active, check your E-Mail!"]);
+        }
 
         $session = $this->authManager->loginWithUsernamePassword(UserAccountType::EMAIL, $email, $password);
         $response = [
@@ -49,19 +59,37 @@ class PkUserController extends BaseController
         $user = new User();
         $user->email = $data->email;
         $user->fullName = $data->fullName;
+        $user->hash = md5($this->hash->hash($data->email) . date('jS \of F Y h:i:s'));
+        $user->active = false;
         $user->password = $this->hash->hash($data->password);
 
         if (!$user->save()) {
             throw new UserException(ErrorCodes::DATA_FAIL, 'Could not save users.');
         }
 
-        $session = $this->authManager->loginWithUsernamePassword(UserAccountType::EMAIL, $data->email, $data->password);
-        $response = [
-            'token'     => $session->getToken(),
-            'expires'   => $session->getExpirationTime()
-        ];
+        $mail = new Mail();
+        $mail->send($data->email, "Daftar", $user->fullName, $user->hash);
 
-        return $this->respond($response);
-        #return $this->respondItem($user, new UserTransformer, 'user');
+        return $this->respond(["data" => ["error" => false]]);
+    }
+
+    public function setUserActive($hash){
+        $user = User::findFirst([
+            'conditions' => 'hash = :hash:',
+            'bind' => ['hash' => $hash]
+        ]);
+
+        if (!$user) {
+            throw new UserException(ErrorCodes::DATA_FAIL, 'Could not found users.');
+        }
+
+        $user->active = true;
+        $user->hash = '';
+
+        if (!$user->save()) {
+            throw new UserException(ErrorCodes::DATA_FAIL, 'Could not save users.');
+        }
+
+        return $this->respondOK();
     }
 }

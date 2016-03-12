@@ -8,23 +8,19 @@ return [
     ],
 
     'authentication' => [
-        'secret' => 'this_should_be_changed',
+        'secret' => '$PK8sN9+<c_p@7YfY0`+_>%3V5x}FK d?]4*{QoHAYr-bAy|*BCl`I;%rBFAH~$@',
         'expirationTime' => 86400 * 7, // One week till token expires
     ],
-    'geoserver' => [
-        'username'      => 'admin',
-        'password'      => 'geoserver',
-        'db_host'       => 'localhost',
-        'rest_url'      => 'http://192.168.1.122:8081/geoserver/rest',#'http://128.199.125.35:8080/geoserver/rest',
-        'datastore_type'=> 'PostGIS',
-        'workspaces'    => [
-            'IDBangunan'        => ['Point', 'LineString', 'Polygon'],
-            'IDTransportasi'    => ['LineString'],
-            'IDHipsografi'      => ['Point', 'LineString'],
-            'IDBatasDaerah'     => ['LineString', 'Polygon'],
-            'IDTutupanLahan'    => ['LineString', 'Polygon'],
-            'IDHydrografi'      => ['Point', 'LineString', 'Polygon'],
-            'IDToponomi'        => ['Point']
+
+    'mail' => [
+        'fromName'  => 'PetaKami',
+        'fromEmail' => 'petakami@gmail.com',
+        'smtp'  => [
+            'server'    => 'smtp.gmail.com',
+            'port'      => 465,
+            'security'  => 'ssl',
+            'username'  => 'petakami@gmail.com',
+            'password'  => 'P3t4K4M1!'
         ]
     ]
 ];

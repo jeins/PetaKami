@@ -3,8 +3,8 @@
 angular.module('pkfrontendApp')
     .controller('AuthCtrl', AuthCtrl);
 
-AuthCtrl.$inject = ["$auth", "$log", "$window"];
-function AuthCtrl($auth, $log, $window){
+AuthCtrl.$inject = ["$auth", "$log", "$window", "svcAuth", "$stateParams"];
+function AuthCtrl($auth, $log, $window, svcAuth, $stateParams){
 	var vm = this;
 	vm.init = init;
 	vm.login = login;
@@ -20,20 +20,45 @@ function AuthCtrl($auth, $log, $window){
 		vm.data.email = "demo@demo.com";
 		vm.data.password = "demo";
 		vm.data.fullName = "";
+		vm.activation = false;
+		vm.disabledForm = false;
 
         vm.alert = [
             {type: "danger", message: "Email Already Exist!", show: false},
-            {type: "danger", message: "Email / Password Salah!", show: false}
+            {type: "danger", message: "Email / Password Salah!", show: false},
+			{type: "success", message: "Register Success, check your E-Mail!", show: false}
         ];
+
+		if($stateParams.hash){
+			_activation($stateParams.hash);
+		}
+	}
+
+	function _activation($hash){
+		svcAuth.active($hash, function(response){
+			if(response.result == "OK"){
+				vm.activation = true;
+				$log.info("OK");
+			} else{
+				$window.location.href = '#/';
+				$window.location.reload();
+			}
+		})
 	}
 
 	function login(){
 		vm.loading = true;
 		$auth.login({ email: vm.data.email, password: vm.data.password })
-            .then(function() {
-                $log.info("Success Login Manual");
-                $window.location.href = '#/';
-                $window.location.reload();
+            .then(function(response) {
+				if(response.data.error){
+					vm.loading = false;
+					vm.alert[1].show = true;
+					vm.alert[1].message = response.data.msg;
+				} else{
+					$log.info("Success Login Manual");
+					$window.location.href = '#/';
+					$window.location.reload();
+				}
             })
             .catch(function(response) {
 				vm.loading = false;
@@ -44,17 +69,18 @@ function AuthCtrl($auth, $log, $window){
 
 	function register(){
 		vm.loading = true;
-		$auth.signup(vm.data)
-			.then(function(){
-				$log.info("Success Signup Manual");
-                $window.location.href = '#/';
-				$window.location.reload();
-			})
-			.catch(function(response){
+		svcAuth.register(vm.data, function(response){
+			$log.info(response);
+			if(response.data.error){
 				vm.loading = false;
-                vm.alert[0].show = true;
-				$log.error(response.data.message);
-			});
+				vm.alert[0].show = true;
+				$log.error(response.data.error.message);
+			} else{
+				vm.disabledForm = true;
+				vm.alert[2].show = true;
+				$log.info(response);
+			}
+		});
 	}
 
 	function logout(){

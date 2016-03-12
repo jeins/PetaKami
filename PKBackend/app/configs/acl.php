@@ -5,6 +5,7 @@ return [
         'publicEndpoints' => [
             '/user/authenticate',
             '/user/register',
+            '/user/active/{hash}',
             '/layer/{workspace}/{layers}/bylayer/geojson'
         ],
         'privateEndpoints' => [
