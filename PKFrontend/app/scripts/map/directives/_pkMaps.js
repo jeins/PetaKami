@@ -142,6 +142,7 @@ function pkMaps($q, $compile, olHelpers, olMapDefaults, olData, CONFIG, $log) {
                             draw = addDrawInteraction(source, value, features);
                             map.addInteraction(draw);
                             map.addInteraction(addDrawModifyInteraction(features));
+                            setMapFromGeoJson = false;
 
                             draw.on('drawend', function (e) {
                                 var drawType = e.feature.getGeometry().getType();
@@ -183,7 +184,6 @@ function pkMaps($q, $compile, olHelpers, olMapDefaults, olData, CONFIG, $log) {
                             ipl++;
                             break;
                     }
-                    setMapFromGeoJson = false;
                 }
                 scope.$emit('pk.draw.feature', e.feature);
             });

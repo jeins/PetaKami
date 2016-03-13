@@ -48,6 +48,7 @@ function EditLayerCtrl($scope, $stateParams, svcSharedProperties, svcLayer, olDa
                     if(point.id != feature.getProperties().id)
                         point[feature.getProperties().id] = pointCoor.getCoordinates();
                     else point.id = data;
+                    $log.info("Add Point: " + point.id);
                     break;
                 case 'LineString':
                     var lineCoor = new ol.geom.LineString(feature.getGeometry().getCoordinates()).transform("EPSG:3857", "EPSG:4326");
@@ -55,6 +56,7 @@ function EditLayerCtrl($scope, $stateParams, svcSharedProperties, svcLayer, olDa
                     if(line.id != feature.getProperties().id)
                         line[feature.getProperties().id] = lineCoor.getCoordinates();
                     else line.id = data;
+                    $log.info("Add LineString: " + line.id);
                     break;
                 case 'Polygon':
                     var polyCoor = new ol.geom.Polygon(feature.getGeometry().getCoordinates()).transform("EPSG:3857", "EPSG:4326");
@@ -62,11 +64,9 @@ function EditLayerCtrl($scope, $stateParams, svcSharedProperties, svcLayer, olDa
                     if(poly.id != feature.getProperties().id)
                         poly[feature.getProperties().id] = polyCoor.getCoordinates();
                     else poly.id = data;
+                    $log.info("Add Polygon: " + poly.id);
                     break;
             }
-            $log.info(point);
-            $log.info(line);
-            $log.info(poly);
             svcSharedProperties.setLayerValues({'point':point, 'linestring':line, 'polygon':poly});
         });
     }
