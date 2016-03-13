@@ -3,9 +3,9 @@
 angular.module('pkfrontendApp')
     .controller('SideBrowseCtrl', SideBrowseCtrl);
 
-SideBrowseCtrl.$inject = ['$scope', 'svcLayer', 'svcWorkspace', '$window', '$stateParams', '$log', 'svcSecurity', 'svcPkLayer', 'CONFIG'];
+SideBrowseCtrl.$inject = ['$scope', 'svcLayer', 'svcWorkspace', '$window', '$routeParams', '$log', 'svcSecurity', 'svcPkLayer', 'CONFIG'];
 
-function SideBrowseCtrl($scope, svcLayer, svcWorkspace, $window, $stateParams, $log, svcSecurity, svcPkLayer, CONFIG) {
+function SideBrowseCtrl($scope, svcLayer, svcWorkspace, $window, $routeParams, $log, svcSecurity, svcPkLayer, CONFIG) {
     var vm = this;
     vm.init = init;
     vm.changeWorkspace = changeWorkspace;
@@ -31,9 +31,9 @@ function SideBrowseCtrl($scope, svcLayer, svcWorkspace, $window, $stateParams, $
             vm.setWorkspaces = result.data;
         });
 
-        if($stateParams.layer != undefined){
+        if($routeParams.layer != undefined){
             vm.displayLayer = true;
-            var param = svcSecurity.decode($stateParams.layer); $log.info("Request URI: " + param);
+            var param = svcSecurity.decode($routeParams.layer); $log.info("Request URI: " + param);
             var workspace = param.split(':')[0];
             var layerGroup = param.split(':')[1];
             var layersAndDrawTypes = param.split(':')[2].split(';');
@@ -68,7 +68,7 @@ function SideBrowseCtrl($scope, svcLayer, svcWorkspace, $window, $stateParams, $
                layerNames += values.name + ',';
            }
         });
-        $window.open(CONFIG.http.rest_host + '/layer/' + vm.selectedWorkspace + '/' + layerNames + '/bylayer/geojson');
+        $window.location.href = CONFIG.http.rest_host + '/layer/' + vm.selectedWorkspace + '/' + layerNames + '/bylayer/geojson';
     }
 
     function downloadLayer(layer, type){
@@ -91,7 +91,7 @@ function SideBrowseCtrl($scope, svcLayer, svcWorkspace, $window, $stateParams, $
                     url += 'application%2Fvnd.google-earth.kml%2Bxml';
                     break;
             }
-            $window.open(url);
+            $window.location.href = url;
         });
     }
 

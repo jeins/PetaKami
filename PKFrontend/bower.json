@@ -8,12 +8,12 @@
     "angular-sanitize": "*",
     "font-awesome": "fontawesome#~4.5.0",
     "openlayers3": "https://github.com/tombatossals/ol3-compiled.git#3.8.2",
-    "angular-ui-router": "~0.2.17",
     "ng-file-upload": "~11.2.3",
     "satellizer": "~0.14.0",
     "angular-translate": "^2.10.0",
     "angular-translate-loader-static-files": "^2.10.0",
-    "angular-smart-table": "^2.1.7"
+    "angular-smart-table": "^2.1.7",
+    "angular-route": "^1.5.0"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

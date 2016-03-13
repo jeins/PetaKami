@@ -2,50 +2,70 @@
 
 angular
     .module('pkfrontendApp')
-    .config(['$urlRouterProvider', '$stateProvider', '$locationProvider',
-    function ($urlRouterProvider, $stateProvider, $locationProvider) {
-        $urlRouterProvider.otherwise('/');
-        $stateProvider
-            .state('home', {
-                url: '/',
+    .config(['$routeProvider', 'CONFIG',
+    function ($routeProvider, CONFIG) {
+        $routeProvider
+            .when('/', {
                 templateUrl: 'views/map/map.html',
-                controller: 'MapCtrl as vm'
+                controller: 'MapCtrl',
+                controllerAs: 'vm',
+                permission: CONFIG.session.user
             })
-            .state('view', {
-                url: '/view/:layer',
+            .when('/view/:layer', {
                 templateUrl: 'views/map/map.html',
-                controller: 'ViewLayerCtrl as CVL'
+                controller: 'ViewLayerCtrl',
+                controllerAs: 'CVL',
+                permission: CONFIG.session.user
             })
-            .state('browse', {
-                url:'/browse',
+            .when('/browse', {
                 templateUrl: 'views/features/browse.html',
-                controller: 'BrowseCtrl as vm'
+                controller: 'BrowseCtrl',
+                controllerAs: 'vm',
+                permission: CONFIG.session.user
             })
-            .state('edit', {
-                url: '/edit/:layer',
+            .when('/edit/:layer', {
                 templateUrl: 'views/map/map.html',
-                controller: 'EditLayerCtrl as vm'
+                controller: 'EditLayerCtrl',
+                controllerAs: 'vm',
+                permission: CONFIG.session.user
             })
-            .state('upload', {
-                url: '/upload',
+            .when('/draw', {
+                templateUrl: 'views/map/map.html',
+                controller: 'MapCtrl',
+                controllerAs: 'vm',
+                permission: CONFIG.session.user
+            })
+            .when('/upload', {
                 templateUrl: 'views/features/upload.html',
-                controller: 'UploadCtrl as vm'
+                controller: 'UploadCtrl',
+                resolve:{
+                    workspace: function(svcWorkspace){
+                        return svcWorkspace.getWorkspacesFromRoutes();
+                    }
+                },
+                controllerAs: 'vm',
+                permission: CONFIG.session.user
             })
-            .state('register', {
-                url: '/register',
+            .when('/register', {
                 templateUrl: 'views/auth/register.html',
-                controller: 'AuthCtrl as vm'
+                controller: 'AuthCtrl',
+                controllerAs: 'vm',
+                permission: CONFIG.session.guest
             })
-            .state('login', {
-                url: '/login',
+            .when('/login', {
                 templateUrl: 'views/auth/login.html',
-                controller: 'AuthCtrl as vm'
+                controller: 'AuthCtrl',
+                controllerAs: 'vm',
+                permission: CONFIG.session.guest
             })
-            .state('active', {
-                url: '/active/:hash',
+            .when('/active/:hash', {
                 templateUrl: 'views/auth/active.html',
-                controller: 'AuthCtrl as vm'
+                controller: 'AuthCtrl',
+                controllerAs: 'vm',
+                permission: CONFIG.session.guest
+            })
+            .otherwise({
+                redirectTo: '/'
             })
         ;
-        //$locationProvider.html5Mode(true);
     }]);

@@ -3,8 +3,8 @@
 angular.module('pkfrontendApp')
     .controller('ViewLayerCtrl', ViewLayerCtrl);
 
-ViewLayerCtrl.$inject = ['$scope', '$stateParams', 'svcSharedProperties', 'svcLayer', 'olData', 'svcSecurity'];
-function ViewLayerCtrl($scope, $stateParams, svcSharedProperties, svcLayer, olData, svcSecurity) {
+ViewLayerCtrl.$inject = ['$scope', '$routeParams', 'svcSharedProperties', 'svcLayer', 'olData', 'svcSecurity'];
+function ViewLayerCtrl($scope, $routeParams, svcSharedProperties, svcLayer, olData, svcSecurity) {
     var vm = this;
     vm.init = init;
 
@@ -12,7 +12,7 @@ function ViewLayerCtrl($scope, $stateParams, svcSharedProperties, svcLayer, olDa
 
     function init(){
         svcSharedProperties.setSelectedNav('browse');
-        var request = _getRequestProperties(svcSecurity.decode($stateParams.layer));
+        var request = _getRequestProperties(svcSecurity.decode($routeParams.layer));
 
         $scope.geoproperties = {
             'workspace': request.workspace,

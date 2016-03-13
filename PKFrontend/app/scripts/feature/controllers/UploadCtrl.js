@@ -3,8 +3,8 @@
 angular.module('pkfrontendApp')
     .controller('UploadCtrl', UploadCtrl);
 
-UploadCtrl.$inject = ['$scope', 'Upload', 'svcWorkspace', 'svcLayer','CONFIG', '$timeout', '$window', 'svcSecurity', 'svcPkLayer', '$log'];
-function UploadCtrl($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$window, svcSecurity, svcPkLayer, $log) {
+UploadCtrl.$inject = ['$scope', 'Upload', 'svcWorkspace', 'svcLayer','CONFIG', '$timeout', '$window', 'svcSecurity', 'svcPkLayer', '$log', 'workspace'];
+function UploadCtrl($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$window, svcSecurity, svcPkLayer, $log, workspace) {
     var vm = this;
     vm.init = init;
     vm.changeWorkspace = changeWorkspace;
@@ -23,9 +23,10 @@ function UploadCtrl($scope, Upload, svcWorkspace, svcLayer, CONFIG, $timeout,$wi
         vm.isCollapsed = true;
         vm.isPointSelected = 'pk-dropbox_brown'; vm.isLineSelected = 'pk-dropbox_brown'; vm.isPolySelected = 'pk-dropbox_brown';
 
-        svcWorkspace.getWorkspaces(function(result){
-            vm.workspaces = result.data;
-        });
+        vm.workspaces = workspace.data;
+        //svcWorkspace.getWorkspaces(function(result){
+        //    vm.workspaces = result.data;
+        //});
     }
 
     function changeWorkspace(workspace){

@@ -21,17 +21,17 @@
                     <td st-ratio="20">{{row.workspace}}</td>
                     <td st-ratio="20">{{row.name}}</td>
                     <td st-ratio="20">{{row.description}}</td>
-                    <td st-ratio="5">
+                    <td st-ratio="5" style="width: 45px">
                         <button type="button" ng-click="vm.viewLayer(row.name, row.workspace)" tooltip-placement="top" uib-tooltip="View">
                             <i class="fa fa-map-o"></i>
                         </button>
                     </td>
-                    <td st-ratio="5">
+                    <td st-ratio="5" style="width: 45px">
                         <button type="button" ng-click="vm.downloadLayer(row.name, row.workspace)" tooltip-placement="top" uib-tooltip="Download">
                             <i class="fa fa-download"></i>
                         </button>
                     </td>
-                    <td st-ratio="5">
+                    <td st-ratio="5" style="width: 45px">
                         <button type="button" ng-click="vm.editLayer(row.name, row.workspace)" ng-if="row.allowEdit" tooltip-placement="top" uib-tooltip="Edit">
                             <i class="fa fa-pencil-square-o"></i>
                         </button>

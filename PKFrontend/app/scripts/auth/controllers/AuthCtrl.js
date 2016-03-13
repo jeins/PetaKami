@@ -3,8 +3,8 @@
 angular.module('pkfrontendApp')
     .controller('AuthCtrl', AuthCtrl);
 
-AuthCtrl.$inject = ["$auth", "$log", "$window", "svcAuth", "$stateParams"];
-function AuthCtrl($auth, $log, $window, svcAuth, $stateParams){
+AuthCtrl.$inject = ["$auth", "$log", "$window", "svcAuth", "$routeParams"];
+function AuthCtrl($auth, $log, $window, svcAuth, $routeParams){
 	var vm = this;
 	vm.init = init;
 	vm.login = login;
@@ -29,8 +29,8 @@ function AuthCtrl($auth, $log, $window, svcAuth, $stateParams){
 			{type: "success", message: "Register Success, check your E-Mail!", show: false}
         ];
 
-		if($stateParams.hash){
-			_activation($stateParams.hash);
+		if($routeParams.hash){
+			_activation($routeParams.hash);
 		}
 	}
 

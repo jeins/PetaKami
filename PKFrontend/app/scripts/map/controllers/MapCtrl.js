@@ -3,7 +3,7 @@
 angular.module('pkfrontendApp')
   .controller('MapCtrl', MapCtrl);
 
-MapCtrl.$inject = ['$scope', '$log', 'svcSharedProperties']
+MapCtrl.$inject = ['$scope', '$log', 'svcSharedProperties'];
 function MapCtrl($scope, $log, svcSharedProperties) {
     var vm = this;
     vm.init = init;

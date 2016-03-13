@@ -3,8 +3,8 @@
 angular.module('pkfrontendApp')
     .controller('EditLayerCtrl', EditLayerCtrl);
 
-EditLayerCtrl.$inject = ['$scope', '$stateParams', 'svcSharedProperties', 'svcLayer', 'olData', 'svcSecurity', '$log'];
-function EditLayerCtrl($scope, $stateParams, svcSharedProperties, svcLayer, olData, svcSecurity, $log){
+EditLayerCtrl.$inject = ['$scope', '$routeParams', 'svcSharedProperties', 'svcLayer', 'olData', 'svcSecurity', '$log'];
+function EditLayerCtrl($scope, $routeParams, svcSharedProperties, svcLayer, olData, svcSecurity, $log){
     var vm = this;
     vm.init = init;
 
@@ -16,7 +16,7 @@ function EditLayerCtrl($scope, $stateParams, svcSharedProperties, svcLayer, olDa
         vm.isDrawOrModify = 'draw';
         vm.geoproperties = '';
         var point = [], line=[], poly=[];
-        var request = _getRequestProperties(svcSecurity.decode($stateParams.layer));
+        var request = _getRequestProperties(svcSecurity.decode($routeParams.layer));
 
         $scope.geoproperties = {
             'workspace': request.workspace,

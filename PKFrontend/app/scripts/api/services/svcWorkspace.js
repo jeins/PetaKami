@@ -17,6 +17,19 @@ angular.module('pkfrontendApp')
                     });
             }
 
+            function getWorkspacesFromRoutes(){
+                var deferred = $q.defer();
+                $http
+                    .get(CONFIG.http.rest_host + '/workspace/all')
+                    .then(function(result){
+                        deferred.resolve(result.data);
+                    })
+                    .catch(function(error){
+                        deferred.reject(error);
+                    });
+                return deferred.promise;
+            }
+
             function setupRequest(uri, method, data){
                 return {
                     url: CONFIG.http.rest_host + uri,
@@ -27,6 +40,7 @@ angular.module('pkfrontendApp')
 
             return {
                 getWorkspaces: getWorkspaces,
+                getWorkspacesFromRoutes: getWorkspacesFromRoutes,
                 getWorkspaceWithDrawTyp: getWorkspaceWithDrawTyp
             }
         }]);

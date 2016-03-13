@@ -29,6 +29,8 @@ function SidenavCtrl($scope, $location, $log, svcSession) {
             toggleSideNav('browse');
         } else if($location.path().match('edit')){
             toggleSideNav('edit');
+        } else if($location.path().match('draw')){
+            toggleSideNav('draw');
         }
 
         isNavActive($location.path());
