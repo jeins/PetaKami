@@ -11,11 +11,21 @@ class PostgisProcessor extends Injectable
 {
     private $queryBuilder;
 
+    /**
+     * PostgisProcessor constructor.
+     */
     public function __construct()
     {
         $this->queryBuilder = new QueryBuilder($this->di->get(PKConst::DB_GEO));
     }
 
+    /**
+     * add layer to postgis
+     * 
+     * @param $layerName
+     * @param $drawTypeAndCoordinates
+     * @return array
+     */
     public function addLayerToPostgis($layerName, $drawTypeAndCoordinates){
         $layerNames = [];
         $index = 0;
@@ -33,6 +43,14 @@ class PostgisProcessor extends Injectable
         return $layerNames;
     }
 
+    /**
+     * update layer to postgis
+     * 
+     * @param $layerName
+     * @param $layers
+     * @param $drawTypeAndCoordinates
+     * @return array
+     */
     public function updateLayerToPostgis($layerName, $layers, $drawTypeAndCoordinates){
         $layerArr = explode(',', $layers);
         $layerNames = [];

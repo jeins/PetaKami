@@ -8,6 +8,9 @@ use Phalcon\Mvc\Micro\Collection;
 
 class PkLayerCollection extends Collection
 {
+    /**
+     * petakami layer routes
+     */
     public function __construct()
     {
         $this->setHandler('\PetaKami\Controllers\PkLayerController', true);

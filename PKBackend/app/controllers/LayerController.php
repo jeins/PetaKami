@@ -24,6 +24,9 @@ class LayerController extends BaseController
     /** @var  UploadProcessor */
     protected $uploadProcessor;
 
+    /**
+     * the constructor
+     */
     public function onConstruct()
     {
         parent::onConstruct();
@@ -34,6 +37,11 @@ class LayerController extends BaseController
         $this->uploadProcessor = new UploadProcessor();
     }
 
+    /**
+     * setup geoserver
+     *
+     * @return mixed
+     */
     public function geoserver()
     {
         $url = str_replace('rest', '', $this->di->get(PKConst::CONFIG)->geoserver->rest_url);
@@ -41,6 +49,13 @@ class LayerController extends BaseController
         return $this->respondArray([$url], PKConst::RESPONSE_KEY);
     }
 
+    /**
+     * get feature collection with return type as GeoJSON
+     *
+     * @param $workspace
+     * @param $layerGroupName
+     * @return array
+     */
     public function getFeatureCollectionGeoJson($workspace, $layerGroupName)
     {
         $geoJson = $this->jsonProcessor->featureCollection($workspace, $layerGroupName);
@@ -48,6 +63,13 @@ class LayerController extends BaseController
         return $geoJson;
     }
 
+    /**
+     * get feature collection filter by layer and workspace
+     *
+     * @param $workspace
+     * @param $layers
+     * @return array
+     */
     public function getFeatureCollectionFilterByLayer($workspace, $layers)
     {
         $geoJson = $this->jsonProcessor->featureCollection($workspace, $layers, true);
@@ -55,6 +77,12 @@ class LayerController extends BaseController
         return $geoJson;
     }
 
+    /**
+     * get layer from workspace
+     *
+     * @param $workspace
+     * @return mixed
+     */
     public function getLayersFromWorkspace($workspace)
     {
         $layers = $this->jsonProcessor->layerFilterByWorkspace($workspace);
@@ -62,6 +90,13 @@ class LayerController extends BaseController
         return $this->respondArray($layers, PKConst::RESPONSE_KEY);
     }
 
+    /**
+     * get coordinate x and y, to auto zoom
+     *
+     * @param $workspace
+     * @param $layerGroupName
+     * @return mixed
+     */
     public function getBbox($workspace, $layerGroupName)
     {
         $bBox = $this->jsonProcessor->bBox($workspace, $layerGroupName);
@@ -69,6 +104,13 @@ class LayerController extends BaseController
         return $this->respondArray($bBox, PKConst::RESPONSE_KEY);
     }
 
+    /**
+     * get layer with draw type
+     *
+     * @param $workspace
+     * @param $layerGroupName
+     * @return mixed
+     */
     public function getLayerAndDrawType($workspace, $layerGroupName)
     {
         $layersAndDrawType = $this->jsonProcessor->layersAndDrawTypeFromLayerGroup($workspace, $layerGroupName);
@@ -76,6 +118,12 @@ class LayerController extends BaseController
         return $this->respondArray($layersAndDrawType, PKConst::RESPONSE_KEY);
     }
 
+    /**
+     * @param $workspace
+     * @param $layerGroupName
+     * @param $layer
+     * @return mixed
+     */
     public function getDrawType($workspace, $layerGroupName, $layer)
     {
         $drawType = $this->jsonProcessor->drawTypeFilterByLayer($workspace, $layerGroupName, $layer);
@@ -83,6 +131,11 @@ class LayerController extends BaseController
         return $this->respondArray($drawType, PKConst::RESPONSE_KEY);
     }
 
+    /**
+     * add new layer
+     *
+     * @return mixed
+     */
     public function postLayer()
     {
         $requestBody = $this->request->getJsonRawBody();
@@ -97,6 +150,13 @@ class LayerController extends BaseController
         return $this->respondArray($layersAndDrawType, PKConst::RESPONSE_KEY);
     }
 
+    /**
+     * upload files shp to tmp folder
+     *
+     * @param $type
+     * @param $key
+     * @return mixed
+     */
     public function postUploadFiles($type, $key)
     {
         $this->uploadProcessor->uploadFileToTmpFolder($type, $key);
@@ -104,6 +164,14 @@ class LayerController extends BaseController
         return $this->respondOK();
     }
 
+    /**
+     * execute uploaded files in tmp folder
+     *
+     * @param $workspace
+     * @param $dataStore
+     * @param $key
+     * @return mixed
+     */
     public function postUploadLayers($workspace, $dataStore, $key)
     {
         $this->uploadProcessor->uploadFileToGeoServer($workspace, $dataStore, $key);
@@ -113,6 +181,11 @@ class LayerController extends BaseController
         return $this->respondArray($layersAndDrawType, PKConst::RESPONSE_KEY);
     }
 
+    /**
+     * edit layer
+     * 
+     * @return mixed
+     */
     public function editLayer()
     {
         $requestBody = $this->request->getJsonRawBody();

@@ -8,7 +8,15 @@ use Phalcon\Di\Injectable;
 
 class Mail extends Injectable
 {
-
+    /**
+     * send email
+     * 
+     * @param $to
+     * @param $subject
+     * @param $fullName
+     * @param $hash
+     * @return int
+     */
     public function send($to, $subject, $fullName, $hash)
     {
         $mailConfig = $this->di->get(PKConst::CONFIG)->mail;
@@ -33,6 +41,13 @@ class Mail extends Injectable
         return $mailer->send($message);
     }
 
+    /**
+     * email template
+     * 
+     * @param $hash
+     * @param $fullName
+     * @return string
+     */
     private function template($hash, $fullName){
         $url = $this->di->get(PKConst::CONFIG)->clientHostName . '/#/active/' . $hash;
 

@@ -14,6 +14,9 @@ class Layer extends BaseModel
     public $workspace;
     public $description;
 
+    /**
+     * initialize layer
+     */
     public function initialize()
     {
         $this->belongsTo('userId', User::class, 'id', [
@@ -21,11 +24,19 @@ class Layer extends BaseModel
         ]);
     }
 
+    /**
+     * set table layers
+     * @return string
+     */
     public function getSource()
     {
         return 'layers';
     }
 
+    /**
+     * setup column
+     * @return array
+     */
     public function columnMap()
     {
         return parent::columnMap() + [

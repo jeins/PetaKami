@@ -14,11 +14,21 @@ use PhalconRest\Exceptions\UserException;
 
 class PkUserController extends BaseController
 {
+    /**
+     * check auth
+     * 
+     * @return mixed
+     */
     public function me()
     {
         return $this->respondItem($this->user, new UserTransformer, 'user');
     }
 
+    /**
+     * user login and retrieve token
+     * 
+     * @return mixed
+     */
     public function authenticate()
     {
         $data = $this->request->getJsonRawBody();
@@ -43,6 +53,12 @@ class PkUserController extends BaseController
         return $this->respond($response);
     }
 
+    /**
+     * user register
+     * 
+     * @return mixed
+     * @throws UserException
+     */
     public function register()
     {
         $data = $this->request->getJsonRawBody();
@@ -73,6 +89,13 @@ class PkUserController extends BaseController
         return $this->respond(["data" => ["error" => false]]);
     }
 
+    /**
+     * set user status to active
+     * 
+     * @param $hash
+     * @return mixed
+     * @throws UserException
+     */
     public function setUserActive($hash){
         $user = User::findFirst([
             'conditions' => 'hash = :hash:',

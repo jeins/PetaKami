@@ -8,6 +8,9 @@ use Phalcon\Mvc\Micro\Collection;
 
 class LayerCollection extends Collection
 {
+    /**
+     * layer routes which connect to GeoServer API
+     */
     public function __construct()
     {
         $this->setHandler('\PetaKami\Controllers\LayerController', true);

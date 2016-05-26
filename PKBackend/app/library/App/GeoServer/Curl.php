@@ -23,6 +23,10 @@ class Curl
 
     private $config;
 
+    /**
+     * Curl constructor.
+     * @param $config
+     */
     public function __construct($config)
     {
         $this->config = $config;
@@ -31,26 +35,50 @@ class Curl
         $this->returnString = true;
     }
 
+    /**
+     * set url for api
+     * 
+     * @param $url
+     * @param bool $replace
+     */
     public function setUrl($url, $replace = false)
     {
         if($replace) $this->_url = str_replace('/rest', '', $this->_url) . $url;
         else $this->_url .= $url;
     }
 
+    /**
+     * setup http method
+     * 
+     * @param $httpMethod
+     */
     public function setHttpMethod($httpMethod)
     {
         $this->httpMethod = $httpMethod;
     }
 
+    /**
+     * setup request body
+     * 
+     * @param $requestBody
+     */
     public function setRequestBody($requestBody)
     {
         $this->requestBody = $requestBody;
     }
 
+    /**
+     * get response body
+     * 
+     * @return mixed
+     */
     public function getResponseBody(){
         return $this->responseBody;
     }
 
+    /**
+     * running request
+     */
     public function run()
     {
         $ch = curl_init($this->_url);

@@ -13,11 +13,21 @@ class JsonRequestProcessor extends Injectable
 
     private $curl;
 
+    /**
+     * JsonRequestProcessor constructor.
+     */
     public function __construct()
     {
         $this->curl = new Curl($this->di->get(PKConst::CONFIG));
     }
 
+    /**
+     * get layer from layer group
+     * 
+     * @param $workspace
+     * @param $dataStore
+     * @return array
+     */
     public function layersFromLayerGroup($workspace, $dataStore)
     {
         $responses = json_decode($this->_doCurl('/workspaces/'.$workspace.'/datastores/'. $dataStore.'/featuretypes.json'));
@@ -31,6 +41,13 @@ class JsonRequestProcessor extends Injectable
         return $layerNames;
     }
 
+    /**
+     * get layer with draw type from layer group
+     * 
+     * @param $workspace
+     * @param $layerGroupName
+     * @return array
+     */
     public function layersAndDrawTypeFromLayerGroup($workspace, $layerGroupName)
     {
         $layers = $this->layersFromLayerGroup($workspace, $layerGroupName);
@@ -45,6 +62,12 @@ class JsonRequestProcessor extends Injectable
         return $layersAndDrawTypes;
     }
 
+    /**
+     * get layer by specific workspace
+     * 
+     * @param $workspace
+     * @return array
+     */
     public function layerFilterByWorkspace($workspace)
     {
         $responses = json_decode($this->_doCurl('/workspaces/'.$workspace.'/layergroups.json'));
@@ -64,6 +87,14 @@ class JsonRequestProcessor extends Injectable
         return $newLayerGroups;
     }
 
+    /**
+     * get draw type by specific workspace, layer group and layer
+     * 
+     * @param $workspace
+     * @param $layerGroupName
+     * @param $layer
+     * @return array
+     */
     public function drawTypeFilterByLayer($workspace, $layerGroupName, $layer)
     {
         $response = $this->_doCurl('/workspaces/'.$workspace.'/datastores/' . $layerGroupName . '/featuretypes/' . $layer . '.json');
@@ -79,6 +110,13 @@ class JsonRequestProcessor extends Injectable
         return $drawType;
     }
 
+    /**
+     * get coordinate box for auto zoom by workspace and layer group
+     * 
+     * @param $workspace
+     * @param $layerGroupName
+     * @return array
+     */
     public function bBox($workspace, $layerGroupName)
     {
         $response = $this->_doCurl(
@@ -90,6 +128,14 @@ class JsonRequestProcessor extends Injectable
         return explode(',', $responses);
     }
 
+    /**
+     * get feature collection
+     * 
+     * @param $workspace
+     * @param $layerGroupName
+     * @param bool $filterByLayer
+     * @return array|mixed
+     */
     public function featureCollection($workspace, $layerGroupName, $filterByLayer = false)
     {
         $layers = explode(',', $layerGroupName);
@@ -121,7 +167,7 @@ class JsonRequestProcessor extends Injectable
 
         return $featureTypes;
     }
-
+    
     private function _doCurl($url, $replaceUrl = false)
     {
         $this->curl->setHttpMethod('get');

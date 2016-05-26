@@ -13,6 +13,12 @@ use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class PkLayerController extends BaseController
 {
+    /**
+     * add user layer to own database
+     * 
+     * @return mixed
+     * @throws UserException
+     */
     public function addUserLayer()
     {
         $data = $this->request->getJsonRawBody();
@@ -31,6 +37,13 @@ class PkLayerController extends BaseController
         return $this->respondItem($uLayer, new UserLayerTransformer, PKConst::RESPONSE_ULAYERS);
     }
 
+    /**
+     * get layer informasi from own database
+     * 
+     * @param $limit
+     * @param $currentPage
+     * @return mixed
+     */
     public function getAll($limit, $currentPage)
     {
         $userLayer = Layer::find();
@@ -56,6 +69,12 @@ class PkLayerController extends BaseController
         return $this->respond($page);
     }
 
+    /**
+     * get information from user
+     * 
+     * @return mixed
+     * @throws UserException
+     */
     public function getByUser()
     {
         $uLayer = Layer::find("userId='" . $this->user->id."''");
@@ -67,6 +86,13 @@ class PkLayerController extends BaseController
         return $this->respondCollection($uLayer, new UserLayerTransformer(), PKConst::RESPONSE_ULAYERS);
     }
 
+    /**
+     * get information from workspace
+     * 
+     * @param $workspace
+     * @return mixed
+     * @throws UserException
+     */
     public function getByWorkspace($workspace)
     {
         $uLayer = Layer::find("workspace='$workspace'");

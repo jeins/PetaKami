@@ -13,12 +13,22 @@ class XmlProcessor extends Injectable
 
     private $curl;
 
+    /**
+     * XmlProcessor constructor.
+     */
     public function __construct()
     {
         $this->xml = new Xml($this->di->get(PKConst::CONFIG));
         $this->curl = new Curl($this->di->get(PKConst::CONFIG));
     }
 
+    /**
+     * xml request create layers
+     * 
+     * @param $groupLayers
+     * @param $workspace
+     * @param $nameOfDataStoreAndLayerGroup
+     */
     public function createLayers($groupLayers, $workspace, $nameOfDataStoreAndLayerGroup)
     {
         foreach($groupLayers as $layerName){
@@ -29,6 +39,12 @@ class XmlProcessor extends Injectable
         $this->createLayerGroup($workspace, $nameOfDataStoreAndLayerGroup, $groupLayers);
     }
 
+    /**
+     * create data store
+     * 
+     * @param $workspace
+     * @param $dataStore
+     */
     public function createDataStore($workspace, $dataStore)
     {
         $this->_doCurl(
@@ -38,6 +54,13 @@ class XmlProcessor extends Injectable
         );
     }
 
+    /**
+     * create feature type
+     * 
+     * @param $workspace
+     * @param $dataStore
+     * @param $featureTypeName
+     */
     public function createFeatureType($workspace, $dataStore, $featureTypeName)
     {
         $this->_doCurl(
@@ -48,6 +71,13 @@ class XmlProcessor extends Injectable
         );
     }
 
+    /**
+     * create layer group
+     * 
+     * @param $workspace
+     * @param $layerGroupName
+     * @param $groupLayers
+     */
     public function createLayerGroup($workspace, $layerGroupName, $groupLayers)
     {
         $this->_doCurl(
@@ -57,6 +87,13 @@ class XmlProcessor extends Injectable
         );
     }
 
+    /**
+     * create layer from shp
+     * 
+     * @param $workspace
+     * @param $dataStore
+     * @param $shpFile
+     */
     public function createLayerFromShp($workspace, $dataStore, $shpFile)
     {
         $this->_doCurl(

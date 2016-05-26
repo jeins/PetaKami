@@ -7,6 +7,9 @@ use Phalcon\Mvc\Micro\Collection;
 
 class WorkspaceCollection extends Collection
 {
+    /**
+     * workspace routes
+     */
     public function __construct()
     {
         $this->setHandler('\PetaKami\Controllers\WorkspaceController', true);

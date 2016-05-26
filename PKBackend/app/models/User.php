@@ -14,6 +14,9 @@ class User extends BaseModel
     public $active;
     public $password;
 
+    /**
+     * initialize user
+     */
     public function initialize()
     {
         $this->hasMany('id', Layer::class, 'userId', [
@@ -21,11 +24,19 @@ class User extends BaseModel
         ]);
     }
 
+    /**
+     * set table 
+     * @return string
+     */
     public function getSource()
     {
         return 'users';
     }
 
+    /**
+     * setup column
+     * @return array
+     */
     public function columnMap()
     {
         return parent::columnMap() + [

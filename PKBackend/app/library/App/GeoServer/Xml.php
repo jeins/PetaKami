@@ -8,11 +8,22 @@ class Xml
 {
     private $config;
 
+    /**
+     * Xml constructor.
+     * @param $config
+     */
     public function __construct($config)
     {
         $this->config = $config;
     }
 
+    /**
+     * xml template to create new datastore
+     * 
+     * @param $workspace
+     * @param $dataStore
+     * @return string
+     */
     public function xmlDataStore($workspace, $dataStore)
     {
         return '
@@ -41,11 +52,25 @@ class Xml
         ';
     }
 
+    /**
+     * xml template to create feature type
+     * 
+     * @param $featureTypeName
+     * @return string
+     */
     public function xmlFeatureType($featureTypeName)
     {
         return '<featureType><name>'.$featureTypeName.'</name></featureType>';
     }
 
+    /**
+     * xml template to create layer group
+     * 
+     * @param $workspace
+     * @param $layerGroupName
+     * @param $layerGroupLayers
+     * @return string
+     */
     public function xmlLayerGroup($workspace, $layerGroupName, $layerGroupLayers)
     {
         $layerGroup = '<layerGroup>

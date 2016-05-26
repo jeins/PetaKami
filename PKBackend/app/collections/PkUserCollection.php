@@ -8,6 +8,9 @@ use Phalcon\Mvc\Micro\Collection;
 class PkUserCollection extends Collection
 {
 
+    /**
+     * user routes
+     */
     public function __construct()
     {
         $this->setHandler('\PetaKami\Controllers\PkUserController', true);

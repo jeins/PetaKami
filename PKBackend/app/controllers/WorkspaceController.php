@@ -8,11 +8,19 @@ use PetaKami\Mvc\BaseController;
 
 class WorkspaceController extends BaseController
 {
+    /**
+     * the constrcutor
+     */
     public function onConstruct()
     {
         parent::onConstruct();
     }
 
+    /**
+     * get all workspace from config
+     * 
+     * @return mixed
+     */
     public function all()
     {
         $workspaces = [];
@@ -22,6 +30,12 @@ class WorkspaceController extends BaseController
         return $this->respondArray($workspaces, PKConst::RESPONSE_KEY);
     }
 
+    /**
+     * get draw type of workspace
+     * 
+     * @param $workspace
+     * @return mixed
+     */
     public function findDrawTyp($workspace)
     {
         $drawTypes = $this->config->geoserver->workspaces[$workspace];

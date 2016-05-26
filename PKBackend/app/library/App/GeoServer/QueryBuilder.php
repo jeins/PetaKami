@@ -22,6 +22,11 @@ class QueryBuilder
         $this->connection = $connection;
     }
 
+    /**
+     * auto create table in postgis
+     * 
+     * @param $type
+     */
     public function createTable($type)
     {
         $spacialTyp = GeoServer::GEOMETRY_POINT_4326;
@@ -70,6 +75,11 @@ class QueryBuilder
         }
     }
 
+    /**
+     * remove table (remove layer)
+     * 
+     * @return string
+     */
     public function clearTable()
     {
         try{
@@ -82,6 +92,12 @@ class QueryBuilder
         return $result;
     }
 
+    /**
+     * check if table already exist or not
+     * 
+     * @param $table
+     * @return bool
+     */
     public function isTableExist($table)
     {
         try{
@@ -91,6 +107,11 @@ class QueryBuilder
         return false;
     }
 
+    /**
+     * insert coordinate
+     * @return string
+     * @throws \Exception
+     */
     public function insertAction()
     {
         $this->_validate();
@@ -124,6 +145,11 @@ class QueryBuilder
         return $result;
     }
 
+    /**
+     * update coordinate
+     * @return string
+     * @throws \Exception
+     */
     public function updateAction()
     {
         $this->_validate();

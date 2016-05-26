@@ -16,6 +16,9 @@ class UploadProcessor extends Injectable
 
     private $jsonProcessor;
 
+    /**
+     * UploadProcessor constructor.
+     */
     public function __construct()
     {
         $this->config = Di::getDefault()->get(PKConst::CONFIG);
@@ -23,6 +26,12 @@ class UploadProcessor extends Injectable
         $this->jsonProcessor = new JsonRequestProcessor();
     }
 
+    /**
+     * upload file to tmp folder
+     * 
+     * @param $type
+     * @param $key
+     */
     public function uploadFileToTmpFolder($type, $key)
     {
         $tmpFolder = $this->config->application->tmpFolder  . $key.'/';
@@ -45,6 +54,13 @@ class UploadProcessor extends Injectable
         }
     }
 
+    /**
+     * upload file to geoserver
+     * 
+     * @param $workspace
+     * @param $dataStore
+     * @param $key
+     */
     public function uploadFileToGeoServer($workspace, $dataStore, $key)
     {
         $tmpFolder = $this->config->application->tmpFolder  . $key.'/';
